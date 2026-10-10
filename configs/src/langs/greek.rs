@@ -1,4 +1,4 @@
-use morphe_train::kaikki::Entry;
+use morphe_train::kaikki::{Entry, Form};
 use morphe_train::spec::*;
 
 pub struct Greek;
@@ -12,6 +12,8 @@ impl Language for Greek {
         // Katharevousa and other learned forms come tagged archaic; weak
         // pronoun forms are clitics, kept behind the strong ones.
         s.soft_tags.extend(tags("weak formal literary Katharevousa"));
+        // Greek Wiktionary adds words English Wiktionary lacks.
+        s.extra_dumps = vec!["el/Greek".into()];
         s.features = vec![
             feature(
                 "Case",
@@ -68,6 +70,107 @@ impl Language for Greek {
             pos("article", "article", vec![group("", "", &format!("{CASES} Gender Number"))]),
         ];
         s
+    }
+
+    /// Greek Wiktionary: a noun's gender is a form tagged only with it; a
+    /// verb has one table per voice (the passive one's template ends in
+    /// -μαι), its tenses carry no mood or voice, the aorist is "aorist", the
+    /// imperfective imperative comes before the aorist rows and the
+    /// perfective one after, and the dependent is the future without θα.
+    fn prepare_extra(&self, _dump: &str, e: &mut Entry) {
+        let word = e.word.clone();
+        let skip = ["form-of", "participle"];
+        if e.tags.iter().any(|t| skip.contains(&t.as_str())) || word.contains(' ') || word.starts_with(char::is_uppercase) {
+            e.forms.clear();
+            return;
+        }
+        let tagged = |f: &Form, t: &str| f.tags.iter().any(|x| x == t);
+        let tags = |t: &str| t.split(' ').map(String::from).collect::<Vec<_>>();
+        let cases = ["nominative", "genitive", "accusative", "vocative"];
+        let genders = ["masculine", "feminine", "neuter"];
+        let forms = std::mem::take(&mut e.forms);
+        match e.pos.as_str() {
+            "noun" => {
+                // Adjectives filed as nouns carry gendered case forms.
+                if forms.iter().any(|f| cases.iter().any(|c| tagged(f, c)) && genders.iter().any(|g| tagged(f, g))) {
+                    return;
+                }
+                for f in forms {
+                    if f.form == word && f.tags.iter().all(|t| genders.contains(&t.as_str())) {
+                        e.tags.extend(f.tags.iter().cloned());
+                    } else if cases.iter().any(|c| tagged(&f, c)) {
+                        e.forms.push(f);
+                    }
+                }
+            }
+            "adj" => e.forms = forms.into_iter().filter(|f| cases.iter().any(|c| tagged(f, c))).collect(),
+            "verb" => {
+                // Deponents (έρχομαι) are left to English Wiktionary.
+                if word.ends_with("μαι") {
+                    return;
+                }
+                let mut table: Option<bool> = None;
+                let mut perfective = false;
+                for f in forms {
+                    if tagged(&f, "inflection-template") {
+                        table = Some(f.form.ends_with("μαι'"));
+                        perfective = false;
+                        continue;
+                    }
+                    let Some(passive) = table else { continue };
+                    let voice = if passive { " passive" } else { "" };
+                    let mut form = f.form.trim().to_string();
+                    if tagged(&f, "aorist") || tagged(&f, "infinitive") {
+                        perfective = true;
+                    }
+                    let person = ["first-person", "second-person", "third-person"].into_iter().find(|p| tagged(&f, p));
+                    let number = ["singular", "plural"].into_iter().find(|n| tagged(&f, n));
+                    let pn = match (person, number) {
+                        (Some(p), Some(n)) => format!(" {p} {n}"),
+                        _ => String::new(),
+                    };
+                    let t = if tagged(&f, "participle") {
+                        if form.ends_with("ντας") && !passive {
+                            "participle present".to_string()
+                        } else if form.ends_with("μένος") {
+                            "participle passive".to_string()
+                        } else if form.ends_with("μενος") {
+                            "participle passive present".to_string()
+                        } else {
+                            continue;
+                        }
+                    } else if tagged(&f, "infinitive") {
+                        format!("infinitive-aorist{voice}")
+                    } else if tagged(&f, "imperative") {
+                        let aspect = if perfective { "perfective" } else { "imperfective" };
+                        format!("imperative {aspect}{voice}{pn}")
+                    } else if pn.is_empty() || tagged(&f, "subjunctive") || ["perfect", "pluperfect"].iter().any(|t| tagged(&f, t)) {
+                        continue;
+                    } else if tagged(&f, "future") {
+                        // θα + dependent; the imperfective future is θα + present.
+                        if tagged(&f, "imperfect") {
+                            continue;
+                        }
+                        let Some(rest) = form.strip_prefix("θα ") else { continue };
+                        form = rest.to_string();
+                        format!("indicative dependent{voice}{pn}")
+                    } else if tagged(&f, "aorist") {
+                        format!("indicative past perfective{voice}{pn}")
+                    } else if tagged(&f, "imperfect") {
+                        format!("indicative imperfect{voice}{pn}")
+                    } else if tagged(&f, "present") {
+                        format!("indicative present{voice}{pn}")
+                    } else {
+                        continue;
+                    };
+                    if form.contains(' ') || form.is_empty() {
+                        continue;
+                    }
+                    e.forms.push(Form { form, tags: tags(&t), source: Some("table".into()) });
+                }
+            }
+            _ => {}
+        }
     }
 
     fn keep_entry(&self, e: &Entry) -> bool {
