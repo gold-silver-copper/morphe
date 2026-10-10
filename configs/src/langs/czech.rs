@@ -95,7 +95,7 @@ impl Language for Czech {
     /// "plural" (and the inanimate one without "masculine"); the accusative
     /// plural "masculine / feminine" comes as feminine only. Each masculine
     /// gets one tag per animacy, so that it weighs as much as "feminine".
-    fn retag(&self, _pos: &PosSpec, t: &mut Vec<String>) {
+    fn retag(&self, _pos: &PosSpec, _form: &str, t: &mut Vec<String>) {
         let push = |t: &mut Vec<String>, s: &str| {
             if !has(t, s) {
                 t.push(s.into());

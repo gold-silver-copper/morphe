@@ -75,9 +75,9 @@ impl<'a> Extractor<'a> {
             .filter(|c| self.strip(c) == plain)
             .unwrap_or_else(|| plain.clone());
 
-        let retagged = |t: &[String]| {
+        let retagged = |form: &str, t: &[String]| {
             let mut t = t.to_vec();
-            self.lang.retag(pos, &mut t);
+            self.lang.retag(pos, form, &mut t);
             t
         };
         // (cell, form, soft, from a table)
@@ -87,7 +87,7 @@ impl<'a> Extractor<'a> {
             if (spec.source == Source::Head && table) || (spec.source == Source::Table && !table) {
                 continue;
             }
-            let tags = retagged(&f.tags);
+            let tags = retagged(f.form.trim(), &f.tags);
             if tags.iter().any(|t| spec.drop_tags.contains(t)) {
                 continue;
             }
@@ -143,9 +143,9 @@ impl<'a> Extractor<'a> {
         let canon_tags: Vec<String> = spec
             .canonical_tag
             .as_ref()
-            .map(|t| e.forms.iter().filter(|f| f.tags.contains(t)).flat_map(|f| retagged(&f.tags)).collect())
+            .map(|t| e.forms.iter().filter(|f| f.tags.contains(t)).flat_map(|f| retagged(f.form.trim(), &f.tags)).collect())
             .unwrap_or_default();
-        let sense_tags: Vec<String> = e.senses.iter().flat_map(|s| retagged(&s.tags)).collect();
+        let sense_tags: Vec<String> = e.senses.iter().flat_map(|s| retagged("", &s.tags)).collect();
         let inherent = pos
             .inherent
             .iter()
