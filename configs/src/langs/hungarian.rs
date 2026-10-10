@@ -97,6 +97,10 @@ impl Language for Hungarian {
         e.forms.extend(retagged.into_iter().map(|(form, t)| Form { form, tags: tags(&t), source: Some("conjugation".into()) }));
     }
 
+    fn samples(&self) -> Vec<&'static str> {
+        vec!["ház", "ló", "olvas", "eszik", "szép", "kert", "blorgol", "zsimbók"]
+    }
+
     fn readme(&self) -> String {
         r#"## Example
 

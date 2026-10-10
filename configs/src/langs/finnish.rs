@@ -142,6 +142,10 @@ impl Language for Finnish {
         });
     }
 
+    fn samples(&self) -> Vec<&'static str> {
+        vec!["talo", "käsi", "tietää", "hyvä", "kuusi, kuuden", "hölökkä", "sulputtaa", "minä"]
+    }
+
     fn readme(&self) -> String {
         r#"## Example
 
