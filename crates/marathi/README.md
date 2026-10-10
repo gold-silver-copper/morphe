@@ -32,7 +32,7 @@ by person and gender. Tenses built with auxiliaries are left out.
 | noun | 3381 | 16 | 647 | 177 | 168 | 1511 |
 | verb | 239 | 51 | 175 | 28 | 6 | 35 |
 
-Model size: 274523 bytes.
+Model size: 101559 bytes.
 
 **noun** cells: `DirectSingular`, `DirectPlural`, `ObliqueSingular`, `ObliquePlural`, `DativeSingular`, `DativePlural`, `ErgativeSingular`, `ErgativePlural`, `InstrumentalSingular`, `InstrumentalPlural`, `LocativeSingular`, `LocativePlural`, `GenitiveSingular`, `GenitivePlural`, `VocativeSingular`, `VocativePlural`
 

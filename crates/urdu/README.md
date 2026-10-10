@@ -37,7 +37,7 @@ Urdu, and input matching ignores them.
 | num | 6 | 6 | 6 | 2 | 2 | 1 |
 | det | 16 | 12 | 9 | 5 | 3 | 0 |
 
-Model size: 102821 bytes.
+Model size: 39707 bytes.
 
 **noun** cells: `DirectSingular`, `DirectPlural`, `ObliqueSingular`, `ObliquePlural`, `VocativeSingular`, `VocativePlural`
 

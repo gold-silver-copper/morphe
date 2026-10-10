@@ -35,7 +35,7 @@ auxiliaries (કરું છું, કરતું હતું) are left out.
 | pron | 7 | 12 | 12 | 2 | 2 | 0 |
 | det | 3 | 12 | 7 | 1 | 2 | 0 |
 
-Model size: 54940 bytes.
+Model size: 20336 bytes.
 
 **noun** cells: `NominativeSingular`, `NominativePlural`, `ObliqueSingular`, `ObliquePlural`, `VocativeSingular`, `VocativePlural`, `InstrumentalSingular`, `InstrumentalPlural`, `LocativeSingular`, `LocativePlural`
 

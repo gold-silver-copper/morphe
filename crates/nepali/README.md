@@ -34,7 +34,7 @@ Negative forms are left out.
 | adj | 31 | 4 | 7 | 3 | 2 | 3 |
 | verb | 244 | 115 | 586 | 99 | 17 | 108 |
 
-Model size: 231766 bytes.
+Model size: 63533 bytes.
 
 **noun** cells: `NominativeSingular`, `NominativePlural`, `AccusativeSingular`, `AccusativePlural`, `ErgativeSingular`, `ErgativePlural`, `AblativeSingular`, `AblativePlural`, `GenitiveSingular`, `GenitivePlural`, `LocativeSingular`, `LocativePlural`
 
