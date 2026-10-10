@@ -105,6 +105,18 @@ impl Language for Irish {
         }
     }
 
+    /// The autonomous row lists the subjunctive forms too ("go dtógtar",
+    /// "dá dtógtaí") under the present and past.
+    fn retag(&self, _pos: &PosSpec, form: &str, tags: &mut Vec<String>) {
+        if (form.starts_with("go ") || form.starts_with("dá ")) && tags.iter().any(|t| t == "autonomous") {
+            tags.push("subjunctive".into());
+        }
+    }
+
+    fn samples(&self) -> Vec<&'static str> {
+        vec!["bean", "fear", "teach", "tóg", "bí", "mór", "glumpán", "sclimp"]
+    }
+
     fn readme(&self) -> String {
         r#"## Example
 
