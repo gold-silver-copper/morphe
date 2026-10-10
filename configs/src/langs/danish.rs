@@ -1,4 +1,4 @@
-use morphe_train::kaikki::Entry;
+use morphe_train::kaikki::{Entry, Form};
 use morphe_train::spec::*;
 
 pub struct Danish;
@@ -66,6 +66,9 @@ impl Language for Danish {
     }
 
     fn prepare(&self, e: &mut Entry) {
+        if e.pos == "verb" {
+            add_participles(e);
+        }
         let (mut positive, mut superlative) = (0, 0);
         for f in &mut e.forms {
             // "at give", "har givet", "den ansatte", "(have /havde) givet".
@@ -128,6 +131,33 @@ Forms are given without "at", "har" or articles ("give", "givet", "ansatte").
 "#
         .into()
     }
+}
+
+/// Most verbs give only the neuter past participle (talt, elsket); its
+/// common-gender form is the same and its plural adds -e (-et → -ede):
+/// talte, elskede.
+fn add_participles(e: &mut Entry) {
+    let has = |f: &Form, t: &str| f.tags.iter().any(|x| x == t);
+    if e.forms.iter().any(|f| has(f, "participle") && (has(f, "common-gender") || has(f, "plural"))) {
+        return;
+    }
+    let Some(neuter) = e
+        .forms
+        .iter()
+        .find(|f| has(f, "participle") && has(f, "past") || has(f, "perfect"))
+        .and_then(|f| f.form.rsplit(") ").next())
+        .map(|p| p.trim().to_string())
+        .filter(|p| !p.contains(' ') && p.ends_with('t'))
+    else {
+        return;
+    };
+    let plural = match neuter.strip_suffix("et") {
+        Some(stem) => format!("{stem}ede"),
+        None => format!("{neuter}e"),
+    };
+    let row = |form: String, t: &str| Form { form, tags: tags(t), source: Some("conjugation".into()) };
+    e.forms.push(row(neuter, "participle past common-gender"));
+    e.forms.push(row(plural, "participle past plural"));
 }
 
 pub fn language() -> Box<dyn Language> {
