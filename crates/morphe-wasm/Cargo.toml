@@ -1,0 +1,15 @@
+[package]
+name = "morphe-wasm"
+version = "0.1.0"
+description = "morphe runtime as a WebAssembly module, for the playground"
+edition.workspace = true
+license.workspace = true
+repository.workspace = true
+authors.workspace = true
+publish = false
+
+[lib]
+crate-type = ["cdylib", "rlib"]
+
+[dependencies]
+morphe = { path = "../morphe" }

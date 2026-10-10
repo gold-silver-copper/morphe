@@ -207,6 +207,11 @@ pub trait Language: Sync {
         String::new()
     }
 
+    /// A few words to try in the playground: real ones and made-up ones.
+    fn samples(&self) -> Vec<&'static str> {
+        Vec::new()
+    }
+
     /// Extra README text (examples, notes).
     fn readme(&self) -> String {
         String::new()

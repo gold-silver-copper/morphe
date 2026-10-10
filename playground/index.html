@@ -1,0 +1,257 @@
+<title>morphe Playground</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Alegreya+SC:wght@500;700&family=Alegreya+Sans:ital,wght@0,400;0,500;0,700;1,400&family=JetBrains+Mono:wght@400;600&display=swap">
+<style>
+/* Layout: a dictionary's working desk. Query bar on top, analyses in a narrow margin column, paradigm cells as a dense grid of entries. */
+:root {
+  --bg: #f3f6f6;
+  --paper: #ffffff;
+  --ink: #17262a;
+  --muted: #5d6f73;
+  --rule: #d5e0e1;
+  --accent: #0d6b66;
+  --accent-soft: #d8eeec;
+  --bar: #9cc9c5;
+  --display: "Alegreya SC", "Palatino Linotype", Palatino, serif;
+  --body: "Alegreya Sans", "Gill Sans", "Segoe UI", sans-serif;
+  --mono: "JetBrains Mono", ui-monospace, "SF Mono", Menlo, monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #0f1719; --paper: #162124; --ink: #e3eeee; --muted: #93a8ab;
+    --rule: #26363a; --accent: #5cc4bb; --accent-soft: #173a38; --bar: #2f6f69;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #0f1719; --paper: #162124; --ink: #e3eeee; --muted: #93a8ab;
+  --rule: #26363a; --accent: #5cc4bb; --accent-soft: #173a38; --bar: #2f6f69;
+  color-scheme: dark;
+}
+* { box-sizing: border-box; }
+body {
+  background: var(--bg); color: var(--ink); font-family: var(--body);
+  font-size: 16px; line-height: 1.45; padding-inline: 16px; padding-block: 20px 48px;
+}
+.wrap { max-width: 1180px; margin: 0 auto; display: grid; gap: 20px; }
+header { display: flex; flex-wrap: wrap; align-items: baseline; gap: 6px 16px; }
+h1 { font-family: var(--display); font-weight: 700; font-size: 1.9rem; margin: 0; letter-spacing: .01em; color: var(--accent); }
+header p { margin: 0; color: var(--muted); max-width: 62ch; }
+form.query {
+  display: flex; flex-wrap: wrap; gap: 10px; align-items: end;
+  background: var(--paper); border: 1px solid var(--rule); border-radius: 6px; padding: 14px;
+}
+.field { display: grid; gap: 4px; min-width: 0; }
+.field.grow { flex: 1 1 260px; }
+label { font-family: var(--display); font-size: .82rem; letter-spacing: .06em; color: var(--muted); }
+select, input[type=text] {
+  font: inherit; font-size: 1.1rem; color: var(--ink); background: var(--bg);
+  border: 1px solid var(--rule); border-radius: 4px; padding: 8px 10px; min-width: 0; width: 100%;
+}
+input[type=text] { font-size: 1.25rem; }
+select:focus-visible, input:focus-visible, button:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.toggle { display: flex; align-items: center; gap: 6px; padding-bottom: 10px; color: var(--muted); font-size: .95rem; }
+button {
+  font: inherit; font-weight: 700; background: var(--accent); color: var(--paper); border: 0;
+  border-radius: 4px; padding: 10px 18px; cursor: pointer;
+}
+.samples { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; color: var(--muted); font-size: .92rem; }
+.samples button { background: var(--accent-soft); color: var(--accent); font-weight: 500; padding: 3px 10px; border-radius: 20px; }
+.desk { display: grid; grid-template-columns: minmax(0, 260px) minmax(0, 1fr); gap: 20px; align-items: start; }
+@media (max-width: 760px) { .desk { grid-template-columns: minmax(0, 1fr); } }
+aside, section.pos { background: var(--paper); border: 1px solid var(--rule); border-radius: 6px; padding: 14px; min-width: 0; }
+h2 { font-family: var(--display); font-weight: 500; font-size: 1.05rem; letter-spacing: .05em; margin: 0 0 10px; color: var(--muted); }
+.analyses { list-style: none; margin: 0; padding: 0; display: grid; gap: 8px; }
+.analyses li { display: grid; grid-template-columns: 1fr auto; gap: 2px 8px; border-bottom: 1px solid var(--rule); padding-bottom: 8px; }
+.analyses .lemma { font-weight: 700; font-size: 1.1rem; }
+.analyses .what { grid-column: 1 / -1; color: var(--muted); font-size: .9rem; }
+.pct { font-family: var(--mono); font-size: .78rem; color: var(--muted); font-variant-numeric: tabular-nums; }
+main { display: grid; gap: 16px; min-width: 0; }
+.poshead { display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 14px; margin-bottom: 12px; }
+.poshead h2 { margin: 0; color: var(--accent); font-weight: 700; font-size: 1.2rem; }
+.poshead .lemma { font-size: 1.4rem; font-weight: 700; }
+.chips { display: flex; flex-wrap: wrap; gap: 6px; }
+.chip { background: var(--accent-soft); color: var(--accent); border-radius: 20px; padding: 2px 10px; font-size: .88rem; }
+.chip .pct { color: var(--accent); }
+.cells { display: grid; grid-template-columns: repeat(auto-fill, minmax(190px, 1fr)); gap: 1px; background: var(--rule); border: 1px solid var(--rule); }
+.cell { background: var(--paper); padding: 8px 10px; display: grid; gap: 3px; min-width: 0; }
+.cell .name { font-family: var(--display); font-size: .76rem; letter-spacing: .05em; color: var(--muted); }
+.cell .top { font-size: 1.12rem; font-weight: 500; overflow-wrap: anywhere; }
+.meter { height: 3px; background: var(--rule); border-radius: 2px; overflow: hidden; }
+.meter i { display: block; height: 100%; background: var(--bar); }
+.alts { font-size: .86rem; color: var(--muted); overflow-wrap: anywhere; }
+.status { color: var(--muted); font-size: .95rem; min-height: 1.4em; }
+.empty { color: var(--muted); }
+footer { color: var(--muted); font-size: .85rem; max-width: 80ch; }
+@media (prefers-reduced-motion: no-preference) { .cell { transition: background .15s; } .cell:hover { background: var(--accent-soft); } }
+</style>
+
+<div class="wrap">
+  <header>
+    <h1>morphe</h1>
+    <p>Inflection learned from Wiktionary. Type any word, real or made up: every cell gets a best guess and its confidence, and the margin shows what the word itself could be a form of.</p>
+  </header>
+
+  <form class="query" id="query">
+    <div class="field">
+      <label for="lang">Language</label>
+      <select id="lang"></select>
+    </div>
+    <div class="field grow">
+      <label for="word">Word or citation (e.g. “путь, пути”)</label>
+      <input type="text" id="word" autocomplete="off" spellcheck="false" value="octopus">
+    </div>
+    <label class="toggle" for="marks"><input type="checkbox" id="marks" checked> Stress and length marks</label>
+    <button type="submit">Inflect</button>
+  </form>
+  <div class="samples" id="samples"></div>
+  <div class="status" id="status" role="status">Loading the model…</div>
+
+  <div class="desk">
+    <aside>
+      <h2>Could be a form of</h2>
+      <ul class="analyses" id="analyses"><li class="empty">Nothing yet.</li></ul>
+    </aside>
+    <main id="paradigms"></main>
+  </div>
+
+  <footer>Data: Wiktionary contributors via kaikki.org, CC BY-SA 4.0. Confidences are smoothed counts over similar words; variant weights follow Wiktionary's listing order, not measured usage. Runs entirely in your browser.</footer>
+</div>
+
+<script>
+const $ = (id) => document.getElementById(id);
+let wasm = null, mem = () => new Uint8Array(wasm.memory.buffer);
+const handles = {};
+let manifest = [];
+const enc = new TextEncoder(), dec = new TextDecoder();
+
+function words(camel) {
+  return camel.replace(/([a-z])([A-Z])/g, "$1 $2").replace(/^Number /, "");
+}
+function pct(p) { return (p * 100).toFixed(p >= 0.995 || p < 0.1 ? 0 : 1) + "%"; }
+function el(tag, cls, text) { const e = document.createElement(tag); if (cls) e.className = cls; if (text != null) e.textContent = text; return e; }
+
+async function ensureModel(name) {
+  if (name in handles) return handles[name];
+  const entry = manifest.find((m) => m.name === name);
+  $("status").textContent = `Loading ${entry.title} (${(entry.bytes / 1e6).toFixed(1)} MB)…`;
+  const b64 = (await (await fetch(entry.file)).text()).trim();
+  const bin = atob(b64);
+  const buf = new Uint8Array(bin.length);
+  for (let i = 0; i < bin.length; i++) buf[i] = bin.charCodeAt(i);
+  const ptr = wasm.alloc(buf.length);
+  mem().set(buf, ptr);
+  const h = wasm.load(ptr, buf.length);
+  wasm.dealloc(ptr, buf.length);
+  if (h < 0) throw new Error(`The ${entry.title} model could not be read.`);
+  handles[name] = h;
+  return h;
+}
+
+function query(h, word, marks) {
+  const bytes = enc.encode(word);
+  const ptr = wasm.alloc(bytes.length || 1);
+  mem().set(bytes, ptr);
+  const len = wasm.query(h, ptr, bytes.length, marks ? 1 : 0);
+  wasm.dealloc(ptr, bytes.length || 1);
+  const out = wasm.out_ptr();
+  return JSON.parse(dec.decode(mem().slice(out, out + len)));
+}
+
+function render(res) {
+  const an = $("analyses");
+  an.replaceChildren();
+  if (!res.analyses.length) an.append(el("li", "empty", "No analysis."));
+  for (const a of res.analyses) {
+    const li = el("li");
+    li.append(el("span", "lemma", a.lemma), el("span", "pct", pct(a.p)),
+      el("span", "what", `${a.pos} · ${a.cell === "lemma" ? "dictionary form" : words(a.cell)}`));
+    an.append(li);
+  }
+  const main = $("paradigms");
+  main.replaceChildren();
+  for (const p of res.pos) {
+    if (!p.cells.length) continue;
+    const sec = el("section", "pos");
+    const head = el("div", "poshead");
+    head.append(el("h2", null, p.name), el("span", "lemma", p.lemma));
+    const chips = el("div", "chips");
+    for (const f of p.inherent) {
+      const best = f.values[0];
+      if (!best) continue;
+      const c = el("span", "chip", `${f.name}: ${best[0]} `);
+      c.append(el("span", "pct", pct(best[1])));
+      chips.append(c);
+    }
+    head.append(chips);
+    const grid = el("div", "cells");
+    for (const c of p.cells) {
+      const cell = el("div", "cell");
+      const [top, tp] = c.forms[0];
+      const meter = el("div", "meter"); const fill = el("i"); fill.style.width = (tp * 100).toFixed(0) + "%"; meter.append(fill);
+      const name = el("span", "name", words(c.cell));
+      const topEl = el("span", "top", top);
+      cell.append(name, topEl, meter);
+      if (c.forms.length > 1) cell.append(el("span", "alts", c.forms.slice(1).map(([f, q]) => `${f} ${pct(q)}`).join(" · ")));
+      cell.title = c.forms.map(([f, q]) => `${f}  ${pct(q)}`).join("\n");
+      grid.append(cell);
+    }
+    sec.append(head, grid);
+    main.append(sec);
+  }
+}
+
+async function run() {
+  const name = $("lang").value, word = $("word").value.trim();
+  if (!word) { $("status").textContent = "Type a word to inflect."; return; }
+  try {
+    const h = await ensureModel(name);
+    const t = performance.now();
+    const res = query(h, word, $("marks").checked);
+    render(res);
+    const n = res.pos.reduce((s, p) => s + p.cells.length, 0);
+    $("status").textContent = `${n} cells and ${res.analyses.length} analyses in ${(performance.now() - t).toFixed(1)} ms.`;
+  } catch (e) {
+    $("status").textContent = String(e.message || e);
+  }
+}
+
+function showSamples() {
+  const entry = manifest.find((m) => m.name === $("lang").value);
+  const box = $("samples");
+  box.replaceChildren(el("span", null, "Try:"));
+  for (const s of entry.samples || []) {
+    const b = el("button", null, s); b.type = "button";
+    b.addEventListener("click", () => { $("word").value = s; run(); });
+    box.append(b);
+  }
+}
+
+async function boot() {
+  try {
+    manifest = await (await fetch("models.json")).json();
+    const sel = $("lang");
+    for (const m of manifest) { const o = el("option", null, m.title); o.value = m.name; sel.append(o); }
+    let saved = null; try { saved = localStorage.getItem("morphe-lang"); } catch (_) {}
+    sel.value = manifest.some((m) => m.name === saved) ? saved : "english";
+    const entry = manifest.find((m) => m.name === sel.value);
+    if (saved && entry.samples?.length) $("word").value = entry.samples[0];
+    const { instance } = await WebAssembly.instantiate(await (await fetch("morphe.wasm")).arrayBuffer(), {});
+    wasm = instance.exports;
+    showSamples();
+    await run();
+  } catch (e) {
+    $("status").textContent = "The playground could not start: " + (e.message || e);
+  }
+}
+
+$("query").addEventListener("submit", (e) => { e.preventDefault(); run(); });
+$("marks").addEventListener("change", run);
+$("lang").addEventListener("change", () => {
+  try { localStorage.setItem("morphe-lang", $("lang").value); } catch (_) {}
+  const entry = manifest.find((m) => m.name === $("lang").value);
+  if (entry.samples?.length) $("word").value = entry.samples[0];
+  showSamples(); run();
+});
+boot();
+</script>

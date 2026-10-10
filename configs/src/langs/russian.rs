@@ -79,6 +79,10 @@ impl Language for Russian {
         s
     }
 
+    fn samples(&self) -> Vec<&'static str> {
+        vec!["кракозябра", "путь, пути", "писать", "бузять", "кофе", "книг", "большой", "тетрадь"]
+    }
+
     fn readme(&self) -> String {
         r#"## Example
 

@@ -38,6 +38,10 @@ impl Language for English {
         s
     }
 
+    fn samples(&self) -> Vec<&'static str> {
+        vec!["octopus", "lie", "spling", "glorp", "fun", "mice", "passer-by", "be"]
+    }
+
     fn keep_entry(&self, e: &Entry) -> bool {
         e.word.chars().any(char::is_alphabetic) && !e.word.chars().any(|c| c.is_ascii_digit())
     }

@@ -84,6 +84,47 @@ fn main() {
                 println!("  {p:.3}  {pos:<6} {:<20} {cell}", a.lemma);
             }
         }
+        Some("playground") => {
+            let Some(out) = args.get(1).map(PathBuf::from) else {
+                eprintln!("usage: morphe playground <out dir>  (build morphe-wasm for wasm32 first)");
+                std::process::exit(2);
+            };
+            let models = out.join("models");
+            let _ = std::fs::create_dir_all(&models);
+            let r = root();
+            let copy = |from: PathBuf, to: PathBuf| {
+                if let Err(e) = std::fs::copy(&from, &to) {
+                    eprintln!("{}: {e}", from.display());
+                    std::process::exit(1);
+                }
+            };
+            copy(r.join("playground/index.html"), out.join("index.html"));
+            copy(r.join("target/wasm32-unknown-unknown/release/morphe_wasm.wasm"), out.join("morphe.wasm"));
+            let mut entries = Vec::new();
+            let mut specs: Vec<_> = langs.iter().map(|l| (l.spec(), l.samples())).collect();
+            specs.sort_by(|a, b| a.0.title.cmp(&b.0.title));
+            for (spec, samples) in specs {
+                let bin = r.join("crates").join(&spec.name).join("src/model.bin");
+                let Ok(meta) = std::fs::metadata(&bin) else { continue };
+                // Served as base64 text: artifact hosts don't serve raw binary.
+                let Ok(bytes) = std::fs::read(&bin) else { continue };
+                if let Err(e) = std::fs::write(models.join(format!("{}.txt", spec.name)), base64(&bytes)) {
+                    eprintln!("{e}");
+                    std::process::exit(1);
+                }
+                let samples: Vec<String> = samples.iter().map(|s| format!("{s:?}")).collect();
+                entries.push(format!(
+                    "{{\"name\":{:?},\"title\":{:?},\"file\":\"models/{}.txt\",\"bytes\":{},\"samples\":[{}]}}",
+                    spec.name,
+                    spec.title,
+                    spec.name,
+                    meta.len(),
+                    samples.join(",")
+                ));
+            }
+            let _ = std::fs::write(out.join("models.json"), format!("[{}]", entries.join(",")));
+            println!("{} languages → {}", entries.len(), out.display());
+        }
         Some("tags") => {
             let Some(title) = args.get(1) else {
                 eprintln!("usage: morphe tags <Kaikki title, e.g. Russian> [pos…]");
@@ -145,4 +186,21 @@ fn tags(title: &str, only: &[String]) {
             }
         }
     }
+}
+
+fn base64(bytes: &[u8]) -> String {
+    const T: &[u8; 64] = b"ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
+    let mut out = String::with_capacity(bytes.len().div_ceil(3) * 4);
+    for chunk in bytes.chunks(3) {
+        let b = [chunk[0], *chunk.get(1).unwrap_or(&0), *chunk.get(2).unwrap_or(&0)];
+        let n = (u32::from(b[0]) << 16) | (u32::from(b[1]) << 8) | u32::from(b[2]);
+        for i in 0..4 {
+            if i <= chunk.len() {
+                out.push(T[((n >> (18 - 6 * i)) & 63) as usize] as char);
+            } else {
+                out.push('=');
+            }
+        }
+    }
+    out
 }
