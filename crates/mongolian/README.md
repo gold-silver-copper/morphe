@@ -25,7 +25,7 @@ verbs have almost none and are left out.
 |---|---|---|---|---|---|---|
 | noun | 435 | 39 | 2133 | 448 | 69 | 278 |
 
-Model size: 240248 bytes.
+Model size: 242477 bytes.
 
 **noun** cells: `NominativeSingular`, `NominativePlural`, `GenitiveSingular`, `GenitivePlural`, `AccusativeSingular`, `AccusativePlural`, `DativeLocativeSingular`, `DativeLocativePlural`, `AblativeSingular`, `AblativePlural`, `InstrumentalSingular`, `InstrumentalPlural`, `ComitativeSingular`, `ComitativePlural`, `PrivativeSingular`, `PrivativePlural`, `DirectiveSingular`, `DirectivePlural`, `SubstantiveSingular`, `SubstantivePlural`, `ReflexiveNominativeSingular`, `ReflexiveNominativePlural`, `ReflexiveGenitiveSingular`, `ReflexiveGenitivePlural`, `ReflexiveAccusativeSingular`, `ReflexiveAccusativePlural`, `ReflexiveDativeLocativeSingular`, `ReflexiveDativeLocativePlural`, `ReflexiveAblativeSingular`, `ReflexiveAblativePlural`, `ReflexiveInstrumentalSingular`, `ReflexiveInstrumentalPlural`, `ReflexiveComitativeSingular`, `ReflexiveComitativePlural`, `ReflexivePrivativeSingular`, `ReflexivePrivativePlural`, `ReflexiveDirectiveSingular`, `ReflexiveDirectivePlural`, `Attributive`
 

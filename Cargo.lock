@@ -344,6 +344,13 @@ dependencies = [
 ]
 
 [[package]]
+name = "mongolian"
+version = "0.1.0"
+dependencies = [
+ "morphe",
+]
+
+[[package]]
 name = "morphe"
 version = "0.1.0"
 
