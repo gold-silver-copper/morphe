@@ -86,6 +86,10 @@ impl Language for Spanish {
         fill_lemma(names, lemma, forms);
     }
 
+    fn samples(&self) -> Vec<&'static str> {
+        vec!["casa", "ciudad", "tener", "hablar", "rojo", "verde", "flurgar", "glurbo"]
+    }
+
     fn readme(&self) -> String {
         r#"## Example
 

@@ -84,6 +84,10 @@ impl Language for French {
         fill_lemma(names, lemma, forms);
     }
 
+    fn samples(&self) -> Vec<&'static str> {
+        vec!["cheval", "chien", "aller", "prendre", "beau", "rapide", "flurger", "glorbeau"]
+    }
+
     fn readme(&self) -> String {
         r#"## Example
 
