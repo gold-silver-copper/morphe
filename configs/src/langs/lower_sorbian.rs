@@ -103,6 +103,24 @@ impl Language for LowerSorbian {
         if !e.forms.iter().any(|f| has(&f.tags, "canonical")) {
             e.forms.push(Form { form: e.word.clone(), tags: vec!["canonical".into()], source: None });
         }
+        if e.pos == "adj" {
+            // Oblique cases name only the neuter for the shared
+            // masculine-neuter column.
+            let mut extra = Vec::new();
+            for case in ["genitive", "dative", "instrumental", "locative"] {
+                let masc = e.forms.iter().any(|f| f.source.is_some() && has(&f.tags, case) && has(&f.tags, "masculine") && has(&f.tags, "singular"));
+                if masc {
+                    continue;
+                }
+                for f in e.forms.iter().filter(|f| f.source.is_some() && has(&f.tags, case) && has(&f.tags, "neuter") && has(&f.tags, "singular")) {
+                    let mut g = f.clone();
+                    g.tags.retain(|t| t != "neuter");
+                    g.tags.push("masculine".into());
+                    extra.push(g);
+                }
+            }
+            e.forms.extend(extra);
+        }
         let nonfinite = ["infinitive", "supine", "noun-from-verb", "participle"];
         let mut bare = 0;
         for f in &mut e.forms {

@@ -26,7 +26,7 @@ Lower Sorbian keeps the dual. Diacritics are optional on input.
 | adj | 195 | 50 | 89 | 62 | 38 | 106 |
 | verb | 212 | 33 | 552 | 105 | 63 | 125 |
 
-Model size: 95220 bytes.
+Model size: 95556 bytes.
 
 **noun** cells: `NominativeSingular`, `NominativeDual`, `NominativePlural`, `GenitiveSingular`, `GenitiveDual`, `GenitivePlural`, `DativeSingular`, `DativeDual`, `DativePlural`, `AccusativeSingular`, `AccusativeDual`, `AccusativePlural`, `InstrumentalSingular`, `InstrumentalDual`, `InstrumentalPlural`, `LocativeSingular`, `LocativeDual`, `LocativePlural`, `Diminutive`
 
