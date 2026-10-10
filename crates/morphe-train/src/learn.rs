@@ -198,6 +198,7 @@ pub fn learn(ex: &Extractor, threads: usize) -> (Model, Vec<Stats>) {
             analysis,
             inverse,
             reverse: Vec::new(),
+            missing_is_absent: ps.missing_is_absent,
         };
         let probe = Model { pos: Vec::new(), ..model.clone() };
 

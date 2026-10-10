@@ -91,6 +91,9 @@ pub struct PosSpec {
     pub head: morphe::model::Head,
     /// A cell that holds the lemma itself when the data leaves it out.
     pub lemma_cell: Option<String>,
+    /// A known word's missing cell means the form doesn't exist (deponents,
+    /// defective verbs) instead of being predicted.
+    pub missing_is_absent: bool,
 }
 
 /// A product of features, all sharing some fixed tags.
@@ -320,6 +323,7 @@ pub fn pos(name: &str, kaikki: &str, groups: Vec<Group>) -> PosSpec {
         key: Vec::new(),
         head: morphe::model::Head::Whole,
         lemma_cell: None,
+        missing_is_absent: false,
     }
 }
 
@@ -335,6 +339,11 @@ impl PosSpec {
     /// Fill `cell` with the lemma when an entry's data leaves it out.
     pub fn lemma_cell(mut self, cell: &str) -> Self {
         self.lemma_cell = Some(cell.into());
+        self
+    }
+    /// Missing cells of known words mean "no such form".
+    pub fn missing_is_absent(mut self) -> Self {
+        self.missing_is_absent = true;
         self
     }
     pub fn head_first(mut self) -> Self {

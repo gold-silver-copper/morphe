@@ -24,7 +24,7 @@ Sami conjugation tables.
 |---|---|---|---|---|---|---|
 | noun | 350 | 16 | 2079 | 312 | 65 | 209 |
 
-Model size: 68464 bytes.
+Model size: 68472 bytes.
 
 **noun** cells: `NominativeSingular`, `NominativePlural`, `AccusativeSingular`, `AccusativePlural`, `GenitiveSingular`, `GenitivePlural`, `IllativeSingular`, `IllativePlural`, `LocativeSingular`, `LocativePlural`, `ComitativeSingular`, `ComitativePlural`, `AbessiveSingular`, `AbessivePlural`, `Essive`, `Partitive`
 

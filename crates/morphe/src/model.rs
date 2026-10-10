@@ -64,6 +64,9 @@ pub struct Pos {
     pub inverse: Vec<(u32, Edit)>,
     /// Attested forms the analysis tree misses: form key → (lemma, cell).
     pub reverse: Vec<(String, Vec<(String, u32)>)>,
+    /// A known word's missing cell means the form doesn't exist (instead of
+    /// "not in the data", which is predicted).
+    pub missing_is_absent: bool,
 }
 
 /// One analysis of a form: part of speech, lemma, and every cell the form
@@ -379,7 +382,12 @@ impl Model {
                 if !exact.is_empty() {
                     return exact;
                 }
-                let known: Vec<(String, u32, f32)> = known.into_iter().map(|r| (r.0, r.1, r.2)).collect();
+                let mut known: Vec<(String, u32, f32)> = known.into_iter().map(|r| (r.0, r.1, r.2)).collect();
+                // A cell missing from the data is predicted, unless this
+                // language treats missing as absent.
+                if !pos.missing_is_absent {
+                    known.retain(|r| needs(r.1));
+                }
                 if !known.is_empty() {
                     return known;
                 }
@@ -388,8 +396,12 @@ impl Model {
 
         if pos.known.binary_search(&q.key).is_ok() {
             if let Some((canon, class)) = self.top_reading(pos, &q.plain) {
-                // A known word lacking this cell has no form for it.
-                if cites(&canon, class) && q.typed.as_ref().is_none_or(|t| *t == canon) {
+                // A known word lacking this cell has no form for it only if
+                // the language says missing means absent; else predict it.
+                if cites(&canon, class)
+                    && q.typed.as_ref().is_none_or(|t| *t == canon)
+                    && (pos.missing_is_absent || needs(class))
+                {
                     return vec![(canon, class, 1.0)];
                 }
             }
@@ -426,12 +438,14 @@ impl Model {
             // The class tree reads the dictionary spelling, marks included:
             // where the stress or accent falls often decides the class.
             let mut classes = pos.paradigm.predict(&canon, applies);
-            if classes.is_empty() && !q.parts.is_empty() {
-                // The citation rules out every class the tree knows here:
-                // search all classes.
-                let all: Vec<u32> = (0..pos.classes.len() as u32).filter(|&c| applies(c)).collect();
-                let p = 1.0 / all.len().max(1) as f32;
-                classes = all.into_iter().map(|c| (c, p)).collect();
+            if classes.is_empty() {
+                // Nothing the tree proposes fits this word (or the citation):
+                // search all classes, commoner ones first (ids are by
+                // frequency).
+                let all: Vec<(u32, f32)> =
+                    (0..pos.classes.len() as u32).filter(|&c| applies(c)).map(|c| (c, 1.0 / (c as f32 + 1.0))).collect();
+                let total: f32 = all.iter().map(|x| x.1).sum();
+                classes = all.into_iter().map(|(c, p)| (c, p / total.max(f32::MIN_POSITIVE))).collect();
             }
             out.extend(classes.into_iter().map(|(c, p)| (canon.clone(), c, p * rp)));
         }
@@ -793,6 +807,10 @@ impl Model {
                 }
             }
         }
+        w.s("flags-1");
+        for p in &self.pos {
+            w.u(u64::from(p.missing_is_absent));
+        }
         w.s("alphabet-1");
         w.s(&self.alphabet.iter().collect::<String>());
         w.u(u64::from(self.max_marks));
@@ -901,6 +919,7 @@ impl Model {
                 analysis: Tree::default(),
                 inverse: Vec::new(),
                 reverse: Vec::new(),
+                missing_is_absent: false,
             })
         })?;
         let mut model =
@@ -923,6 +942,12 @@ impl Model {
                 });
                 let Some(rev) = rev else { break };
                 p.reverse = rev;
+            }
+            tag = r.s();
+        }
+        if tag.as_deref() == Some("flags-1") {
+            for p in &mut model.pos {
+                p.missing_is_absent = r.u() == Some(1);
             }
             tag = r.s();
         }

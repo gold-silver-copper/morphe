@@ -23,6 +23,13 @@ dependencies = [
 ]
 
 [[package]]
+name = "amharic"
+version = "0.1.0"
+dependencies = [
+ "morphe",
+]
+
+[[package]]
 name = "ancient_greek"
 version = "0.1.0"
 dependencies = [
@@ -37,6 +44,20 @@ dependencies = [
 ]
 
 [[package]]
+name = "aragonese"
+version = "0.1.0"
+dependencies = [
+ "morphe",
+]
+
+[[package]]
+name = "aramaic"
+version = "0.1.0"
+dependencies = [
+ "morphe",
+]
+
+[[package]]
 name = "armenian"
 version = "0.1.0"
 dependencies = [
@@ -45,6 +66,13 @@ dependencies = [
 
 [[package]]
 name = "aromanian"
+version = "0.1.0"
+dependencies = [
+ "morphe",
+]
+
+[[package]]
+name = "asturian"
 version = "0.1.0"
 dependencies = [
  "morphe",
@@ -113,6 +141,13 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "4e7648175b45a9a48536d676f68d918270699102aa8dab5496df06904c914600"
 
 [[package]]
+name = "chechen"
+version = "0.1.0"
+dependencies = [
+ "morphe",
+]
+
+[[package]]
 name = "classical_syriac"
 version = "0.1.0"
 dependencies = [
@@ -173,6 +208,13 @@ dependencies = [
 [[package]]
 name = "english"
 version = "0.5.0"
+dependencies = [
+ "morphe",
+]
+
+[[package]]
+name = "erzya"
+version = "0.1.0"
 dependencies = [
  "morphe",
 ]
@@ -245,6 +287,13 @@ dependencies = [
 ]
 
 [[package]]
+name = "geez"
+version = "0.1.0"
+dependencies = [
+ "morphe",
+]
+
+[[package]]
 name = "georgian"
 version = "0.1.0"
 dependencies = [
@@ -273,6 +322,13 @@ dependencies = [
 ]
 
 [[package]]
+name = "greenlandic"
+version = "0.1.0"
+dependencies = [
+ "morphe",
+]
+
+[[package]]
 name = "gujarati"
 version = "0.1.0"
 dependencies = [
@@ -294,6 +350,13 @@ dependencies = [
 ]
 
 [[package]]
+name = "hittite"
+version = "0.1.0"
+dependencies = [
+ "morphe",
+]
+
+[[package]]
 name = "hungarian"
 version = "0.1.0"
 dependencies = [
@@ -309,6 +372,13 @@ dependencies = [
 
 [[package]]
 name = "inari_sami"
+version = "0.1.0"
+dependencies = [
+ "morphe",
+]
+
+[[package]]
+name = "indonesian"
 version = "0.1.0"
 dependencies = [
  "morphe",
@@ -356,7 +426,21 @@ dependencies = [
 ]
 
 [[package]]
+name = "kashubian"
+version = "0.1.0"
+dependencies = [
+ "morphe",
+]
+
+[[package]]
 name = "kazakh"
+version = "0.1.0"
+dependencies = [
+ "morphe",
+]
+
+[[package]]
+name = "kildin_sami"
 version = "0.1.0"
 dependencies = [
  "morphe",
@@ -371,6 +455,13 @@ dependencies = [
 
 [[package]]
 name = "ladin"
+version = "0.1.0"
+dependencies = [
+ "morphe",
+]
+
+[[package]]
+name = "ladino"
 version = "0.1.0"
 dependencies = [
  "morphe",
@@ -426,6 +517,13 @@ dependencies = [
 ]
 
 [[package]]
+name = "lower_sorbian"
+version = "0.1.0"
+dependencies = [
+ "morphe",
+]
+
+[[package]]
 name = "lule_sami"
 version = "0.1.0"
 dependencies = [
@@ -441,6 +539,13 @@ dependencies = [
 
 [[package]]
 name = "macedonian"
+version = "0.1.0"
+dependencies = [
+ "morphe",
+]
+
+[[package]]
+name = "malay"
 version = "0.1.0"
 dependencies = [
  "morphe",
@@ -505,6 +610,13 @@ dependencies = [
 ]
 
 [[package]]
+name = "moksha"
+version = "0.1.0"
+dependencies = [
+ "morphe",
+]
+
+[[package]]
 name = "mongolian"
 version = "0.1.0"
 dependencies = [
@@ -557,6 +669,13 @@ dependencies = [
 
 [[package]]
 name = "north_frisian"
+version = "0.1.0"
+dependencies = [
+ "morphe",
+]
+
+[[package]]
+name = "northern_kurdish"
 version = "0.1.0"
 dependencies = [
  "morphe",
@@ -654,6 +773,13 @@ dependencies = [
 ]
 
 [[package]]
+name = "old_occitan"
+version = "0.1.0"
+dependencies = [
+ "morphe",
+]
+
+[[package]]
 name = "old_saxon"
 version = "0.1.0"
 dependencies = [
@@ -661,7 +787,35 @@ dependencies = [
 ]
 
 [[package]]
+name = "old_spanish"
+version = "0.1.0"
+dependencies = [
+ "morphe",
+]
+
+[[package]]
+name = "ossetian"
+version = "0.1.0"
+dependencies = [
+ "morphe",
+]
+
+[[package]]
+name = "ottoman_turkish"
+version = "0.1.0"
+dependencies = [
+ "morphe",
+]
+
+[[package]]
 name = "pali"
+version = "0.1.0"
+dependencies = [
+ "morphe",
+]
+
+[[package]]
+name = "pashto"
 version = "0.1.0"
 dependencies = [
  "morphe",
@@ -840,6 +994,13 @@ dependencies = [
 ]
 
 [[package]]
+name = "somali"
+version = "0.1.0"
+dependencies = [
+ "morphe",
+]
+
+[[package]]
 name = "spanish"
 version = "0.1.0"
 dependencies = [
@@ -872,6 +1033,13 @@ dependencies = [
 ]
 
 [[package]]
+name = "tagalog"
+version = "0.1.0"
+dependencies = [
+ "morphe",
+]
+
+[[package]]
 name = "tamil"
 version = "0.1.0"
 dependencies = [
@@ -887,6 +1055,13 @@ dependencies = [
 
 [[package]]
 name = "telugu"
+version = "0.1.0"
+dependencies = [
+ "morphe",
+]
+
+[[package]]
+name = "tigrinya"
 version = "0.1.0"
 dependencies = [
  "morphe",
@@ -925,6 +1100,13 @@ name = "unicode-ident"
 version = "1.0.26"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "d245f478577f809a851594d02313b640fb437e0bb33866753cff937863096954"
+
+[[package]]
+name = "upper_sorbian"
+version = "0.1.0"
+dependencies = [
+ "morphe",
+]
 
 [[package]]
 name = "urdu"
@@ -990,6 +1172,13 @@ dependencies = [
 ]
 
 [[package]]
+name = "xhosa"
+version = "0.1.0"
+dependencies = [
+ "morphe",
+]
+
+[[package]]
 name = "yiddish"
 version = "0.1.0"
 dependencies = [
@@ -1007,3 +1196,10 @@ name = "zmij"
 version = "1.0.23"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "29666d0abbfad1e3dc4dcf6144730dd3a3ab225bbbdac83319345b1b44ccfc1b"
+
+[[package]]
+name = "zulu"
+version = "0.1.0"
+dependencies = [
+ "morphe",
+]
