@@ -37,6 +37,8 @@ impl German {
 impl Language for German {
     fn spec(&self) -> Spec {
         let mut s = Spec::new("german", "German", "de");
+        // Swiss spelling and ASCII input write ß as ss.
+        s.fold_strs = vec![("ß".into(), "ss".into())];
         // Compound tenses are auxiliary + participle; old spellings come tagged.
         s.drop_tags.extend(tags("multiword-construction dated"));
         s.soft_tags.extend(tags("poetic regional"));

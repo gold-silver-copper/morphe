@@ -36,6 +36,8 @@ pub struct Spec {
     pub unmark: Vec<(char, char)>,
     /// Letters users write interchangeably, for matching (ё → е).
     pub fold: Vec<(char, char)>,
+    /// Multi-letter spellings written interchangeably, for matching (ß → ss).
+    pub fold_strs: Vec<(String, String)>,
     /// Tag of the form that gives the lemma's dictionary spelling.
     pub canonical_tag: Option<String>,
     pub features: Vec<Feature>,
@@ -330,6 +332,7 @@ impl Spec {
             marks: Vec::new(),
             unmark: Vec::new(),
             fold: Vec::new(),
+            fold_strs: Vec::new(),
             canonical_tag: Some("canonical".into()),
             features: Vec::new(),
             pos: Vec::new(),

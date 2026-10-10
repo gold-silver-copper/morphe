@@ -18,6 +18,9 @@ pub struct Model {
     /// Letter pairs that users write interchangeably (ё → е), applied only
     /// when matching input against known words.
     pub fold: Vec<(char, char)>,
+    /// Spellings users write interchangeably, longer than one letter
+    /// (ß → ss), applied after `fold` when matching.
+    pub fold_strs: Vec<(String, String)>,
     /// Letters that marks follow in the data (vowels, for stress).
     pub mark_bases: Vec<char>,
     pub pos: Vec<Pos>,
@@ -249,10 +252,17 @@ impl Model {
 
     /// Lowercase, without marks, with letter folds: how two spellings are compared.
     pub fn key(&self, s: &str) -> String {
-        self.strip(&s.to_lowercase())
+        let mut k: String = self
+            .strip(&s.to_lowercase())
             .chars()
             .map(|c| self.fold.iter().find(|f| f.0 == c).map_or(c, |f| f.1))
-            .collect()
+            .collect();
+        for (a, b) in &self.fold_strs {
+            if k.contains(a.as_str()) {
+                k = k.replace(a.as_str(), b);
+            }
+        }
+        k
     }
 
     /// Every mark follows a letter that carries marks in the data.
@@ -653,6 +663,12 @@ impl Model {
                 w.edit(e);
             }
         }
+        w.s("fold-strs-1");
+        w.u(self.fold_strs.len() as u64);
+        for (a, b) in &self.fold_strs {
+            w.s(a);
+            w.s(b);
+        }
         w.buf
     }
 
@@ -745,13 +761,16 @@ impl Model {
                 inverse: Vec::new(),
             })
         })?;
-        let mut model = Model { name, marks, unmark, fold, mark_bases, pos };
+        let mut model = Model { name, marks, unmark, fold, fold_strs: Vec::new(), mark_bases, pos };
         if r.s().as_deref() == Some("analysis-1") {
             for p in &mut model.pos {
                 let (Some(t), Some(inv)) = (read_tree(&mut r), r.vec(|r| Some((r.u32()?, r.edit()?)))) else { break };
                 p.analysis = t;
                 p.inverse = inv;
             }
+        }
+        if r.s().as_deref() == Some("fold-strs-1") {
+            model.fold_strs = r.vec(|r| Some((r.s()?, r.s()?))).unwrap_or_default();
         }
         Some(model)
     }

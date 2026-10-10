@@ -56,6 +56,7 @@ pub fn learn(ex: &Extractor, threads: usize) -> (Model, Vec<Stats>) {
             marks: spec.marks.clone(),
             unmark: spec.unmark.clone(),
             fold: spec.fold.clone(),
+            fold_strs: spec.fold_strs.clone(),
             mark_bases,
             pos: Vec::new(),
         };
