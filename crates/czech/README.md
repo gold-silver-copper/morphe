@@ -26,14 +26,14 @@ optional marks, so they are not ignored.
 
 | Part of speech | Entries | Cells | Edits | Classes | Tree nodes | Lexicon |
 |---|---|---|---|---|---|---|
-| noun | 23321 | 14 | 4379 | 2217 | 899 | 6453 |
-| adj | 8808 | 50 | 306 | 168 | 175 | 1808 |
-| verb | 4336 | 35 | 2828 | 1392 | 482 | 1896 |
+| noun | 31549 | 14 | 4732 | 2819 | 1396 | 9075 |
+| adj | 14062 | 50 | 530 | 249 | 588 | 5594 |
+| verb | 11757 | 35 | 3080 | 1719 | 698 | 3023 |
 | pron | 66 | 56 | 318 | 68 | 10 | 26 |
 | det | 25 | 48 | 82 | 25 | 5 | 9 |
 | num | 145 | 48 | 73 | 31 | 8 | 76 |
 
-Model size: 2010191 bytes.
+Model size: 1081869 bytes.
 
 **noun** cells: `NominativeSingular`, `NominativePlural`, `GenitiveSingular`, `GenitivePlural`, `DativeSingular`, `DativePlural`, `AccusativeSingular`, `AccusativePlural`, `InstrumentalSingular`, `InstrumentalPlural`, `LocativeSingular`, `LocativePlural`, `VocativeSingular`, `VocativePlural`
 

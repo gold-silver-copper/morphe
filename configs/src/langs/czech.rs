@@ -1,8 +1,11 @@
+use morphe_train::kaikki::{Entry, Form};
 use morphe_train::spec::*;
 
 pub struct Czech;
 
 const CASES: &str = "Case[Nominative,Genitive,Dative,Accusative,Instrumental,Locative]";
+
+const CASE_TAGS: [&str; 7] = ["nominative", "genitive", "dative", "accusative", "instrumental", "locative", "vocative"];
 
 fn has(tags: &[String], t: &str) -> bool {
     tags.iter().any(|x| x == t)
@@ -12,6 +15,8 @@ impl Language for Czech {
     fn spec(&self) -> Spec {
         let mut s = Spec::new("czech", "Czech", "cs");
         s.drop_tags.extend(tags("dated"));
+        // Czech Wiktionary adds words English Wiktionary lacks.
+        s.extra_dumps = vec!["cs/čeština".into()];
         s.soft_tags.extend(tags("poetic literary"));
         s.features = vec![
             feature(
@@ -123,6 +128,93 @@ impl Language for Czech {
 
     /// The bookish infinitive in -ti/-ci (dělati, péci) is listed beside the
     /// plain one without a tag; keep it as a low-weight alternative.
+    /// Czech Wiktionary's tables leave out every form spelled like the
+    /// headword (nominative singular, genitive singular of růže…); the past
+    /// participle is "active participle"; the non-past of perfective verbs is
+    /// "future"; the plural "masculine inanimate / feminine" comes as
+    /// "masculine animate feminine"; imperfective verbs are "imperfect".
+    fn prepare_extra(&self, _dump: &str, e: &mut Entry) {
+        let word = e.word.clone();
+        if e.tags.iter().any(|t| t == "form-of") || word.contains(' ') || word.starts_with(char::is_uppercase) {
+            e.forms.clear();
+            return;
+        }
+        for t in &mut e.tags {
+            if t == "imperfect" {
+                *t = "imperfective".into();
+            }
+        }
+        let tagged = |f: &Form, t: &str| f.tags.iter().any(|x| x == t);
+        let tags = |t: &str| t.split(' ').map(String::from).collect::<Vec<_>>();
+        let noise = ["alternative", "dialectal", "obsolete", "archaic", "literary"];
+        e.forms.retain(|f| !noise.iter().any(|t| tagged(f, t)) && !f.form.contains([' ', '(', '/']) && !f.form.is_empty());
+        let has_form = |e: &Entry, t: &[&str]| e.forms.iter().any(|f| t.iter().all(|x| tagged(f, x)));
+        match e.pos.as_str() {
+            "noun" => {
+                for number in ["singular", "plural"] {
+                    if e.forms.iter().filter(|f| tagged(f, number)).count() < 3 {
+                        continue;
+                    }
+                    for case in CASE_TAGS {
+                        if !has_form(e, &[case, number]) {
+                            e.forms.push(Form { form: word.clone(), tags: vec![case.into(), number.into()], source: None });
+                        }
+                    }
+                }
+                let g = |t: &str| e.tags.iter().any(|x| x == t);
+                if g("masculine") {
+                    match (g("animate"), g("inanimate")) {
+                        (true, false) => e.tags.push("masculine-animate".into()),
+                        (false, true) => e.tags.push("masculine-inanimate".into()),
+                        _ => {}
+                    }
+                }
+            }
+            "adj" => {
+                // Short forms (mlád, mláda) name no case.
+                e.forms.retain(|f| CASE_TAGS.iter().any(|c| tagged(f, c)) || tagged(f, "comparative") || tagged(f, "superlative"));
+                if e.forms.len() < 40 {
+                    return;
+                }
+                for number in ["singular", "plural"] {
+                    for case in CASE_TAGS {
+                        for gender in ["masculine animate", "masculine inanimate", "feminine", "neuter"] {
+                            let t = format!("{case} {number} {gender}");
+                            let need: Vec<&str> = t.split(' ').collect();
+                            if !has_form(e, &need) {
+                                e.forms.push(Form { form: word.clone(), tags: tags(&t), source: None });
+                            }
+                        }
+                    }
+                }
+            }
+            "verb" => {
+                let perfective = e.tags.iter().any(|t| t == "perfective");
+                for f in &mut e.forms {
+                    let has = |f: &Form, t: &str| f.tags.iter().any(|x| x == t);
+                    if has(f, "future") && perfective {
+                        f.tags.retain(|t| t != "future");
+                        f.tags.push("present".into());
+                    }
+                    if has(f, "participle") && has(f, "active") {
+                        f.tags.push("past".into());
+                    }
+                    if has(f, "transgressive") && !has(f, "present") {
+                        f.tags.push("past".into());
+                    }
+                    if has(f, "plural") && has(f, "masculine") && has(f, "animate") && has(f, "feminine") {
+                        f.tags.retain(|t| t != "animate");
+                        f.tags.push("inanimate".into());
+                    }
+                }
+                // Imperfective futures are analytic (budu dělat).
+                e.forms.retain(|f| !tagged(f, "future"));
+                e.forms.push(Form { form: word, tags: tags("infinitive"), source: None });
+            }
+            _ => e.forms.clear(),
+        }
+    }
+
     fn adjust(&self, pos: &PosSpec, _lemma: &str, forms: &mut Vec<(usize, String, bool)>) {
         if pos.name != "verb" {
             return;
