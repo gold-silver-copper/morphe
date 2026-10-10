@@ -63,7 +63,8 @@ aside, section.pos { background: var(--paper); border: 1px solid var(--rule); bo
 h2 { font-family: var(--display); font-weight: 500; font-size: 1.05rem; letter-spacing: .05em; margin: 0 0 10px; color: var(--muted); }
 .analyses { list-style: none; margin: 0; padding: 0; display: grid; gap: 8px; }
 .analyses li { display: grid; grid-template-columns: 1fr auto; gap: 2px 8px; border-bottom: 1px solid var(--rule); padding-bottom: 8px; }
-.analyses .lemma { font-weight: 700; font-size: 1.1rem; }
+.analyses .lemma { font: inherit; font-weight: 700; font-size: 1.1rem; background: none; color: var(--ink); padding: 0; text-align: left; cursor: pointer; text-decoration: underline dotted var(--muted); text-underline-offset: 3px; }
+.analyses .lemma:hover { color: var(--accent); }
 .analyses .what { grid-column: 1 / -1; color: var(--muted); font-size: .9rem; }
 .pct { font-family: var(--mono); font-size: .78rem; color: var(--muted); font-variant-numeric: tabular-nums; }
 main { display: grid; gap: 16px; min-width: 0; }
@@ -164,7 +165,11 @@ function render(res) {
   if (!res.analyses.length) an.append(el("li", "empty", "No analysis."));
   for (const a of res.analyses) {
     const li = el("li");
-    li.append(el("span", "lemma", a.lemma), el("span", "pct", pct(a.p)),
+    const lemma = el("button", "lemma", a.lemma);
+    lemma.type = "button";
+    lemma.title = `Show the paradigm of ${a.lemma}`;
+    lemma.addEventListener("click", () => { $("word").value = a.lemma; run(); });
+    li.append(lemma, el("span", "pct", pct(a.p)),
       el("span", "what", `${a.pos} · ${a.cells.length ? a.cells.map(words).join(", ") : "dictionary form"}`));
     an.append(li);
   }
