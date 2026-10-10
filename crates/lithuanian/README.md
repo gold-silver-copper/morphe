@@ -31,13 +31,13 @@ Wiktionary's verb tables are read by row, as their person labels are lost.
 
 | Part of speech | Entries | Cells | Edits | Classes | Tree nodes | Lexicon |
 |---|---|---|---|---|---|---|
-| noun | 3887 | 14 | 4275 | 965 | 1054 | 2454 |
-| adj | 624 | 99 | 7967 | 274 | 175 | 397 |
-| verb | 2140 | 40 | 8709 | 1137 | 428 | 894 |
-| pron | 36 | 36 | 714 | 49 | 12 | 28 |
-| num | 11 | 12 | 63 | 10 | 7 | 8 |
+| noun | 3887 | 14 | 4157 | 937 | 1054 | 2253 |
+| adj | 624 | 99 | 7631 | 262 | 172 | 314 |
+| verb | 2140 | 40 | 8512 | 1114 | 416 | 855 |
+| pron | 36 | 36 | 704 | 49 | 12 | 27 |
+| num | 11 | 12 | 63 | 10 | 6 | 5 |
 
-Model size: 1456595 bytes.
+Model size: 516331 bytes.
 
 **noun** cells: `NominativeSingular`, `NominativePlural`, `GenitiveSingular`, `GenitivePlural`, `DativeSingular`, `DativePlural`, `AccusativeSingular`, `AccusativePlural`, `InstrumentalSingular`, `InstrumentalPlural`, `LocativeSingular`, `LocativePlural`, `VocativeSingular`, `VocativePlural`
 
