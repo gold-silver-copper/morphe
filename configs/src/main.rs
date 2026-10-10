@@ -128,7 +128,19 @@ fn main() {
                     eprintln!("{e}");
                     std::process::exit(1);
                 }
-                let samples: Vec<String> = samples.iter().map(|s| json(s)).collect();
+                // No samples in the config: a few known irregular words,
+                // spread evenly through the first part of speech's lexicon.
+                let samples: Vec<String> = if samples.is_empty() {
+                    morphe::Model::decode(&bytes)
+                        .and_then(|m| {
+                            let lex = &m.pos.first()?.lexicon;
+                            let n = lex.len();
+                            Some((1..=5).filter_map(|i| lex.get(i * n / 6)).map(|(k, _)| json(k)).collect())
+                        })
+                        .unwrap_or_default()
+                } else {
+                    samples.iter().map(|s| json(s)).collect()
+                };
                 entries.push(format!(
                     "{{\"name\":{},\"title\":{},\"file\":\"models/{}.txt\",\"bytes\":{},\"samples\":[{}]}}",
                     json(&spec.name),

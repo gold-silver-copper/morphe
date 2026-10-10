@@ -532,6 +532,13 @@ dependencies = [
 ]
 
 [[package]]
+name = "saterland_frisian"
+version = "0.1.0"
+dependencies = [
+ "morphe",
+]
+
+[[package]]
 name = "scottish_gaelic"
 version = "0.1.0"
 dependencies = [
