@@ -29,12 +29,12 @@ them, and `marks(false)` removes them from output.
 
 | Part of speech | Entries | Cells | Edits | Classes | Tree nodes | Lexicon |
 |---|---|---|---|---|---|---|
-| noun | 2065 | 22 | 3865 | 1012 | 476 | 871 |
+| noun | 2065 | 22 | 3866 | 1012 | 476 | 871 |
 | adj | 481 | 22 | 842 | 118 | 81 | 147 |
-| verb | 1133 | 59 | 8889 | 748 | 175 | 334 |
-| pron | 20 | 22 | 65 | 26 | 4 | 11 |
+| verb | 1133 | 59 | 8890 | 748 | 175 | 334 |
+| pron | 20 | 22 | 66 | 26 | 4 | 11 |
 
-Model size: 1932681 bytes.
+Model size: 1955371 bytes.
 
 **noun** cells: `NominativeSingular`, `NominativePlural`, `GenitiveSingular`, `GenitivePlural`, `AccusativeSingular`, `AccusativePlural`, `IllativeSingular`, `IllativePlural`, `LocativeSingular`, `LocativePlural`, `ComitativeSingular`, `ComitativePlural`, `Essive`, `PossessiveFirstSingular`, `PossessiveFirstDual`, `PossessiveFirstPlural`, `PossessiveSecondSingular`, `PossessiveSecondDual`, `PossessiveSecondPlural`, `PossessiveThirdSingular`, `PossessiveThirdDual`, `PossessiveThirdPlural`
 
