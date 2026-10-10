@@ -23,11 +23,11 @@ participle is given without "ow" and the superlative without "an".
 
 | Part of speech | Entries | Cells | Edits | Classes | Tree nodes | Lexicon |
 |---|---|---|---|---|---|---|
-| noun | 3622 | 7 | 647 | 1221 | 544 | 2235 |
-| adj | 424 | 6 | 70 | 115 | 27 | 88 |
+| noun | 3622 | 7 | 647 | 1221 | 574 | 2234 |
+| adj | 424 | 6 | 66 | 113 | 27 | 88 |
 | verb | 1088 | 53 | 3048 | 660 | 218 | 590 |
 
-Model size: 342299 bytes.
+Model size: 342446 bytes.
 
 **noun** cells: `Plural`, `Singulative`, `Dual`, `MutatedSoft`, `MutatedAspirate`, `MutatedHard`, `MutatedMixed`
 

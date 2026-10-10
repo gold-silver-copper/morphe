@@ -22,11 +22,11 @@ The comparative is given without its particle ("s’buiggey" → "buiggey").
 
 | Part of speech | Entries | Cells | Edits | Classes | Tree nodes | Lexicon |
 |---|---|---|---|---|---|---|
-| noun | 1479 | 4 | 275 | 556 | 195 | 782 |
-| adj | 253 | 4 | 72 | 74 | 28 | 63 |
-| verb | 280 | 22 | 225 | 232 | 57 | 176 |
+| noun | 1479 | 4 | 240 | 539 | 208 | 792 |
+| adj | 253 | 4 | 66 | 71 | 36 | 63 |
+| verb | 280 | 22 | 209 | 227 | 60 | 182 |
 
-Model size: 43737 bytes.
+Model size: 43447 bytes.
 
 **noun** cells: `GenitiveSingular`, `Plural`, `MutatedLenition`, `MutatedEclipsis`
 

@@ -26,7 +26,7 @@ optional on input.
 | adj | 77 | 35 | 14 | 14 | 13 | 30 |
 | verb | 55 | 4 | 39 | 35 | 13 | 42 |
 
-Model size: 13514 bytes.
+Model size: 13521 bytes.
 
 **noun** cells: `NominativeSingular`, `NominativeDual`, `NominativePlural`, `VocativeSingular`, `VocativeDual`, `VocativePlural`, `AccusativeSingular`, `AccusativeDual`, `AccusativePlural`, `GenitiveSingular`, `GenitiveDual`, `GenitivePlural`, `DativeSingular`, `DativeDual`, `DativePlural`, `MutatedLenition`, `MutatedNasalization`
 

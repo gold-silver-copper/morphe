@@ -22,11 +22,11 @@ Lower Sorbian keeps the dual. Diacritics are optional on input.
 
 | Part of speech | Entries | Cells | Edits | Classes | Tree nodes | Lexicon |
 |---|---|---|---|---|---|---|
-| noun | 932 | 19 | 529 | 325 | 182 | 632 |
+| noun | 932 | 19 | 527 | 325 | 184 | 632 |
 | adj | 195 | 50 | 89 | 62 | 38 | 106 |
-| verb | 212 | 33 | 552 | 105 | 63 | 125 |
+| verb | 212 | 33 | 528 | 104 | 63 | 124 |
 
-Model size: 95565 bytes.
+Model size: 95411 bytes.
 
 **noun** cells: `NominativeSingular`, `NominativeDual`, `NominativePlural`, `GenitiveSingular`, `GenitiveDual`, `GenitivePlural`, `DativeSingular`, `DativeDual`, `DativePlural`, `AccusativeSingular`, `AccusativeDual`, `AccusativePlural`, `InstrumentalSingular`, `InstrumentalDual`, `InstrumentalPlural`, `LocativeSingular`, `LocativeDual`, `LocativePlural`, `Diminutive`
 

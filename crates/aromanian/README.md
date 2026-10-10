@@ -23,11 +23,11 @@ input.
 
 | Part of speech | Entries | Cells | Edits | Classes | Tree nodes | Lexicon |
 |---|---|---|---|---|---|---|
-| noun | 2321 | 8 | 472 | 536 | 504 | 1435 |
-| adj | 328 | 3 | 110 | 144 | 75 | 171 |
+| noun | 2321 | 8 | 461 | 530 | 502 | 1431 |
+| adj | 328 | 3 | 104 | 143 | 75 | 171 |
 | verb | 987 | 29 | 441 | 361 | 196 | 549 |
 
-Model size: 79311 bytes.
+Model size: 79194 bytes.
 
 **noun** cells: `IndefiniteDirectSingular`, `IndefiniteDirectPlural`, `IndefiniteObliqueSingular`, `IndefiniteObliquePlural`, `DefiniteDirectSingular`, `DefiniteDirectPlural`, `DefiniteObliqueSingular`, `DefiniteObliquePlural`
 

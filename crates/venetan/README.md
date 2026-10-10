@@ -22,11 +22,11 @@ Accents are optional on input, and l matches the standard spelling's ł.
 
 | Part of speech | Entries | Cells | Edits | Classes | Tree nodes | Lexicon |
 |---|---|---|---|---|---|---|
-| noun | 1360 | 1 | 39 | 49 | 140 | 591 |
-| adj | 302 | 3 | 27 | 22 | 40 | 142 |
+| noun | 1360 | 1 | 38 | 48 | 142 | 591 |
+| adj | 302 | 3 | 24 | 21 | 40 | 141 |
 | verb | 383 | 45 | 380 | 81 | 40 | 95 |
 
-Model size: 45881 bytes.
+Model size: 45893 bytes.
 
 **noun** cells: `Plural`
 

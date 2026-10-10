@@ -21,10 +21,10 @@ left out: Wiktionary has conjugation tables for only a handful.
 
 | Part of speech | Entries | Cells | Edits | Classes | Tree nodes | Lexicon |
 |---|---|---|---|---|---|---|
-| noun | 382 | 4 | 18 | 20 | 23 | 89 |
+| noun | 382 | 4 | 6 | 13 | 24 | 93 |
 | adj | 33 | 3 | 18 | 14 | 2 | 17 |
 
-Model size: 4523 bytes.
+Model size: 4486 bytes.
 
 **noun** cells: `NominativeSingular`, `NominativePlural`, `ObliqueSingular`, `ObliquePlural`
 

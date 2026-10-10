@@ -24,11 +24,11 @@ stress marks; і/ї match и, ѡ matches о, and ꙋ/ѹ match оу.
 
 | Part of speech | Entries | Cells | Edits | Classes | Tree nodes | Lexicon |
 |---|---|---|---|---|---|---|
-| noun | 332 | 21 | 301 | 59 | 36 | 79 |
-| adj | 68 | 108 | 207 | 8 | 7 | 4 |
-| verb | 62 | 39 | 646 | 86 | 16 | 41 |
+| noun | 332 | 21 | 281 | 57 | 35 | 79 |
+| adj | 68 | 108 | 139 | 6 | 7 | 4 |
+| verb | 62 | 39 | 617 | 82 | 17 | 41 |
 
-Model size: 63820 bytes.
+Model size: 62899 bytes.
 
 **noun** cells: `NominativeSingular`, `NominativeDual`, `NominativePlural`, `AccusativeSingular`, `AccusativeDual`, `AccusativePlural`, `GenitiveSingular`, `GenitiveDual`, `GenitivePlural`, `DativeSingular`, `DativeDual`, `DativePlural`, `InstrumentalSingular`, `InstrumentalDual`, `InstrumentalPlural`, `LocativeSingular`, `LocativeDual`, `LocativePlural`, `VocativeSingular`, `VocativeDual`, `VocativePlural`
 
