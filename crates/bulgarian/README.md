@@ -35,7 +35,7 @@ Wiktionary has them (`marks(false)` removes them).
 | det | 16 | 36 | 55 | 15 | 2 | 13 |
 | num | 26 | 13 | 30 | 18 | 17 | 21 |
 
-Model size: 1550244 bytes.
+Model size: 1550257 bytes.
 
 **noun** cells: `IndefiniteSingular`, `IndefinitePlural`, `DefiniteSingular`, `DefinitePlural`, `DefiniteShortSingular`, `DefiniteShortPlural`, `Count`, `VocativeSingular`, `VocativePlural`
 

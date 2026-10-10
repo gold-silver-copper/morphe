@@ -33,7 +33,7 @@ optional marks, so they are not ignored.
 | det | 25 | 48 | 82 | 25 | 5 | 9 |
 | num | 145 | 48 | 73 | 31 | 8 | 76 |
 
-Model size: 1991431 bytes.
+Model size: 1991444 bytes.
 
 **noun** cells: `NominativeSingular`, `NominativePlural`, `GenitiveSingular`, `GenitivePlural`, `DativeSingular`, `DativePlural`, `AccusativeSingular`, `AccusativePlural`, `InstrumentalSingular`, `InstrumentalPlural`, `LocativeSingular`, `LocativePlural`, `VocativeSingular`, `VocativePlural`
 
