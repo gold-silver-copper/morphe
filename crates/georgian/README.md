@@ -35,7 +35,7 @@ aorist of unknown verbs are often wrong.
 | adj | 3249 | 21 | 104 | 24 | 43 | 167 |
 | verb | 445 | 78 | 6016 | 368 | 97 | 212 |
 
-Model size: 2178253 bytes.
+Model size: 597899 bytes.
 
 **noun** cells: `NominativeSingular`, `NominativePlural`, `ErgativeSingular`, `ErgativePlural`, `DativeSingular`, `DativePlural`, `GenitiveSingular`, `GenitivePlural`, `InstrumentalSingular`, `InstrumentalPlural`, `AdverbialSingular`, `AdverbialPlural`, `VocativeSingular`, `VocativePlural`, `PostpositionOnSingular`, `PostpositionOnPlural`, `PostpositionNearSingular`, `PostpositionNearPlural`, `PostpositionInSingular`, `PostpositionInPlural`, `PostpositionLikeSingular`, `PostpositionLikePlural`, `PostpositionForSingular`, `PostpositionForPlural`, `PostpositionFromSingular`, `PostpositionFromPlural`, `PostpositionTowardsSingular`, `PostpositionTowardsPlural`, `PostpositionRegardingSingular`, `PostpositionRegardingPlural`, `PostpositionSimilarSingular`, `PostpositionSimilarPlural`, `PostpositionSinceSingular`, `PostpositionSincePlural`, `PostpositionWithSingular`, `PostpositionWithPlural`, `PostpositionUpToSingular`, `PostpositionUpToPlural`
 

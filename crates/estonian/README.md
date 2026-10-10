@@ -37,7 +37,7 @@ and da-infinitives, the des-form and the participles. Compound tenses
 | pron | 28 | 28 | 1554 | 51 | 3 | 26 |
 | num | 34 | 28 | 447 | 42 | 12 | 21 |
 
-Model size: 1646681 bytes.
+Model size: 753138 bytes.
 
 **noun** cells: `NominativeSingular`, `NominativePlural`, `GenitiveSingular`, `GenitivePlural`, `PartitiveSingular`, `PartitivePlural`, `IllativeSingular`, `IllativePlural`, `InessiveSingular`, `InessivePlural`, `ElativeSingular`, `ElativePlural`, `AllativeSingular`, `AllativePlural`, `AdessiveSingular`, `AdessivePlural`, `AblativeSingular`, `AblativePlural`, `TranslativeSingular`, `TranslativePlural`, `TerminativeSingular`, `TerminativePlural`, `EssiveSingular`, `EssivePlural`, `AbessiveSingular`, `AbessivePlural`, `ComitativeSingular`, `ComitativePlural`
 

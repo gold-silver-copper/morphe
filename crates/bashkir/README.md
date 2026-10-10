@@ -22,7 +22,7 @@ tables.
 |---|---|---|---|---|---|---|
 | noun | 1640 | 12 | 101 | 37 | 103 | 349 |
 
-Model size: 52779 bytes.
+Model size: 21913 bytes.
 
 **noun** cells: `NominativeSingular`, `NominativePlural`, `GenitiveSingular`, `GenitivePlural`, `DativeSingular`, `DativePlural`, `AccusativeSingular`, `AccusativePlural`, `LocativeSingular`, `LocativePlural`, `AblativeSingular`, `AblativePlural`
 

@@ -37,7 +37,7 @@ chandrabindu as anusvara.
 | pron | 36 | 28 | 202 | 41 | 3 | 19 |
 | num | 8 | 6 | 7 | 5 | 2 | 3 |
 
-Model size: 810415 bytes.
+Model size: 221475 bytes.
 
 **noun** cells: `DirectSingular`, `DirectPlural`, `ObliqueSingular`, `ObliquePlural`, `VocativeSingular`, `VocativePlural`
 

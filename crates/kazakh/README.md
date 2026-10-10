@@ -29,7 +29,7 @@ hundred verbs only.
 | noun | 4648 | 16 | 900 | 345 | 194 | 487 |
 | verb | 168 | 88 | 1007 | 21 | 18 | 43 |
 
-Model size: 324479 bytes.
+Model size: 120140 bytes.
 
 **noun** cells: `NominativeSingular`, `NominativePlural`, `GenitiveSingular`, `GenitivePlural`, `DativeSingular`, `DativePlural`, `AccusativeSingular`, `AccusativePlural`, `LocativeSingular`, `LocativePlural`, `AblativeSingular`, `AblativePlural`, `InstrumentalSingular`, `InstrumentalPlural`, `EquativeSingular`, `EquativePlural`
 
