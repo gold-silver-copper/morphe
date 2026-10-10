@@ -25,6 +25,16 @@ fn best(scored: Scored<String>, word: &str) -> String {
 }
 
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord)]
+pub enum Auxiliary {
+    Have,
+    Be,
+}
+
+impl Auxiliary {
+    pub const ALL: [Self; 2] = [Self::Have, Self::Be];
+}
+
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord)]
 pub enum Gender {
     Masculine,
     Feminine,
@@ -267,18 +277,9 @@ impl Yiddish {
         best(self.verb_participle_past_scored(word), word)
     }
 
-    /// The auxiliary verb.
-    pub fn verb_auxiliary_scored(&self, word: &str) -> Scored<String> {
-        let cell: Option<u32> = Some(10);
-        match (model(), cell) {
-            (Some(m), Some(c)) => m.inflect(2, c, word, self.options),
-            _ => Vec::new(),
-        }
-    }
-
-    /// The auxiliary verb. The best candidate; the word itself if nothing is known.
-    pub fn verb_auxiliary(&self, word: &str) -> String {
-        best(self.verb_auxiliary_scored(word), word)
+    /// Scored auxiliary of a verb.
+    pub fn verb_auxiliary(&self, word: &str) -> Scored<Auxiliary> {
+        model().map(|m| m.inherent(2, 0, word).into_iter().filter_map(|(v, p)| Some((Auxiliary::ALL.get(v as usize).copied()?, p))).collect()).unwrap_or_default()
     }
 
     /// Dictionary spelling of a verb (with stress marks where the data has them).
@@ -393,14 +394,9 @@ pub fn verb_participle_past_scored(word: &str) -> Scored<String> {
     Yiddish::default().verb_participle_past_scored(word)
 }
 
-/// The auxiliary verb.
-pub fn verb_auxiliary(word: &str) -> String {
+/// Scored auxiliary of a verb.
+pub fn verb_auxiliary(word: &str) -> Scored<Auxiliary> {
     Yiddish::default().verb_auxiliary(word)
-}
-
-/// The auxiliary verb. Every candidate with its confidence, best first.
-pub fn verb_auxiliary_scored(word: &str) -> Scored<String> {
-    Yiddish::default().verb_auxiliary_scored(word)
 }
 
 /// Dictionary spelling of a verb.

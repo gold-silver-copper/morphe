@@ -1,3 +1,4 @@
+use morphe_train::kaikki::{Entry, Sense};
 use morphe_train::spec::*;
 
 pub struct Luxembourgish;
@@ -12,6 +13,8 @@ impl Language for Luxembourgish {
         // Compound tenses are auxiliary + participle.
         s.drop_tags.extend(tags("dated perfect future"));
         s.features = vec![
+            // The auxiliary of the perfect, read from the conjugation table.
+            feature("Auxiliary", &[("Have", "auxiliary-have"), ("Be", "auxiliary-be")]),
             feature("Gender", &[("Masculine", "masculine"), ("Feminine", "feminine"), ("Neuter", "neuter")]),
             feature(
                 "GenderNumber",
@@ -63,14 +66,28 @@ impl Language for Luxembourgish {
                     group("Conditional", "conditional !present", "PersonNumber"),
                     group("Imperative", "imperative second-person", "Number"),
                     group("Participle", "participle", ""),
-                    // hunn or sinn, for the perfect.
-                    group("Auxiliary", "auxiliary", ""),
                 ],
             )
+            .inherent("Auxiliary")
             .citation("Lemma Participle")
             .head_first(),
         ];
         s
+    }
+
+    fn prepare(&self, e: &mut Entry) {
+        // The auxiliary is a property of the verb: keep it as a sense tag.
+        if let Some(aux) = e.forms.iter().find(|f| f.tags.iter().any(|t| t == "auxiliary")).map(|f| f.form.clone()) {
+            let tag = if aux == "hunn" { "auxiliary-have" } else if aux == "sinn" { "auxiliary-be" } else { "" };
+            if !tag.is_empty() {
+                if e.senses.is_empty() {
+                    e.senses.push(Sense { tags: Vec::new() });
+                }
+                for sense in &mut e.senses {
+                    sense.tags.push(tag.into());
+                }
+            }
+        }
     }
 
     fn retag(&self, pos: &PosSpec, _form: &str, tags: &mut Vec<String>) {
@@ -94,7 +111,7 @@ println!("{:?}", noun_gender("Buch"));
 assert_eq!(adj("grouss", GenderNumber::Masculine), "groussen");
 assert_eq!(adj_strong("grouss", GenderNumber::Neuter), "grousses");
 println!("{}", verb_present("hidden", PersonNumber::SecondSingular)); // hitts
-println!("{}", verb_auxiliary("goen")); // sinn
+println!("{:?}", verb_auxiliary("goen")); // Be
 ```
 
 Compound tenses are left to the caller: `verb_auxiliary` plus

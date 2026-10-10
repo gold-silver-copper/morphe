@@ -14,7 +14,7 @@ println!("{:?}", noun_gender("Buch"));
 assert_eq!(adj("grouss", GenderNumber::Masculine), "groussen");
 assert_eq!(adj_strong("grouss", GenderNumber::Neuter), "grousses");
 println!("{}", verb_present("hidden", PersonNumber::SecondSingular)); // hitts
-println!("{}", verb_auxiliary("goen")); // sinn
+println!("{:?}", verb_auxiliary("goen")); // Be
 ```
 
 Compound tenses are left to the caller: `verb_auxiliary` plus
@@ -27,9 +27,9 @@ writes them ("méi grouss", "am gréissten").
 |---|---|---|---|---|---|---|
 | noun | 3332 | 2 | 232 | 302 | 337 | 879 |
 | adj | 680 | 14 | 82 | 80 | 49 | 227 |
-| verb | 1471 | 22 | 2394 | 1499 | 179 | 807 |
+| verb | 1471 | 21 | 927 | 397 | 146 | 661 |
 
-Model size: 305817 bytes.
+Model size: 217400 bytes.
 
 **noun** cells: `Plural`, `Diminutive`
 
@@ -39,7 +39,7 @@ Citation form: `Lemma, Plural` (comma-separated; parts you give are output exact
 
 Citation form: `Lemma, Masculine, Neuter` (comma-separated; parts you give are output exactly and narrow the prediction).
 
-**verb** cells: `PresentFirstSingular`, `PresentSecondSingular`, `PresentThirdSingular`, `PresentFirstPlural`, `PresentSecondPlural`, `PresentThirdPlural`, `PastFirstSingular`, `PastSecondSingular`, `PastThirdSingular`, `PastFirstPlural`, `PastSecondPlural`, `PastThirdPlural`, `ConditionalFirstSingular`, `ConditionalSecondSingular`, `ConditionalThirdSingular`, `ConditionalFirstPlural`, `ConditionalSecondPlural`, `ConditionalThirdPlural`, `ImperativeSingular`, `ImperativePlural`, `Participle`, `Auxiliary`
+**verb** cells: `PresentFirstSingular`, `PresentSecondSingular`, `PresentThirdSingular`, `PresentFirstPlural`, `PresentSecondPlural`, `PresentThirdPlural`, `PastFirstSingular`, `PastSecondSingular`, `PastThirdSingular`, `PastFirstPlural`, `PastSecondPlural`, `PastThirdPlural`, `ConditionalFirstSingular`, `ConditionalSecondSingular`, `ConditionalThirdSingular`, `ConditionalFirstPlural`, `ConditionalSecondPlural`, `ConditionalThirdPlural`, `ImperativeSingular`, `ImperativePlural`, `Participle`
 
 Citation form: `Lemma, Participle` (comma-separated; parts you give are output exactly and narrow the prediction).
 

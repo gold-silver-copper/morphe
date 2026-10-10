@@ -1,4 +1,4 @@
-use morphe_train::kaikki::Entry;
+use morphe_train::kaikki::{Entry, Sense};
 use morphe_train::spec::*;
 
 pub struct Yiddish;
@@ -26,6 +26,8 @@ impl Language for Yiddish {
         // Compound tenses are auxiliary + participle.
         s.drop_tags.extend(tags("dated Daytshmerish pluperfect future"));
         s.features = vec![
+            // The auxiliary of the perfect, read from the conjugation table.
+            feature("Auxiliary", &[("Have", "auxiliary-have"), ("Be", "auxiliary-be")]),
             feature("Gender", &[("Masculine", "masculine"), ("Feminine", "feminine"), ("Neuter", "neuter")]),
             feature("Case", &[("Nominative", "nominative"), ("Accusative", "accusative"), ("Dative", "dative")]),
             feature(
@@ -78,10 +80,9 @@ impl Language for Yiddish {
                     group("Imperative", "imperative", "Number"),
                     group("ParticiplePresent", "participle present", ""),
                     group("ParticiplePast", "participle past", ""),
-                    // האָבן or זײַן, for the past.
-                    group("Auxiliary", "auxiliary", ""),
                 ],
             )
+            .inherent("Auxiliary")
             .citation("Lemma ParticiplePast")
             .head_first(),
         ];
@@ -89,6 +90,18 @@ impl Language for Yiddish {
     }
 
     fn prepare(&self, e: &mut Entry) {
+        // The auxiliary is a property of the verb: keep it as a sense tag.
+        if let Some(aux) = e.forms.iter().find(|f| f.tags.iter().any(|t| t == "auxiliary")).map(|f| f.form.clone()) {
+            let tag = if aux == "האָבן" { "auxiliary-have" } else if aux == "זײַן" { "auxiliary-be" } else { "" };
+            if !tag.is_empty() {
+                if e.senses.is_empty() {
+                    e.senses.push(Sense { tags: Vec::new() });
+                }
+                for sense in &mut e.senses {
+                    sense.tags.push(tag.into());
+                }
+            }
+        }
         // The headword line comes as canonical forms: "plural כלבים",
         // "diminutive הינטל", then further variants of the same label.
         let mut label: Option<&str> = None;
@@ -147,7 +160,7 @@ use yiddish::*;
 println!("{}", noun_plural("הונט")); // הינט
 println!("{:?}", noun_gender("הונט"));
 println!("{}", verb_present("בענטשן", PersonNumber::SecondSingular)); // בענטשסט
-println!("{}", verb_auxiliary("גיין")); // זײַן
+println!("{:?}", verb_auxiliary("גיין")); // Be
 println!("{}", adj("גוט", Case::Nominative, Form::Masculine)); // גוטער
 ```
 

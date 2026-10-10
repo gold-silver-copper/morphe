@@ -12,7 +12,7 @@ use yiddish::*;
 println!("{}", noun_plural("הונט")); // הינט
 println!("{:?}", noun_gender("הונט"));
 println!("{}", verb_present("בענטשן", PersonNumber::SecondSingular)); // בענטשסט
-println!("{}", verb_auxiliary("גיין")); // זײַן
+println!("{:?}", verb_auxiliary("גיין")); // Be
 println!("{}", adj("גוט", Case::Nominative, Form::Masculine)); // גוטער
 ```
 
@@ -26,9 +26,9 @@ spellings. The past and future are compound tenses: `verb_auxiliary` plus
 |---|---|---|---|---|---|---|
 | noun | 4528 | 2 | 412 | 579 | 904 | 3135 |
 | adj | 1046 | 20 | 1438 | 336 | 158 | 594 |
-| verb | 1280 | 11 | 3443 | 1257 | 116 | 977 |
+| verb | 1280 | 10 | 2294 | 797 | 147 | 1002 |
 
-Model size: 490338 bytes.
+Model size: 427983 bytes.
 
 **noun** cells: `Plural`, `Diminutive`
 
@@ -38,7 +38,7 @@ Citation form: `Lemma, Plural` (comma-separated; parts you give are output exact
 
 Citation form: `Lemma, Comparative, Superlative` (comma-separated; parts you give are output exactly and narrow the prediction).
 
-**verb** cells: `PresentFirstSingular`, `PresentSecondSingular`, `PresentThirdSingular`, `PresentFirstPlural`, `PresentSecondPlural`, `PresentThirdPlural`, `ImperativeSingular`, `ImperativePlural`, `ParticiplePresent`, `ParticiplePast`, `Auxiliary`
+**verb** cells: `PresentFirstSingular`, `PresentSecondSingular`, `PresentThirdSingular`, `PresentFirstPlural`, `PresentSecondPlural`, `PresentThirdPlural`, `ImperativeSingular`, `ImperativePlural`, `ParticiplePresent`, `ParticiplePast`
 
 Citation form: `Lemma, ParticiplePast` (comma-separated; parts you give are output exactly and narrow the prediction).
 
