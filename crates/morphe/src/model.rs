@@ -378,6 +378,20 @@ impl Model {
         out
     }
 
+    /// The variant position a citation picked, if it picked a later one.
+    fn aligned_variant(&self, p: &Pos, q: &Query, canon: &str, class: u32) -> Option<usize> {
+        let c = p.classes.get(class as usize)?;
+        q.parts.iter().zip(p.citation.iter().skip(1)).find_map(|(part, alts)| {
+            let want = self.key(part);
+            alts.iter().find_map(|&cc| {
+                c.get(cc as usize)?
+                    .iter()
+                    .position(|&(e, _)| p.edits.get(e as usize).and_then(|e| e.apply(canon)).is_some_and(|f| self.key(&f) == want))
+                    .filter(|&j| j > 0)
+            })
+        })
+    }
+
     fn is_known(&self, p: &Pos, key: &str) -> bool {
         p.known.binary_search_by(|k| k.as_str().cmp(key)).is_ok()
             || p.lexicon.binary_search_by(|e| e.0.as_str().cmp(key)).is_ok()
@@ -442,7 +456,15 @@ impl Model {
         let mut forms: Vec<(String, f32)> = Vec::new();
         for (canon, class, w) in readings {
             let Some(vs) = p.classes.get(class as usize).and_then(|c| c.get(cell as usize)) else { continue };
-            for &(e, vw) in vs {
+            // A cited part that matched a later-listed variant picks the
+            // variant at the same position in other cells (Wiktionary lists
+            // parallel variants in parallel order: backte/buk in every person).
+            let aligned = self.aligned_variant(p, &q, &canon, class).filter(|&j| j < vs.len());
+            let vs: Vec<(u32, f32)> = match aligned {
+                Some(j) => vs.get(j).map(|&(e, _)| vec![(e, 1.0)]).unwrap_or_default(),
+                None => vs.clone(),
+            };
+            for &(e, vw) in &vs {
                 if let Some(f) = p.edits.get(e as usize).and_then(|e| e.apply(&canon)) {
                     let f = self.finish(&f, q.casing, opts);
                     match forms.iter_mut().find(|x| x.0 == f) {
