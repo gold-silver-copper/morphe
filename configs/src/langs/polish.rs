@@ -1,3 +1,4 @@
+use morphe_train::kaikki::{Entry, Form};
 use morphe_train::spec::*;
 
 pub struct Polish;
@@ -14,6 +15,8 @@ impl Language for Polish {
         let mut s = Spec::new("polish", "Polish", "pl");
         s.drop_tags.extend(tags("dated Middle"));
         s.soft_tags.extend(tags("poetic literary derogatory regional Łowicz"));
+        // Polish Wiktionary adds words English Wiktionary lacks.
+        s.extra_dumps = vec!["pl/językpolski".into()];
         s.features = vec![
             feature(
                 "Case",
@@ -158,6 +161,148 @@ impl Language for Polish {
             return;
         };
         t.push(person.into());
+    }
+
+    /// Polish Wiktionary's tables: past and conditional forms name no gender
+    /// (read off the endings: -ł, -ła, -ło, -li, -ły), adjective rows run the
+    /// three degrees together, participles and the verbal noun name no
+    /// gender or number (the first form listed is the masculine singular),
+    /// the masculine personal gender is plain "masculine", and the
+    /// infinitive and the adjective's masculine nominative are missing.
+    fn prepare_extra(&self, _dump: &str, e: &mut Entry) {
+        let tagged = |f: &Form, t: &str| f.tags.iter().any(|x| x == t);
+        let word = e.word.clone();
+        if e.tags.iter().any(|t| t == "form-of") || word.contains(' ') {
+            e.forms.clear();
+            return;
+        }
+        let noise = ["dated", "obsolete", "rare", "potential", "colloquial", "literary", "depreciative", "elevatedly", "alternative", "neutral"];
+        let forms = std::mem::take(&mut e.forms);
+        let keep = |e: &mut Entry, f: Form| {
+            for alt in f.form.split(" / ").flat_map(|x| x.split(" lub ")) {
+                let alt = alt.trim();
+                if !alt.is_empty() && !alt.contains(['\n', ',']) {
+                    e.forms.push(Form { form: alt.to_string(), ..f.clone() });
+                }
+            }
+        };
+        match e.pos.as_str() {
+            "noun" => {
+                let g = |t: &str| e.tags.iter().any(|x| x == t);
+                if g("masculine") && !g("feminine") && !g("neuter") {
+                    match (g("animate"), g("inanimate")) {
+                        (false, false) => e.tags.push("person".into()),
+                        (true, false) => e.tags.push("animal-not-person".into()),
+                        _ => {}
+                    }
+                }
+                for f in forms {
+                    if !f.tags.is_empty() && !noise.iter().any(|t| tagged(&f, t)) {
+                        keep(e, f);
+                    }
+                }
+                // Tables leave out the forms spelled like the headword.
+                let sg = e.forms.iter().any(|f| tagged(f, "singular"));
+                let missing = |e: &Entry, t: &[&str]| sg && !e.forms.iter().any(|f| t.iter().all(|x| tagged(f, x)));
+                for t in [["nominative", "singular"], ["accusative", "singular"]] {
+                    if missing(e, &t) {
+                        e.forms.push(Form { form: word.clone(), tags: t.map(String::from).to_vec(), source: None });
+                    }
+                }
+            }
+            "adj" => {
+                // The positive degree only: comparative and superlative rows
+                // start with their own stems.
+                let stem = |t: &str| {
+                    forms.iter().find(|f| f.tags.iter().map(String::as_str).eq([t])).map(|f| f.form.trim_end_matches(['y', 'i']).to_string())
+                };
+                let (cmp, sup) = (stem("comparative"), stem("superlative"));
+                let other = |x: &str| {
+                    [&cmp, &sup].iter().any(|s| s.as_ref().is_some_and(|s| !s.is_empty() && x.starts_with(s.as_str()) && !word.starts_with(s.as_str())))
+                };
+                for t in ["masculine nominative singular", "masculine singular vocative", "accusative inanimate masculine singular"] {
+                    e.forms.push(Form { form: word.clone(), tags: t.split(' ').map(String::from).collect(), source: None });
+                }
+                for mut f in forms {
+                    if f.form.contains(' ') || noise.iter().any(|t| tagged(&f, t)) {
+                        continue;
+                    }
+                    let degree = tagged(&f, "comparative") || tagged(&f, "superlative");
+                    if !degree && (other(&f.form) || tagged(&f, "masculine") && tagged(&f, "singular") && tagged(&f, "nominative")) {
+                        continue;
+                    }
+                    if tagged(&f, "plural") && tagged(&f, "masculine") {
+                        f.tags.retain(|t| t != "masculine");
+                        f.tags.push("virile".into());
+                    }
+                    keep(e, f);
+                }
+                // Tables leave out the forms spelled like the headword
+                // (krogulczy: nominative virile krogulczy).
+                if e.forms.len() > 3 {
+                    for case in ["nominative", "vocative"] {
+                        if !e.forms.iter().any(|f| tagged(f, case) && tagged(f, "virile")) {
+                            e.forms.push(Form { form: word.clone(), tags: vec![case.into(), "virile".into(), "plural".into()], source: None });
+                        }
+                    }
+                }
+            }
+            "verb" => {
+                e.forms.push(Form { form: word.clone(), tags: vec!["infinitive".into()], source: None });
+                let (mut active, mut passive, mut noun) = (false, false, false);
+                for mut f in forms {
+                    let text = f.form.trim().to_string();
+                    let multi = text.contains(' ') && !(tagged(&f, "imperative") && text.starts_with("niech "));
+                    if multi || text.starts_with("nie") && !word.starts_with("nie") || tagged(&f, "pluperfect") {
+                        continue;
+                    }
+                    f.tags.retain(|t| t != "potential" && t != "rare");
+                    let nonfinite = ["participle", "gerund", "impersonal", "infinitive"].iter().any(|t| tagged(&f, t));
+                    if nonfinite {
+                        f.tags.retain(|t| !PERSONS.contains(&t.as_str()) && t != "singular" && t != "plural");
+                    }
+                    if tagged(&f, "gerund") {
+                        if noun {
+                            continue;
+                        }
+                        noun = true;
+                        f.tags = vec!["noun-from-verb".into()];
+                    } else if tagged(&f, "participle") && !tagged(&f, "adverbial") {
+                        let first = if tagged(&f, "active") { &mut active } else { &mut passive };
+                        if *first {
+                            continue;
+                        }
+                        *first = true;
+                        let voice = if tagged(&f, "active") { "active" } else { "passive" };
+                        f.tags = ["adjectival", "participle", "masculine", "singular", voice].map(String::from).to_vec();
+                    } else if (tagged(&f, "past") || tagged(&f, "conditional")) && !nonfinite {
+                        // czytałbym → czytał, czytałam → czytała, czytaliśmy → czytali.
+                        let mut x = text.as_str();
+                        if tagged(&f, "conditional") {
+                            x = ["byśmy", "byście", "bym", "byś", "by"].iter().find_map(|s| x.strip_suffix(s)).unwrap_or(x);
+                        }
+                        let x = ["śmy", "ście", "em", "eś", "m", "ś"].iter().find_map(|s| x.strip_suffix(s)).unwrap_or(x);
+                        let g = if x.ends_with('ł') {
+                            "masculine"
+                        } else if x.ends_with("ła") {
+                            "feminine"
+                        } else if x.ends_with("ło") {
+                            "neuter"
+                        } else if x.ends_with("li") {
+                            "virile"
+                        } else if x.ends_with("ły") {
+                            "nonvirile"
+                        } else {
+                            continue;
+                        };
+                        f.tags.push(g.into());
+                    }
+                    f.form = text;
+                    keep(e, f);
+                }
+            }
+            _ => {}
+        }
     }
 
     fn readme(&self) -> String {
