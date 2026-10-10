@@ -1,4 +1,4 @@
-use morphe_train::kaikki::Entry;
+use morphe_train::kaikki::{Entry, Form};
 use morphe_train::spec::*;
 use std::sync::OnceLock;
 
@@ -11,6 +11,8 @@ impl Language for Portuguese {
         // comparatives are analytic (mais famoso).
         s.drop_tags.extend(tags("alternative abbreviation diminutive augmentative comparative dated"));
         s.soft_tags.extend(tags("poetic"));
+        // Portuguese Wiktionary adds verbs English Wiktionary lacks.
+        s.extra_dumps = vec!["pt/Português".into()];
         s.features = vec![
             feature("Number", &[("Singular", "!plural"), ("Plural", "plural")]),
             feature("Gender", &[("Masculine", "masculine"), ("Feminine", "feminine")]),
@@ -77,6 +79,64 @@ impl Language for Portuguese {
         if let Some(second) = e.forms.iter().enumerate().filter(|(_, f)| f.tags.iter().any(|t| t == "inflection-template")).nth(1).map(|x| x.0) {
             e.forms.truncate(second);
         }
+    }
+
+    /// Portuguese Wiktionary: only verb tables carry forms. The imperfect is
+    /// "continuative past", the preterite plain "past", the conditional
+    /// "future past"; the impersonal infinitive and the forms spelled like it
+    /// (personal infinitive and future subjunctive of the first and third
+    /// person singular) are left out; the participle names no gender.
+    fn prepare_extra(&self, _dump: &str, e: &mut Entry) {
+        let word = e.word.clone();
+        if e.pos != "verb" || word.contains(' ') || e.tags.iter().any(|t| t == "form-of") || e.forms.len() < 20 {
+            e.forms.clear();
+            return;
+        }
+        let tags = |t: &str| t.split(' ').map(String::from).collect::<Vec<_>>();
+        let mut out = vec![Form { form: word.clone(), tags: tags("infinitive impersonal"), source: None }];
+        for f in std::mem::take(&mut e.forms) {
+            let has = |t: &str| f.tags.iter().any(|x| x == t);
+            let form = f.form.trim().to_string();
+            if form.contains(' ') || form.contains('.') || form.is_empty() || has("negative") || has("canonical") {
+                continue;
+            }
+            if has("participle") {
+                if let Some(stem) = form.strip_suffix('o') {
+                    for (end, g) in [("o", "masculine"), ("a", "feminine"), ("os", "masculine plural"), ("as", "feminine plural")] {
+                        out.push(Form { form: format!("{stem}{end}"), tags: tags(&format!("participle past {g}")), source: None });
+                    }
+                }
+                continue;
+            }
+            let mut t: Vec<String> = f.tags.iter().filter(|t| !matches!(t.as_str(), "conjunctive" | "affirmative" | "personal")).cloned().collect();
+            let drop = |t: &mut Vec<String>, x: &[&str]| t.retain(|y| !x.contains(&y.as_str()));
+            if has("indicative") && has("future") {
+                if has("past") {
+                    drop(&mut t, &["future", "past", "indicative"]);
+                    t.push("conditional".into());
+                } else {
+                    drop(&mut t, &["present"]);
+                }
+            } else if has("past") && has("continuative") {
+                drop(&mut t, &["past", "continuative"]);
+                t.push("imperfect".into());
+            } else if has("past") {
+                drop(&mut t, &["past"]);
+                t.push("preterite".into());
+            }
+            out.push(Form { form, tags: t, source: None });
+        }
+        let missing = |out: &[Form], t: &[&str]| !out.iter().any(|f| t.iter().all(|x| f.tags.iter().any(|y| y == x)));
+        for mood in ["infinitive", "subjunctive future"] {
+            for person in ["first-person", "third-person"] {
+                let t = format!("{mood} {person} singular");
+                let need: Vec<&str> = t.split(' ').collect();
+                if missing(&out, &need) && (mood == "infinitive" || !missing(&out, &["subjunctive", "future"])) {
+                    out.push(Form { form: word.clone(), tags: tags(&t), source: None });
+                }
+            }
+        }
+        e.forms = out;
     }
 
     fn keep_entry(&self, e: &Entry) -> bool {

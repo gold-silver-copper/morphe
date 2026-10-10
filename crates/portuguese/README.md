@@ -31,13 +31,13 @@ present subjunctive.
 |---|---|---|---|---|---|---|
 | noun | 40837 | 5 | 1146 | 1111 | 1429 | 7668 |
 | adj | 13400 | 5 | 680 | 658 | 267 | 1015 |
-| verb | 7104 | 73 | 2832 | 437 | 167 | 1128 |
+| verb | 10300 | 73 | 3258 | 498 | 249 | 1874 |
 | pron | 70 | 4 | 46 | 42 | 7 | 41 |
 | det | 38 | 4 | 28 | 16 | 4 | 13 |
 | article | 3 | 4 | 7 | 4 | 2 | 1 |
 | num | 13 | 4 | 7 | 6 | 2 | 8 |
 
-Model size: 1441612 bytes.
+Model size: 645793 bytes.
 
 **noun** cells: `Plural`, `CounterpartMasculineSingular`, `CounterpartMasculinePlural`, `CounterpartFeminineSingular`, `CounterpartFemininePlural`
 
