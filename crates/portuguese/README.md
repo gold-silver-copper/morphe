@@ -37,7 +37,7 @@ present subjunctive.
 | article | 3 | 4 | 7 | 4 | 2 | 1 |
 | num | 13 | 4 | 7 | 6 | 2 | 8 |
 
-Model size: 1442194 bytes.
+Model size: 1442197 bytes.
 
 **noun** cells: `Plural`, `CounterpartMasculineSingular`, `CounterpartMasculinePlural`, `CounterpartFeminineSingular`, `CounterpartFemininePlural`
 

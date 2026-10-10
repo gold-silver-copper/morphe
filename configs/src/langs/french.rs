@@ -138,7 +138,9 @@ fn fill_lemma(names: &[String], lemma: &str, forms: &mut Vec<(usize, String, boo
     let has = |ci: usize, forms: &[(usize, String, bool)]| forms.iter().any(|f| f.0 == ci);
     match (has(ms, forms), has(fs, forms)) {
         (false, false) => {
-            let invariable = set(mp, forms) == set(fp, forms);
+            // A feminine singular that differs would be listed (feliç,
+            // feliços, felices).
+            let invariable = set(mp, forms) == set(fp, forms) || !set(fp, forms).is_empty();
             forms.push((ms, lemma.to_string(), false));
             if invariable {
                 forms.push((fs, lemma.to_string(), false));
