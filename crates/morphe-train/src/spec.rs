@@ -219,6 +219,13 @@ pub trait Language: Sync {
     /// mislabeled, split or rewrite forms).
     fn prepare(&self, _entry: &mut Entry) {}
 
+    /// Fix an entry of an extra dump (`Spec::extra_dumps`, named by `dump`)
+    /// before anything reads it: another Wiktionary edition tags its tables
+    /// its own way. The default is `prepare`.
+    fn prepare_extra(&self, _dump: &str, entry: &mut Entry) {
+        self.prepare(entry)
+    }
+
     /// Whether an entry is used at all.
     fn keep_entry(&self, _entry: &Entry) -> bool {
         true

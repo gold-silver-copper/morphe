@@ -31,7 +31,7 @@ pub fn run(lang: &dyn spec::Language, dump: &Path, out: &Path, dump_date: &str, 
     for stem in ex.spec.extra_dumps.clone() {
         let path = dir.join(format!("{stem}.jsonl"));
         match kaikki::read(&path, &code, &all_pos, |mut e| {
-            lang.prepare(&mut e);
+            lang.prepare_extra(&stem, &mut e);
             ex.add(&e)
         }) {
             Ok((used, _)) => eprintln!("[{}] read {used} entries from {stem} in {:.1?}", ex.spec.name, t.elapsed()),

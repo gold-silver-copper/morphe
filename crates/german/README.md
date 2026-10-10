@@ -29,15 +29,15 @@ auxiliary plus `verb_participle_past`. Personal pronouns are not covered.
 
 | Part of speech | Entries | Cells | Edits | Classes | Tree nodes | Lexicon |
 |---|---|---|---|---|---|---|
-| noun | 63142 | 9 | 1128 | 1951 | 4326 | 14279 |
-| adj | 15385 | 146 | 566 | 128 | 690 | 4894 |
-| verb | 10632 | 54 | 15243 | 5638 | 1179 | 5581 |
+| noun | 146927 | 9 | 1449 | 2834 | 9147 | 37307 |
+| adj | 22075 | 146 | 640 | 160 | 929 | 6296 |
+| verb | 17144 | 54 | 21749 | 10487 | 2654 | 11018 |
 | pron | 83 | 16 | 111 | 89 | 44 | 44 |
 | det | 20 | 16 | 36 | 13 | 5 | 9 |
 | article | 12 | 16 | 51 | 13 | 2 | 11 |
 | num | 19 | 8 | 4 | 3 | 4 | 1 |
 
-Model size: 5189673 bytes.
+Model size: 3195178 bytes.
 
 **noun** cells: `NominativeSingular`, `NominativePlural`, `GenitiveSingular`, `GenitivePlural`, `DativeSingular`, `DativePlural`, `AccusativeSingular`, `AccusativePlural`, `Diminutive`
 
