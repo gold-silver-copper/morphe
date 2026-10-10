@@ -19,7 +19,10 @@ pub fn run(lang: &dyn spec::Language, dump: &Path, out: &Path, dump_date: &str, 
     let mut ex = extract::Extractor::new(lang);
     let all_pos: Vec<String> = ex.spec.pos.iter().flat_map(|p| p.kaikki.clone()).collect();
     let code = ex.spec.lang_code.clone();
-    let (used, bad) = kaikki::read(dump, &code, &all_pos, |e| ex.add(&e))?;
+    let (used, bad) = kaikki::read(dump, &code, &all_pos, |mut e| {
+        lang.prepare(&mut e);
+        ex.add(&e)
+    })?;
     eprintln!("[{}] read {used} entries ({bad} unreadable) in {:.1?}", ex.spec.name, t.elapsed());
     let (model, stats) = learn::learn(&ex, threads);
     emit::emit(lang, &ex.spec, &ex.cells, &model, &stats, out, dump_date)?;

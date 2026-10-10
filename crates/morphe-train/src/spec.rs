@@ -194,6 +194,10 @@ impl Cell {
 pub trait Language: Sync {
     fn spec(&self) -> Spec;
 
+    /// Fix an entry before anything reads it (retag forms a table parser
+    /// mislabeled, split or rewrite forms).
+    fn prepare(&self, _entry: &mut Entry) {}
+
     /// Whether an entry is used at all.
     fn keep_entry(&self, _entry: &Entry) -> bool {
         true
