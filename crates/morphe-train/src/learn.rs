@@ -315,15 +315,7 @@ pub fn learn(ex: &Extractor, threads: usize) -> (Model, Vec<Stats>) {
         let forms: Vec<(String, Vec<(String, u32)>)> = by_form.into_iter().collect();
         let check = Model { pos: vec![pos.clone()], ..probe.clone() };
         let missing: Vec<Vec<(String, u32)>> = par_map(&forms, threads, |(form, truth)| {
-            let found = check.analyze_pos(0, form);
-            truth
-                .iter()
-                .filter(|(lemma, cell)| {
-                    let lk = check.key(lemma);
-                    !found.iter().any(|(a, w)| *w > 0.0 && check.key(&a.lemma) == lk && a.cells.contains(cell))
-                })
-                .cloned()
-                .collect()
+            truth.iter().filter(|(lemma, cell)| !check.analysis_finds(0, form, lemma, *cell)).cloned().collect()
         });
         pos.reverse = forms.into_iter().zip(missing).filter(|(_, m)| !m.is_empty()).map(|((f, _), m)| (f, m)).collect();
 

@@ -555,6 +555,26 @@ impl Model {
         out
     }
 
+    /// Whether the analysis tree alone proposes (`lemma`, `cell`) for
+    /// `form`: the inverse edit for that cell turns the form into the lemma.
+    /// The trainer checks this for every attested form; the misses go in the
+    /// reverse lexicon. (Inflecting back is exact for known lemmas, so it
+    /// isn't rechecked.)
+    pub fn analysis_finds(&self, pi: usize, form: &str, lemma: &str, cell: u32) -> bool {
+        let Some(p) = self.pos.get(pi) else { return false };
+        let q = self.query(form);
+        let lemma_key = self.key(lemma);
+        p.analysis
+            .predict(&q.plain, |l| p.inverse.get(l as usize).is_some_and(|(_, e)| e.apply(&q.plain).is_some()))
+            .iter()
+            .any(|&(l, pr)| {
+                pr > 0.0
+                    && p.inverse.get(l as usize).is_some_and(|(c, e)| {
+                        *c == cell && e.apply(&q.plain).is_some_and(|lm| self.key(&lm) == lemma_key)
+                    })
+            })
+    }
+
     /// Unnormalized analyses within one part of speech: (lemma, cell, weight)
     /// merged by lemma.
     pub fn analyze_pos(&self, pi: usize, input: &str) -> Vec<(Analysis, f32)> {
