@@ -28,13 +28,13 @@ are not covered.
 | Part of speech | Entries | Cells | Edits | Classes | Tree nodes | Lexicon |
 |---|---|---|---|---|---|---|
 | noun | 37182 | 8 | 1351 | 669 | 2510 | 6771 |
-| adj | 7736 | 15 | 173 | 98 | 364 | 2499 |
-| verb | 6911 | 12 | 1252 | 1090 | 441 | 2912 |
+| adj | 7736 | 15 | 173 | 98 | 364 | 2500 |
+| verb | 6911 | 12 | 1252 | 1090 | 441 | 2914 |
 | pron | 30 | 2 | 29 | 23 | 6 | 20 |
 | det | 18 | 2 | 14 | 11 | 4 | 12 |
 | num | 9 | 8 | 8 | 1 | 2 | 0 |
 
-Model size: 1542473 bytes.
+Model size: 1542486 bytes.
 
 **noun** cells: `IndefiniteNominativeSingular`, `IndefiniteNominativePlural`, `IndefiniteGenitiveSingular`, `IndefiniteGenitivePlural`, `DefiniteNominativeSingular`, `DefiniteNominativePlural`, `DefiniteGenitiveSingular`, `DefiniteGenitivePlural`
 
