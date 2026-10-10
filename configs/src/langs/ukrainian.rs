@@ -94,16 +94,24 @@ impl Language for Ukrainian {
                     group("Personal", "personal", &format!("{CASES} PronPerson Number? Gender?")),
                     group("", "!personal", &format!("{CASES} Number? Gender? Animacy[Animate,Inanimate]?")),
                 ],
-            ),
-            pos("det", "det", vec![group("", "", &adjlike)]),
-            pos("num", "num", vec![group("", "", &format!("{CASES} Number? Gender? Animacy[Animate,Inanimate]?"))]),
+            )
+            // A demonstrative has no personal-pronoun cells, and vice versa.
+            .missing_is_absent(),
+            pos("det", "det", vec![group("", "", &adjlike)]).missing_is_absent(),
+            pos("num", "num", vec![group("", "", &format!("{CASES} Number? Gender? Animacy[Animate,Inanimate]?"))]).missing_is_absent(),
         ];
         s
     }
 
     fn adjust(&self, _pos: &PosSpec, _lemma: &str, forms: &mut Vec<(usize, String, bool)>) {
-        // "impersonal: пи́сано" rides along in the participle cell.
-        forms.retain(|(_, f, _)| !f.contains(':'));
+        // "impersonal: пи́сано" rides along in the participle cell, and a few
+        // tables put a romanization next to the form (бу́дучий, búdučyj).
+        let cyrillic = |c: char| matches!(c, '\u{400}'..='\u{52f}');
+        forms.retain(|(_, f, _)| !f.contains(':') && (f.chars().any(cyrillic) || !f.chars().any(char::is_alphabetic)));
+    }
+
+    fn samples(&self) -> Vec<&'static str> {
+        vec!["книга", "кіт, кота", "писати", "бути", "гарний", "я", "кракозябра", "бузяти"]
     }
 
     fn readme(&self) -> String {

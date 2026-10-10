@@ -30,14 +30,14 @@ often wrong.
 
 | Part of speech | Entries | Cells | Edits | Classes | Tree nodes | Lexicon |
 |---|---|---|---|---|---|---|
-| noun | 14344 | 14 | 5342 | 3075 | 2670 | 8492 |
+| noun | 14344 | 14 | 5334 | 3071 | 2674 | 8489 |
 | adj | 5700 | 58 | 945 | 256 | 619 | 1468 |
-| verb | 5844 | 26 | 4464 | 1964 | 1022 | 3507 |
+| verb | 5844 | 26 | 4042 | 1900 | 1007 | 3495 |
 | pron | 51 | 252 | 723 | 82 | 9 | 46 |
 | det | 21 | 56 | 137 | 28 | 11 | 16 |
 | num | 63 | 84 | 161 | 52 | 39 | 29 |
 
-Model size: 2513780 bytes.
+Model size: 886901 bytes.
 
 **noun** cells: `NominativeSingular`, `NominativePlural`, `GenitiveSingular`, `GenitivePlural`, `DativeSingular`, `DativePlural`, `AccusativeSingular`, `AccusativePlural`, `InstrumentalSingular`, `InstrumentalPlural`, `LocativeSingular`, `LocativePlural`, `VocativeSingular`, `VocativePlural`
 
