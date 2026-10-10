@@ -1,4 +1,4 @@
-use morphe_train::kaikki::Entry;
+use morphe_train::kaikki::{Entry, Form};
 use morphe_train::spec::*;
 use std::sync::OnceLock;
 
@@ -11,6 +11,8 @@ impl Language for French {
         // past participle) are phrases; alternative spellings are other words.
         s.drop_tags.extend(tags("reflexive multiword-construction alternative abbreviation dated"));
         s.soft_tags.extend(tags("poetic Louisiana"));
+        // French Wiktionary adds words English Wiktionary lacks.
+        s.extra_dumps = vec!["fr/Français".into()];
         s.features = vec![
             feature("Number", &[("Singular", "!plural"), ("Plural", "plural")]),
             feature("Gender", &[("Masculine", "masculine"), ("Feminine", "feminine")]),
@@ -56,6 +58,106 @@ impl Language for French {
 
     fn keep_entry(&self, e: &Entry) -> bool {
         e.word.chars().any(char::is_alphabetic) && !e.word.chars().any(|c| c.is_ascii_digit())
+    }
+
+    /// French Wiktionary's tables: conjugated forms carry their pronoun
+    /// ("que nous lisions") instead of person and number tags, imperatives
+    /// come in order (lis, lisons, lisez), the passé simple is "indicative
+    /// past"; noun forms list the counterpart's plural with gender tags.
+    fn prepare_extra(&self, _dump: &str, e: &mut Entry) {
+        let tagged = |f: &Form, t: &str| f.tags.iter().any(|x| x == t);
+        let junk = |f: &Form| f.form.contains(['\\', '^', '·', '.']) || f.form.trim().is_empty();
+        let word = e.word.clone();
+        match e.pos.as_str() {
+            "noun" | "adj" if e.tags.iter().any(|t| t == "form-of") => e.forms.clear(),
+            "noun" => {
+                let own = |g: &str| e.tags.iter().any(|t| t == g);
+                let genders = ["masculine", "feminine"];
+                let forms = std::mem::take(&mut e.forms);
+                for mut f in forms {
+                    if junk(&f) || ["obsolete", "rare", "archaic", "dated", "neuter"].iter().any(|t| tagged(&f, t)) {
+                        continue;
+                    }
+                    let g: Vec<&str> = genders.iter().copied().filter(|g| tagged(&f, g)).collect();
+                    let other = g.len() == 1 && !own(g[0]) && genders.iter().any(|x| own(x));
+                    if tagged(&f, "plural") {
+                        // The counterpart's plural (Roumaines for Roumain) has no cell.
+                        if other {
+                            continue;
+                        }
+                        f.tags = vec!["plural".into()];
+                    } else if other {
+                        f.tags = vec![g[0].into()];
+                    } else {
+                        continue;
+                    }
+                    e.forms.push(f);
+                }
+            }
+            "adj" => e.forms.retain(|f| !junk(f) && !f.tags.is_empty()),
+            "verb" => {
+                // Pronominal verbs (s'absenter) and phrases (faire suer) are
+                // left to English Wiktionary.
+                if word.contains(' ') || word.starts_with("s’") || word.starts_with("s'") {
+                    e.forms.clear();
+                    return;
+                }
+                let imperatives = e.forms.iter().filter(|f| tagged(f, "imperative") && tagged(f, "present")).count();
+                let mut imperative = 0;
+                let forms = std::mem::take(&mut e.forms);
+                for mut f in forms {
+                    let compound = tagged(&f, "past") && !(tagged(&f, "indicative") || tagged(&f, "participle"));
+                    if f.source.is_none() || compound || tagged(&f, "gerund") || tagged(&f, "multiword-construction") {
+                        continue;
+                    }
+                    if tagged(&f, "indicative") && tagged(&f, "past") {
+                        if tagged(&f, "anterior") {
+                            continue;
+                        }
+                        f.tags.push("historic".into());
+                    }
+                    let mut text = f.form.trim().to_string();
+                    if tagged(&f, "imperative") {
+                        imperative += 1;
+                        let pn: &[&str] = match (imperatives, imperative) {
+                            (3, 1) => &["second-person"],
+                            (3, 2) => &["first-person", "plural"],
+                            (3, 3) => &["second-person", "plural"],
+                            _ => continue,
+                        };
+                        f.tags.extend(pn.iter().map(|t| t.to_string()));
+                    } else if tagged(&f, "indicative") || tagged(&f, "subjunctive") || tagged(&f, "conditional") {
+                        for p in ["que ", "qu’", "qu'"] {
+                            if let Some(rest) = text.strip_prefix(p) {
+                                text = rest.to_string();
+                            }
+                        }
+                        let pronouns: &[(&str, &[&str])] = &[
+                            ("je ", &["first-person"]),
+                            ("j’", &["first-person"]),
+                            ("j'", &["first-person"]),
+                            ("tu ", &["second-person"]),
+                            ("il/elle/on ", &["third-person"]),
+                            ("il ", &["third-person"]),
+                            ("nous ", &["first-person", "plural"]),
+                            ("vous ", &["second-person", "plural"]),
+                            ("ils/elles ", &["third-person", "plural"]),
+                            ("ils ", &["third-person", "plural"]),
+                        ];
+                        let Some((rest, pn)) = pronouns.iter().find_map(|(p, pn)| Some((text.strip_prefix(p)?, *pn))) else {
+                            continue;
+                        };
+                        text = rest.to_string();
+                        f.tags.extend(pn.iter().map(|t| t.to_string()));
+                    }
+                    // "pleus ou pleux": two forms.
+                    for alt in text.split(" ou ") {
+                        e.forms.push(Form { form: alt.trim().to_string(), ..f.clone() });
+                    }
+                }
+            }
+            _ => e.forms.clear(),
+        }
     }
 
     fn adjust(&self, pos: &PosSpec, lemma: &str, forms: &mut Vec<(usize, String, bool)>) {
