@@ -172,6 +172,8 @@ impl Language for AncientGreek {
                  IndicativePerfectActiveFirstSingular IndicativePerfectPassiveFirstSingular \
                  IndicativeAoristPassiveFirstSingular",
             )
+            // Deponents lack the active; many verbs lack whole tenses.
+            .missing_is_absent()
             .head_first(),
             pos("pron", "pron", vec![group("", "", &format!("{CASES} Gender? Number"))]),
             pos("det", "det", vec![group("", "", &format!("{CASES} Gender? Number"))]),
@@ -240,6 +242,10 @@ impl Language for AncientGreek {
         if !e.forms.iter().any(|f| f.tags.iter().any(|t| t == "canonical")) {
             e.forms.push(Form { form: decompose(&e.word), tags: vec!["canonical".into()], source: None });
         }
+    }
+
+    fn samples(&self) -> Vec<&'static str> {
+        vec!["λόγος", "χώρα", "λύω", "βούλομαι", "καλός", "logos", "σκλορπος", "γλέπω"]
     }
 
     fn readme(&self) -> String {
