@@ -82,20 +82,22 @@ impl<'a> Extractor<'a> {
             if (spec.source == Source::Head && table) || (spec.source == Source::Table && !table) {
                 continue;
             }
-            let form = f.form.trim();
-            if spec.sentinels.iter().any(|s| s == form)
-                || form.contains(['(', ')', '/', '[', ']'])
-                || f.tags.iter().any(|t| spec.drop_tags.contains(t))
-            {
+            if f.tags.iter().any(|t| spec.drop_tags.contains(t)) {
                 continue;
             }
             let soft = f.tags.iter().any(|t| spec.soft_tags.contains(t));
             let matched: Vec<(usize, usize)> =
                 cells.iter().enumerate().filter_map(|(ci, c)| c.matches(&f.tags).map(|n| (ci, n))).collect();
             let Some(best) = matched.iter().map(|m| m.1).max() else { continue };
-            for (ci, n) in matched {
-                if n == best {
-                    raw.push((ci, form.to_lowercase(), soft, table));
+            for form in self.lang.split_form(f.form.trim()) {
+                let form = form.trim();
+                if spec.sentinels.iter().any(|s| s == form) || form.contains(['(', ')', '/', '[', ']']) {
+                    continue;
+                }
+                for &(ci, n) in &matched {
+                    if n == best {
+                        raw.push((ci, form.to_lowercase(), soft, table));
+                    }
                 }
             }
         }

@@ -199,6 +199,12 @@ pub trait Language: Sync {
         true
     }
 
+    /// Rewrite a raw form string before it is read: strip editorial notes,
+    /// split listed alternatives. The default keeps it as is.
+    fn split_form(&self, raw: &str) -> Vec<String> {
+        vec![raw.to_string()]
+    }
+
     /// Adjust a lemma's extracted forms: (cell index, form, soft).
     fn adjust(&self, _pos: &PosSpec, _lemma: &str, _forms: &mut Vec<(usize, String, bool)>) {}
 
