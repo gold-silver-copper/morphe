@@ -30,14 +30,14 @@ one plural form for all persons, hence `PersonNumber`.
 
 | Part of speech | Entries | Cells | Edits | Classes | Tree nodes | Lexicon |
 |---|---|---|---|---|---|---|
-| noun | 7375 | 8 | 999 | 686 | 1578 | 4357 |
-| adj | 2329 | 62 | 724 | 431 | 553 | 1269 |
-| verb | 4081 | 18 | 2625 | 1121 | 894 | 2712 |
-| pron | 36 | 30 | 90 | 33 | 10 | 28 |
+| noun | 7375 | 8 | 999 | 686 | 1583 | 4345 |
+| adj | 2329 | 62 | 724 | 431 | 538 | 1275 |
+| verb | 4081 | 18 | 2625 | 1121 | 903 | 2696 |
+| pron | 42 | 45 | 109 | 45 | 12 | 34 |
 | det | 11 | 30 | 43 | 12 | 7 | 7 |
 | num | 21 | 30 | 35 | 16 | 3 | 17 |
 
-Model size: 1302243 bytes.
+Model size: 595835 bytes.
 
 **noun** cells: `NominativeSingular`, `NominativePlural`, `AccusativeSingular`, `AccusativePlural`, `GenitiveSingular`, `GenitivePlural`, `DativeSingular`, `DativePlural`
 
@@ -49,7 +49,7 @@ Citation form: `NominativeSingular, GenitiveSingular, NominativePlural` (comma-s
 
 Citation form: `Infinitive, PastFirstSingular, PastPlural, ParticiplePast` (comma-separated; parts you give are output exactly and narrow the prediction).
 
-**pron** cells: `NominativeMasculineSingular`, `NominativeMasculinePlural`, `NominativeFeminineSingular`, `NominativeFemininePlural`, `NominativeNeuterSingular`, `NominativeNeuterPlural`, `AccusativeMasculineSingular`, `AccusativeMasculinePlural`, `AccusativeFeminineSingular`, `AccusativeFemininePlural`, `AccusativeNeuterSingular`, `AccusativeNeuterPlural`, `GenitiveMasculineSingular`, `GenitiveMasculinePlural`, `GenitiveFeminineSingular`, `GenitiveFemininePlural`, `GenitiveNeuterSingular`, `GenitiveNeuterPlural`, `DativeMasculineSingular`, `DativeMasculinePlural`, `DativeFeminineSingular`, `DativeFemininePlural`, `DativeNeuterSingular`, `DativeNeuterPlural`, `InstrumentalMasculineSingular`, `InstrumentalMasculinePlural`, `InstrumentalFeminineSingular`, `InstrumentalFemininePlural`, `InstrumentalNeuterSingular`, `InstrumentalNeuterPlural`
+**pron** cells: `NominativeMasculineSingular`, `NominativeMasculineDual`, `NominativeMasculinePlural`, `NominativeFeminineSingular`, `NominativeFeminineDual`, `NominativeFemininePlural`, `NominativeNeuterSingular`, `NominativeNeuterDual`, `NominativeNeuterPlural`, `AccusativeMasculineSingular`, `AccusativeMasculineDual`, `AccusativeMasculinePlural`, `AccusativeFeminineSingular`, `AccusativeFeminineDual`, `AccusativeFemininePlural`, `AccusativeNeuterSingular`, `AccusativeNeuterDual`, `AccusativeNeuterPlural`, `GenitiveMasculineSingular`, `GenitiveMasculineDual`, `GenitiveMasculinePlural`, `GenitiveFeminineSingular`, `GenitiveFeminineDual`, `GenitiveFemininePlural`, `GenitiveNeuterSingular`, `GenitiveNeuterDual`, `GenitiveNeuterPlural`, `DativeMasculineSingular`, `DativeMasculineDual`, `DativeMasculinePlural`, `DativeFeminineSingular`, `DativeFeminineDual`, `DativeFemininePlural`, `DativeNeuterSingular`, `DativeNeuterDual`, `DativeNeuterPlural`, `InstrumentalMasculineSingular`, `InstrumentalMasculineDual`, `InstrumentalMasculinePlural`, `InstrumentalFeminineSingular`, `InstrumentalFeminineDual`, `InstrumentalFemininePlural`, `InstrumentalNeuterSingular`, `InstrumentalNeuterDual`, `InstrumentalNeuterPlural`
 
 **det** cells: `NominativeMasculineSingular`, `NominativeMasculinePlural`, `NominativeFeminineSingular`, `NominativeFemininePlural`, `NominativeNeuterSingular`, `NominativeNeuterPlural`, `AccusativeMasculineSingular`, `AccusativeMasculinePlural`, `AccusativeFeminineSingular`, `AccusativeFemininePlural`, `AccusativeNeuterSingular`, `AccusativeNeuterPlural`, `GenitiveMasculineSingular`, `GenitiveMasculinePlural`, `GenitiveFeminineSingular`, `GenitiveFemininePlural`, `GenitiveNeuterSingular`, `GenitiveNeuterPlural`, `DativeMasculineSingular`, `DativeMasculinePlural`, `DativeFeminineSingular`, `DativeFemininePlural`, `DativeNeuterSingular`, `DativeNeuterPlural`, `InstrumentalMasculineSingular`, `InstrumentalMasculinePlural`, `InstrumentalFeminineSingular`, `InstrumentalFemininePlural`, `InstrumentalNeuterSingular`, `InstrumentalNeuterPlural`
 

@@ -23,7 +23,8 @@ impl Language for OldEnglish {
                     ("Instrumental", "instrumental"),
                 ],
             ),
-            feature("Number", &[("Singular", "singular"), ("Plural", "plural")]),
+            // The dual is left only in the first- and second-person pronouns.
+            feature("Number", &[("Singular", "singular"), ("Dual", "dual"), ("Plural", "plural")]),
             feature("Gender", &[("Masculine", "masculine"), ("Feminine", "feminine"), ("Neuter", "neuter")]),
             feature("Tense", &[("Present", "present"), ("Past", "past")]),
             feature(
@@ -38,7 +39,7 @@ impl Language for OldEnglish {
         ];
         let cases = "Case[Nominative,Accusative,Genitive,Dative]";
         s.pos = vec![
-            pos("noun", "noun", vec![group("", "", &format!("{cases} Number"))])
+            pos("noun", "noun", vec![group("", "", &format!("{cases} Number[Singular,Plural]"))])
                 .inherent("Gender")
                 .citation("NominativeSingular GenitiveSingular NominativePlural")
                 .head_last(),
@@ -46,8 +47,8 @@ impl Language for OldEnglish {
                 "adj",
                 "adj",
                 vec![
-                    group("", "strong", "Case Gender Number"),
-                    group("Weak", "weak", "Case Gender Number"),
+                    group("", "strong", "Case Gender Number[Singular,Plural]"),
+                    group("Weak", "weak", "Case Gender Number[Singular,Plural]"),
                     group("Comparative", "comparative", ""),
                     group("Superlative", "superlative", ""),
                 ],
@@ -59,16 +60,16 @@ impl Language for OldEnglish {
                     group("Infinitive", "infinitive !inflected", ""),
                     group("InflectedInfinitive", "infinitive inflected", ""),
                     group("", "indicative", "Tense PersonNumber"),
-                    group("Subjunctive", "subjunctive", "Tense Number"),
-                    group("Imperative", "imperative", "Number"),
+                    group("Subjunctive", "subjunctive", "Tense Number[Singular,Plural]"),
+                    group("Imperative", "imperative", "Number[Singular,Plural]"),
                     group("Participle", "participle", "Tense").declines("adj", ""),
                 ],
             )
             .citation("Infinitive PastFirstSingular PastPlural ParticiplePast")
             .head_first(),
-            pos("pron", "pron", vec![group("", "", "Case Gender? Number?")]),
-            pos("det", "det", vec![group("", "", "Case Gender? Number")]),
-            pos("num", "num", vec![group("", "", "Case Gender? Number?")]),
+            pos("pron", "pron", vec![group("", "", "Case Gender? Number?")]).missing_is_absent(),
+            pos("det", "det", vec![group("", "", "Case Gender? Number[Singular,Plural]")]),
+            pos("num", "num", vec![group("", "", "Case Gender? Number[Singular,Plural]?")]),
         ];
         s
     }
@@ -85,12 +86,13 @@ impl Language for OldEnglish {
     ///   present"/"imperative past". The table layout is fixed, so the forms
     ///   are retagged from it;
     /// - adjective tables say strong or weak only in their heading;
-    /// - every personal-pronoun page repeats the whole personal-pronoun table;
+    /// - every personal-pronoun page repeats the whole personal-pronoun table:
+    ///   only the page's own row is kept;
     /// - a noun's gender is in its declension template (ang-decl-noun-a-m).
     fn prepare(&self, e: &mut Entry) {
         let has = |tags: &[String], t: &str| tags.iter().any(|x| x == t);
         if e.pos == "pron" {
-            e.forms.retain(|f| !has(&f.tags, "personal"));
+            keep_own_person(e);
         }
         let gender = e
             .forms
@@ -156,6 +158,10 @@ impl Language for OldEnglish {
         }
     }
 
+    fn samples(&self) -> Vec<&'static str> {
+        vec!["stān", "giefu", "beran", "lufian", "gōd", "iċ", "flōtung", "glimpan"]
+    }
+
     fn readme(&self) -> String {
         r#"## Example
 
@@ -180,6 +186,42 @@ one plural form for all persons, hence `PersonNumber`.
 "#
         .into()
     }
+}
+
+/// The person, number and (third singular) gender of a personal-pronoun
+/// table row.
+fn person_row(tags: &[String]) -> Option<Vec<&str>> {
+    if !tags.iter().any(|t| t == "personal") {
+        return None;
+    }
+    let pick = |vals: &[&'static str]| vals.iter().copied().find(|v| tags.iter().any(|t| t == v));
+    let mut row = vec![pick(&["first-person", "second-person", "third-person"])?, pick(&["singular", "dual", "plural"])?];
+    row.extend(pick(&["masculine", "feminine", "neuter"]));
+    Some(row)
+}
+
+fn keep_own_person(e: &mut Entry) {
+    let plain = |s: &str| -> String {
+        s.chars()
+            .map(|c| match c {
+                'ā' => 'a', 'ē' => 'e', 'ī' => 'i', 'ō' => 'o', 'ū' => 'u', 'ȳ' => 'y', 'ǣ' | 'ǽ' => 'æ', 'ċ' => 'c', 'ġ' => 'g',
+                c => c,
+            })
+            .collect()
+    };
+    let word = plain(&e.word);
+    let own = e
+        .forms
+        .iter()
+        .filter(|f| f.tags.iter().any(|t| t == "nominative") && plain(f.form.trim()) == word)
+        .find_map(|f| person_row(&f.tags))
+        .map(|r| r.iter().map(|x| x.to_string()).collect::<Vec<_>>());
+    // The headword line's bare "hine (accusative)" would fill every gender
+    // and number: the table row says it precisely.
+    e.forms.retain(|f| match person_row(&f.tags) {
+        None => own.is_none() || f.source.is_some() || f.tags.iter().any(|t| t == "canonical"),
+        Some(r) => own.as_ref().is_some_and(|o| r.iter().map(|x| x.to_string()).collect::<Vec<_>>() == *o),
+    });
 }
 
 pub fn language() -> Box<dyn Language> {

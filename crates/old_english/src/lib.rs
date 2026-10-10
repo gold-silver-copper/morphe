@@ -40,11 +40,12 @@ impl Case {
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord)]
 pub enum Number {
     Singular,
+    Dual,
     Plural,
 }
 
 impl Number {
-    pub const ALL: [Self; 2] = [Self::Singular, Self::Plural];
+    pub const ALL: [Self; 3] = [Self::Singular, Self::Dual, Self::Plural];
 }
 
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord)]
@@ -160,6 +161,7 @@ impl OldEnglish {
             (Case::Instrumental, Gender::Feminine, Number::Plural,) => Some(27),
             (Case::Instrumental, Gender::Neuter, Number::Singular,) => Some(28),
             (Case::Instrumental, Gender::Neuter, Number::Plural,) => Some(29),
+            _ => None,
         };
         match (model(), cell) {
             (Some(m), Some(c)) => m.inflect(1, c, word, self.options),
@@ -205,6 +207,7 @@ impl OldEnglish {
             (Case::Instrumental, Gender::Feminine, Number::Plural,) => Some(57),
             (Case::Instrumental, Gender::Neuter, Number::Singular,) => Some(58),
             (Case::Instrumental, Gender::Neuter, Number::Plural,) => Some(59),
+            _ => None,
         };
         match (model(), cell) {
             (Some(m), Some(c)) => m.inflect(1, c, word, self.options),
@@ -308,6 +311,7 @@ impl OldEnglish {
             (Tense::Present, Number::Plural,) => Some(11),
             (Tense::Past, Number::Singular,) => Some(12),
             (Tense::Past, Number::Plural,) => Some(13),
+            _ => None,
         };
         match (model(), cell) {
             (Some(m), Some(c)) => m.inflect(2, c, word, self.options),
@@ -325,6 +329,7 @@ impl OldEnglish {
         let cell: Option<u32> = match (number,) {
             (Number::Singular,) => Some(14),
             (Number::Plural,) => Some(15),
+            _ => None,
         };
         match (model(), cell) {
             (Some(m), Some(c)) => m.inflect(2, c, word, self.options),
@@ -374,35 +379,50 @@ impl OldEnglish {
     pub fn pron_scored(&self, word: &str, case: Case, gender: Gender, number: Number) -> Scored<String> {
         let cell: Option<u32> = match (case, gender, number,) {
             (Case::Nominative, Gender::Masculine, Number::Singular,) => Some(0),
-            (Case::Nominative, Gender::Masculine, Number::Plural,) => Some(1),
-            (Case::Nominative, Gender::Feminine, Number::Singular,) => Some(2),
-            (Case::Nominative, Gender::Feminine, Number::Plural,) => Some(3),
-            (Case::Nominative, Gender::Neuter, Number::Singular,) => Some(4),
-            (Case::Nominative, Gender::Neuter, Number::Plural,) => Some(5),
-            (Case::Accusative, Gender::Masculine, Number::Singular,) => Some(6),
-            (Case::Accusative, Gender::Masculine, Number::Plural,) => Some(7),
-            (Case::Accusative, Gender::Feminine, Number::Singular,) => Some(8),
-            (Case::Accusative, Gender::Feminine, Number::Plural,) => Some(9),
-            (Case::Accusative, Gender::Neuter, Number::Singular,) => Some(10),
-            (Case::Accusative, Gender::Neuter, Number::Plural,) => Some(11),
-            (Case::Genitive, Gender::Masculine, Number::Singular,) => Some(12),
-            (Case::Genitive, Gender::Masculine, Number::Plural,) => Some(13),
-            (Case::Genitive, Gender::Feminine, Number::Singular,) => Some(14),
-            (Case::Genitive, Gender::Feminine, Number::Plural,) => Some(15),
-            (Case::Genitive, Gender::Neuter, Number::Singular,) => Some(16),
-            (Case::Genitive, Gender::Neuter, Number::Plural,) => Some(17),
-            (Case::Dative, Gender::Masculine, Number::Singular,) => Some(18),
-            (Case::Dative, Gender::Masculine, Number::Plural,) => Some(19),
-            (Case::Dative, Gender::Feminine, Number::Singular,) => Some(20),
-            (Case::Dative, Gender::Feminine, Number::Plural,) => Some(21),
-            (Case::Dative, Gender::Neuter, Number::Singular,) => Some(22),
-            (Case::Dative, Gender::Neuter, Number::Plural,) => Some(23),
-            (Case::Instrumental, Gender::Masculine, Number::Singular,) => Some(24),
-            (Case::Instrumental, Gender::Masculine, Number::Plural,) => Some(25),
-            (Case::Instrumental, Gender::Feminine, Number::Singular,) => Some(26),
-            (Case::Instrumental, Gender::Feminine, Number::Plural,) => Some(27),
-            (Case::Instrumental, Gender::Neuter, Number::Singular,) => Some(28),
-            (Case::Instrumental, Gender::Neuter, Number::Plural,) => Some(29),
+            (Case::Nominative, Gender::Masculine, Number::Dual,) => Some(1),
+            (Case::Nominative, Gender::Masculine, Number::Plural,) => Some(2),
+            (Case::Nominative, Gender::Feminine, Number::Singular,) => Some(3),
+            (Case::Nominative, Gender::Feminine, Number::Dual,) => Some(4),
+            (Case::Nominative, Gender::Feminine, Number::Plural,) => Some(5),
+            (Case::Nominative, Gender::Neuter, Number::Singular,) => Some(6),
+            (Case::Nominative, Gender::Neuter, Number::Dual,) => Some(7),
+            (Case::Nominative, Gender::Neuter, Number::Plural,) => Some(8),
+            (Case::Accusative, Gender::Masculine, Number::Singular,) => Some(9),
+            (Case::Accusative, Gender::Masculine, Number::Dual,) => Some(10),
+            (Case::Accusative, Gender::Masculine, Number::Plural,) => Some(11),
+            (Case::Accusative, Gender::Feminine, Number::Singular,) => Some(12),
+            (Case::Accusative, Gender::Feminine, Number::Dual,) => Some(13),
+            (Case::Accusative, Gender::Feminine, Number::Plural,) => Some(14),
+            (Case::Accusative, Gender::Neuter, Number::Singular,) => Some(15),
+            (Case::Accusative, Gender::Neuter, Number::Dual,) => Some(16),
+            (Case::Accusative, Gender::Neuter, Number::Plural,) => Some(17),
+            (Case::Genitive, Gender::Masculine, Number::Singular,) => Some(18),
+            (Case::Genitive, Gender::Masculine, Number::Dual,) => Some(19),
+            (Case::Genitive, Gender::Masculine, Number::Plural,) => Some(20),
+            (Case::Genitive, Gender::Feminine, Number::Singular,) => Some(21),
+            (Case::Genitive, Gender::Feminine, Number::Dual,) => Some(22),
+            (Case::Genitive, Gender::Feminine, Number::Plural,) => Some(23),
+            (Case::Genitive, Gender::Neuter, Number::Singular,) => Some(24),
+            (Case::Genitive, Gender::Neuter, Number::Dual,) => Some(25),
+            (Case::Genitive, Gender::Neuter, Number::Plural,) => Some(26),
+            (Case::Dative, Gender::Masculine, Number::Singular,) => Some(27),
+            (Case::Dative, Gender::Masculine, Number::Dual,) => Some(28),
+            (Case::Dative, Gender::Masculine, Number::Plural,) => Some(29),
+            (Case::Dative, Gender::Feminine, Number::Singular,) => Some(30),
+            (Case::Dative, Gender::Feminine, Number::Dual,) => Some(31),
+            (Case::Dative, Gender::Feminine, Number::Plural,) => Some(32),
+            (Case::Dative, Gender::Neuter, Number::Singular,) => Some(33),
+            (Case::Dative, Gender::Neuter, Number::Dual,) => Some(34),
+            (Case::Dative, Gender::Neuter, Number::Plural,) => Some(35),
+            (Case::Instrumental, Gender::Masculine, Number::Singular,) => Some(36),
+            (Case::Instrumental, Gender::Masculine, Number::Dual,) => Some(37),
+            (Case::Instrumental, Gender::Masculine, Number::Plural,) => Some(38),
+            (Case::Instrumental, Gender::Feminine, Number::Singular,) => Some(39),
+            (Case::Instrumental, Gender::Feminine, Number::Dual,) => Some(40),
+            (Case::Instrumental, Gender::Feminine, Number::Plural,) => Some(41),
+            (Case::Instrumental, Gender::Neuter, Number::Singular,) => Some(42),
+            (Case::Instrumental, Gender::Neuter, Number::Dual,) => Some(43),
+            (Case::Instrumental, Gender::Neuter, Number::Plural,) => Some(44),
         };
         match (model(), cell) {
             (Some(m), Some(c)) => m.inflect(3, c, word, self.options),
@@ -453,6 +473,7 @@ impl OldEnglish {
             (Case::Instrumental, Gender::Feminine, Number::Plural,) => Some(27),
             (Case::Instrumental, Gender::Neuter, Number::Singular,) => Some(28),
             (Case::Instrumental, Gender::Neuter, Number::Plural,) => Some(29),
+            _ => None,
         };
         match (model(), cell) {
             (Some(m), Some(c)) => m.inflect(4, c, word, self.options),
@@ -503,6 +524,7 @@ impl OldEnglish {
             (Case::Instrumental, Gender::Feminine, Number::Plural,) => Some(27),
             (Case::Instrumental, Gender::Neuter, Number::Singular,) => Some(28),
             (Case::Instrumental, Gender::Neuter, Number::Plural,) => Some(29),
+            _ => None,
         };
         match (model(), cell) {
             (Some(m), Some(c)) => m.inflect(5, c, word, self.options),
