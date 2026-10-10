@@ -128,11 +128,11 @@ fn main() {
                     eprintln!("{e}");
                     std::process::exit(1);
                 }
-                let samples: Vec<String> = samples.iter().map(|s| format!("{s:?}")).collect();
+                let samples: Vec<String> = samples.iter().map(|s| json(s)).collect();
                 entries.push(format!(
-                    "{{\"name\":{:?},\"title\":{:?},\"file\":\"models/{}.txt\",\"bytes\":{},\"samples\":[{}]}}",
-                    spec.name,
-                    spec.title,
+                    "{{\"name\":{},\"title\":{},\"file\":\"models/{}.txt\",\"bytes\":{},\"samples\":[{}]}}",
+                    json(&spec.name),
+                    json(&spec.title),
                     spec.name,
                     meta.len(),
                     samples.join(",")
@@ -268,4 +268,19 @@ fn base64(bytes: &[u8]) -> String {
         }
     }
     out
+}
+
+/// A JSON string literal.
+fn json(s: &str) -> String {
+    let mut o = String::from("\"");
+    for c in s.chars() {
+        match c {
+            '"' => o.push_str("\\\""),
+            '\\' => o.push_str("\\\\"),
+            c if (c as u32) < 0x20 => o.push_str(&format!("\\u{:04x}", c as u32)),
+            c => o.push(c),
+        }
+    }
+    o.push('"');
+    o
 }
