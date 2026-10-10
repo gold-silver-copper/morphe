@@ -445,11 +445,17 @@ impl Model {
             })
             .first()?;
         let canon = pos.restores.get(r as usize)?.apply(plain)?;
+        // Classes share most edits: check each edit once.
+        let mut memo: std::collections::HashMap<u32, bool> = std::collections::HashMap::new();
         let (class, _) = *pos
             .paradigm
             .predict(plain, |c| {
                 pos.classes.get(c as usize).is_some_and(|cells| {
-                    cells.iter().flatten().all(|&(e, _)| pos.edits.get(e as usize).is_some_and(|e| e.is_none() || e.apply(&canon).is_some()))
+                    cells.iter().flatten().all(|&(e, _)| {
+                        *memo.entry(e).or_insert_with(|| {
+                            pos.edits.get(e as usize).is_some_and(|e| e.is_none() || e.apply(&canon).is_some())
+                        })
+                    })
                 })
             })
             .first()?;
