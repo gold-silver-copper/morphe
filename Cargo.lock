@@ -245,6 +245,13 @@ dependencies = [
 ]
 
 [[package]]
+name = "ingrian"
+version = "0.1.0"
+dependencies = [
+ "morphe",
+]
+
+[[package]]
 name = "irish"
 version = "0.1.0"
 dependencies = [
@@ -655,6 +662,13 @@ dependencies = [
 ]
 
 [[package]]
+name = "turkmen"
+version = "0.1.0"
+dependencies = [
+ "morphe",
+]
+
+[[package]]
 name = "ukrainian"
 version = "0.1.0"
 dependencies = [
@@ -676,6 +690,13 @@ dependencies = [
 
 [[package]]
 name = "welsh"
+version = "0.1.0"
+dependencies = [
+ "morphe",
+]
+
+[[package]]
+name = "west_frisian"
 version = "0.1.0"
 dependencies = [
  "morphe",
