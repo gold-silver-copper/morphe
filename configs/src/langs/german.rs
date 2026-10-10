@@ -134,6 +134,11 @@ impl Language for German {
             e.forms.clear();
             return;
         }
+        // Acronyms and letters (CD-ROM, API, O).
+        if e.word.chars().filter(|c| c.is_uppercase()).count() > 1 || e.word.chars().count() < 2 {
+            e.forms.clear();
+            return;
+        }
         let verb = e.pos == "verb";
         let word = e.word.clone();
         let mut out = Vec::new();

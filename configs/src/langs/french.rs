@@ -67,6 +67,11 @@ impl Language for French {
     fn prepare_extra(&self, _dump: &str, e: &mut Entry) {
         let tagged = |f: &Form, t: &str| f.tags.iter().any(|x| x == t);
         let junk = |f: &Form| f.form.contains(['\\', '^', '·', '.']) || f.form.trim().is_empty();
+        // Acronyms and letters (CD-ROM, API, O).
+        if e.word.chars().filter(|c| c.is_uppercase()).count() > 1 || e.word.chars().count() < 2 {
+            e.forms.clear();
+            return;
+        }
         let word = e.word.clone();
         match e.pos.as_str() {
             "noun" | "adj" if e.tags.iter().any(|t| t == "form-of") => e.forms.clear(),
