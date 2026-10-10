@@ -35,7 +35,7 @@ ignores the stress and question marks (՛ ՜ ՞) and reads և as եւ.
 | pron | 48 | 14 | 225 | 54 | 8 | 32 |
 | num | 123 | 14 | 121 | 44 | 16 | 45 |
 
-Model size: 663113 bytes.
+Model size: 265312 bytes.
 
 **noun** cells: `NominativeSingular`, `NominativePlural`, `AccusativeSingular`, `AccusativePlural`, `GenitiveSingular`, `GenitivePlural`, `DativeSingular`, `DativePlural`, `LocativeSingular`, `LocativePlural`, `AblativeSingular`, `AblativePlural`, `InstrumentalSingular`, `InstrumentalPlural`
 

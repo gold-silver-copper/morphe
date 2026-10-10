@@ -29,7 +29,7 @@ third person singular (юзы, юзылы), in six cases and both numbers.
 | noun | 737 | 12 | 30 | 11 | 33 | 46 |
 | verb | 159 | 72 | 432 | 32 | 14 | 50 |
 
-Model size: 84886 bytes.
+Model size: 31613 bytes.
 
 **noun** cells: `PossessiveNominativeSingular`, `PossessiveNominativePlural`, `PossessiveAccusativeSingular`, `PossessiveAccusativePlural`, `PossessiveGenitiveSingular`, `PossessiveGenitivePlural`, `PossessiveDativeSingular`, `PossessiveDativePlural`, `PossessiveAblativeSingular`, `PossessiveAblativePlural`, `PossessiveInstrumentalSingular`, `PossessiveInstrumentalPlural`
 

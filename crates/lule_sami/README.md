@@ -32,7 +32,7 @@ Norwegian æ and ń as ä and ŋ.
 | adj | 85 | 27 | 587 | 121 | 24 | 50 |
 | verb | 119 | 62 | 1489 | 75 | 44 | 50 |
 
-Model size: 580533 bytes.
+Model size: 222719 bytes.
 
 **noun** cells: `NominativeSingular`, `NominativePlural`, `GenitiveSingular`, `GenitivePlural`, `AccusativeSingular`, `AccusativePlural`, `IllativeSingular`, `IllativePlural`, `InessiveSingular`, `InessivePlural`, `ElativeSingular`, `ElativePlural`, `ComitativeSingular`, `ComitativePlural`, `AbessiveSingular`, `AbessivePlural`, `Essive`, `PossessiveFirstSingular`, `PossessiveFirstDual`, `PossessiveFirstPlural`, `PossessiveSecondSingular`, `PossessiveSecondDual`, `PossessiveSecondPlural`, `PossessiveThirdSingular`, `PossessiveThirdDual`, `PossessiveThirdPlural`
 

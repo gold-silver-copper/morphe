@@ -31,7 +31,7 @@ conjugation tables for a few dozen verbs only.
 | adj | 26 | 26 | 76 | 8 | 7 | 7 |
 | verb | 49 | 66 | 702 | 94 | 6 | 34 |
 
-Model size: 140156 bytes.
+Model size: 52320 bytes.
 
 **noun** cells: `NominativeSingular`, `NominativePlural`, `GenitiveSingular`, `GenitivePlural`, `AccusativeSingular`, `AccusativePlural`, `DativeSingular`, `DativePlural`, `ComitativeSingular`, `ComitativePlural`, `ComparativeSingular`, `ComparativePlural`, `IllativeSingular`, `IllativePlural`, `ShortIllativeSingular`, `ShortIllativePlural`, `InessiveSingular`, `InessivePlural`, `LativeSingular`, `LativePlural`, `PossessiveFirstSingular`, `PossessiveFirstPlural`, `PossessiveSecondSingular`, `PossessiveSecondPlural`, `PossessiveThirdSingular`, `PossessiveThirdPlural`
 

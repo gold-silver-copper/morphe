@@ -27,7 +27,7 @@ gerunds and the converb. Input matching ignores the circumflex (â).
 | noun | 2529 | 12 | 315 | 61 | 117 | 719 |
 | verb | 422 | 61 | 320 | 23 | 31 | 65 |
 
-Model size: 149400 bytes.
+Model size: 49021 bytes.
 
 **noun** cells: `NominativeSingular`, `NominativePlural`, `GenitiveSingular`, `GenitivePlural`, `DativeSingular`, `DativePlural`, `AccusativeSingular`, `AccusativePlural`, `LocativeSingular`, `LocativePlural`, `AblativeSingular`, `AblativePlural`
 
