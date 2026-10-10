@@ -70,6 +70,7 @@ impl<'a> Extractor<'a> {
         let canon = spec
             .canonical_tag
             .as_ref()
+            .filter(|_| spec.canonical_spelling)
             .and_then(|t| e.forms.iter().find(|f| f.tags.contains(t)))
             .map(|f| f.form.trim().to_lowercase())
             .filter(|c| self.strip(c) == plain)

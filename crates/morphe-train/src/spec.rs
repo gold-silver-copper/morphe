@@ -40,6 +40,10 @@ pub struct Spec {
     pub fold_strs: Vec<(String, String)>,
     /// Tag of the form that gives the lemma's dictionary spelling.
     pub canonical_tag: Option<String>,
+    /// Whether that form's spelling (with its marks) is the dictionary
+    /// spelling. Off when the tables are written without the marks the
+    /// headword carries; the form's tags still give inherent features.
+    pub canonical_spelling: bool,
     pub features: Vec<Feature>,
     pub pos: Vec<PosSpec>,
 }
@@ -334,6 +338,7 @@ impl Spec {
             fold: Vec::new(),
             fold_strs: Vec::new(),
             canonical_tag: Some("canonical".into()),
+            canonical_spelling: true,
             features: Vec::new(),
             pos: Vec::new(),
         }
