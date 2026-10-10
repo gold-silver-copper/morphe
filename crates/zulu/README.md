@@ -36,7 +36,7 @@ Input matching ignores tone marks.
 | noun | 1636 | 26 | 559 | 193 | 214 | 532 |
 | verb | 863 | 56 | 336 | 22 | 17 | 85 |
 
-Model size: 176944 bytes.
+Model size: 176953 bytes.
 
 **noun** cells: `Singular`, `Plural`, `BareSingular`, `BarePlural`, `LocativeSingular`, `LocativePlural`, `CopulativeSingular`, `CopulativePlural`, `PossessiveC1Singular`, `PossessiveC1Plural`, `PossessiveC2Singular`, `PossessiveC2Plural`, `PossessiveC4Singular`, `PossessiveC4Plural`, `PossessiveC5Singular`, `PossessiveC5Plural`, `PossessiveC6Singular`, `PossessiveC6Plural`, `PossessiveC7Singular`, `PossessiveC7Plural`, `PossessiveC8Singular`, `PossessiveC8Plural`, `PossessiveC11Singular`, `PossessiveC11Plural`, `PossessiveC15Singular`, `PossessiveC15Plural`
 

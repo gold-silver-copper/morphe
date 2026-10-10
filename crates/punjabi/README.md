@@ -35,7 +35,7 @@ are left out. Shahmukhi input ignores harakat, and ن, ل stand for ݨ, ࣇ.
 | verb | 470 | 49 | 486 | 171 | 49 | 122 |
 | pron | 24 | 12 | 29 | 10 | 5 | 6 |
 
-Model size: 83231 bytes.
+Model size: 83241 bytes.
 
 **noun** cells: `DirectSingular`, `DirectPlural`, `ObliqueSingular`, `ObliquePlural`, `VocativeSingular`, `VocativePlural`, `AblativeSingular`, `AblativePlural`, `InstrumentalSingular`, `InstrumentalPlural`, `LocativeSingular`, `LocativePlural`
 

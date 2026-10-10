@@ -22,7 +22,7 @@ numbers. Wiktionary has no Ge'ez verb tables.
 |---|---|---|---|---|---|---|
 | noun | 195 | 3 | 227 | 174 | 25 | 131 |
 
-Model size: 7753 bytes.
+Model size: 7761 bytes.
 
 **noun** cells: `Plural`, `AccusativeSingular`, `AccusativePlural`
 

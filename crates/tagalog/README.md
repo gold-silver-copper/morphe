@@ -32,7 +32,7 @@ the plural and the comparison forms. Input matching ignores stress marks.
 | verb | 1911 | 26 | 5809 | 1900 | 526 | 1199 |
 | adj | 422 | 11 | 260 | 173 | 43 | 215 |
 
-Model size: 282341 bytes.
+Model size: 282348 bytes.
 
 **verb** cells: `Root`, `ActorInfinitive`, `ActorCompleted`, `ActorProgressive`, `ActorContemplative`, `ObjectInfinitive`, `ObjectCompleted`, `ObjectProgressive`, `ObjectContemplative`, `DirectionalInfinitive`, `DirectionalCompleted`, `DirectionalProgressive`, `DirectionalContemplative`, `LocativeInfinitive`, `LocativeCompleted`, `LocativeProgressive`, `LocativeContemplative`, `BenefactiveInfinitive`, `BenefactiveCompleted`, `BenefactiveProgressive`, `BenefactiveContemplative`, `InstrumentalInfinitive`, `InstrumentalCompleted`, `InstrumentalProgressive`, `InstrumentalContemplative`, `RecentPast`
 

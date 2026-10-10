@@ -25,7 +25,7 @@ Plurals are given in plain spelling, and input matching ignores tone marks.
 |---|---|---|---|---|---|---|
 | noun | 1472 | 1 | 34 | 34 | 64 | 314 |
 
-Model size: 14230 bytes.
+Model size: 14236 bytes.
 
 **noun** cells: `Plural`
 

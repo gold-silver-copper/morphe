@@ -30,7 +30,7 @@ dictionaries use for the schwa.
 |---|---|---|---|---|---|---|
 | verb | 1497 | 5 | 139 | 232 | 189 | 693 |
 
-Model size: 17838 bytes.
+Model size: 17844 bytes.
 
 **verb** cells: `Active`, `Passive`, `Stative`, `Imperative`, `Jussive`
 

@@ -30,7 +30,7 @@ the schwa.
 | verb | 351 | 2 | 34 | 36 | 34 | 119 |
 | adj | 1240 | 2 | 3 | 2 | 2 | 1 |
 
-Model size: 7545 bytes.
+Model size: 7551 bytes.
 
 **verb** cells: `Active`, `Passive`
 

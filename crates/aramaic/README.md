@@ -31,7 +31,7 @@ usually written. Words are in Hebrew square script.
 | adj | 236 | 12 | 25 | 25 | 15 | 78 |
 | verb | 8 | 28 | 87 | 9 | 2 | 4 |
 
-Model size: 15864 bytes.
+Model size: 15873 bytes.
 
 **noun** cells: `AbsoluteSingular`, `AbsolutePlural`, `ConstructSingular`, `ConstructPlural`, `EmphaticSingular`, `EmphaticPlural`
 

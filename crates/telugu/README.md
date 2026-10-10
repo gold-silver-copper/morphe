@@ -30,7 +30,7 @@ plural also serves the human third person plural (వారు).
 | noun | 15891 | 16 | 112 | 83 | 235 | 1158 |
 | verb | 2488 | 38 | 271 | 56 | 32 | 158 |
 
-Model size: 93380 bytes.
+Model size: 93389 bytes.
 
 **noun** cells: `NominativeSingular`, `NominativePlural`, `AccusativeSingular`, `AccusativePlural`, `DativeSingular`, `DativePlural`, `GenitiveSingular`, `GenitivePlural`, `InstrumentalSingular`, `InstrumentalPlural`, `LocativeSingular`, `LocativePlural`, `AblativeSingular`, `AblativePlural`, `VocativeSingular`, `VocativePlural`
 

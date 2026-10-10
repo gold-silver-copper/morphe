@@ -28,7 +28,7 @@ joiner.
 | verb | 826 | 1 | 18 | 19 | 26 | 19 |
 | pron | 100 | 16 | 65 | 7 | 2 | 5 |
 
-Model size: 70398 bytes.
+Model size: 70409 bytes.
 
 **noun** cells: `NominativeSingular`, `NominativePlural`, `AccusativeSingular`, `AccusativePlural`, `DativeSingular`, `DativePlural`, `SociativeSingular`, `SociativePlural`, `GenitiveSingular`, `GenitivePlural`, `InstrumentalSingular`, `InstrumentalPlural`, `LocativeSingular`, `LocativePlural`, `VocativeSingular`, `VocativePlural`
 

@@ -27,7 +27,7 @@ imperatives and the infinitive. Nouns have their plural.
 | noun | 93 | 1 | 74 | 73 | 21 | 51 |
 | verb | 57 | 49 | 2041 | 57 | 2 | 47 |
 
-Model size: 47083 bytes.
+Model size: 47093 bytes.
 
 **noun** cells: `Plural`
 

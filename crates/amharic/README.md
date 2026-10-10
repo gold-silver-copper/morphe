@@ -28,7 +28,7 @@ Amharic verb tables, so verbs are left out.
 | noun | 369 | 16 | 290 | 152 | 44 | 202 |
 | adj | 51 | 15 | 105 | 26 | 8 | 7 |
 
-Model size: 24291 bytes.
+Model size: 24300 bytes.
 
 **noun** cells: `Plural`, `DefiniteMasculine`, `DefiniteFeminine`, `DefiniteObjectMasculine`, `DefiniteObjectFeminine`, `Object`, `PossessiveFirstSingular`, `PossessiveFirstPlural`, `PossessiveSecondMasculine`, `PossessiveSecondFeminine`, `PossessiveSecondPlural`, `PossessiveSecondFormal`, `PossessiveThirdMasculine`, `PossessiveThirdFeminine`, `PossessiveThirdPlural`, `PossessiveThirdFormal`
 

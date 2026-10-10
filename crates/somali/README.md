@@ -31,7 +31,7 @@ Input matching ignores the tone marks dictionaries write.
 | noun | 179 | 27 | 236 | 113 | 37 | 113 |
 | verb | 315 | 34 | 106 | 41 | 13 | 65 |
 
-Model size: 20931 bytes.
+Model size: 20938 bytes.
 
 **noun** cells: `Plural`, `AbsolutiveSingular`, `AbsolutivePlural`, `NominativeSingular`, `NominativePlural`, `GenitiveSingular`, `GenitivePlural`, `VocativeSingular`, `VocativePlural`, `DefiniteSingular`, `DefinitePlural`, `RemoteDefiniteSingular`, `RemoteDefinitePlural`, `ProximalSingular`, `ProximalPlural`, `MedialSingular`, `MedialPlural`, `DistalSingular`, `DistalPlural`, `PossessiveFirstSingular`, `PossessiveSecondSingular`, `PossessiveThirdMasculine`, `PossessiveThirdFeminine`, `PossessiveFirstPluralExclusive`, `PossessiveFirstPluralInclusive`, `PossessiveSecondPlural`, `PossessiveThirdPlural`
 

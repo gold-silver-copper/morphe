@@ -30,7 +30,7 @@ adverbial and adjectival participles.
 | noun | 1036 | 10 | 138 | 18 | 28 | 66 |
 | verb | 251 | 60 | 615 | 64 | 22 | 153 |
 
-Model size: 59817 bytes.
+Model size: 59825 bytes.
 
 **noun** cells: `NominativeSingular`, `NominativePlural`, `AccusativeSingular`, `AccusativePlural`, `DativeSingular`, `DativePlural`, `GenitiveSingular`, `GenitivePlural`, `InstrumentalSingular`, `InstrumentalPlural`
 

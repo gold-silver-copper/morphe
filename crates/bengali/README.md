@@ -34,7 +34,7 @@ sadhu tables are left out.
 | verb | 313 | 44 | 1241 | 181 | 44 | 140 |
 | pron | 184 | 28 | 273 | 58 | 20 | 44 |
 
-Model size: 135019 bytes.
+Model size: 135028 bytes.
 
 **noun** cells: `IndefiniteNominative`, `IndefiniteObjective`, `IndefiniteGenitive`, `IndefiniteLocative`, `DefiniteNominativeSingular`, `DefiniteNominativePlural`, `DefiniteObjectiveSingular`, `DefiniteObjectivePlural`, `DefiniteGenitiveSingular`, `DefiniteGenitivePlural`, `DefiniteLocativeSingular`, `DefiniteLocativePlural`
 
