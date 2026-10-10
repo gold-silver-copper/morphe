@@ -130,6 +130,8 @@ impl Language for Icelandic {
                 ],
             )
             .citation("Lemma Past Supine")
+            // Most verbs have only their participle table.
+            .lemma_cell("Infinitive")
             .head_first(),
         ];
         s
