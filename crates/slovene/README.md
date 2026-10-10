@@ -29,14 +29,14 @@ the pronunciation letter ł. Output carries them as Wiktionary writes them;
 
 | Part of speech | Entries | Cells | Edits | Classes | Tree nodes | Lexicon |
 |---|---|---|---|---|---|---|
-| noun | 2616 | 18 | 5597 | 1204 | 951 | 1863 |
-| adj | 629 | 110 | 2479 | 489 | 254 | 435 |
-| verb | 476 | 30 | 3186 | 825 | 152 | 337 |
+| noun | 2616 | 18 | 5597 | 1204 | 933 | 1817 |
+| adj | 629 | 110 | 2479 | 489 | 247 | 392 |
+| verb | 476 | 30 | 3132 | 825 | 164 | 328 |
 | pron | 21 | 54 | 378 | 34 | 4 | 17 |
 | det | 15 | 108 | 122 | 12 | 10 | 8 |
 | num | 7 | 54 | 36 | 10 | 2 | 3 |
 
-Model size: 1011787 bytes.
+Model size: 345608 bytes.
 
 **noun** cells: `NominativeSingular`, `NominativeDual`, `NominativePlural`, `GenitiveSingular`, `GenitiveDual`, `GenitivePlural`, `DativeSingular`, `DativeDual`, `DativePlural`, `AccusativeSingular`, `AccusativeDual`, `AccusativePlural`, `LocativeSingular`, `LocativeDual`, `LocativePlural`, `InstrumentalSingular`, `InstrumentalDual`, `InstrumentalPlural`
 

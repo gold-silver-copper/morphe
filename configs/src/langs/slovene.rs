@@ -72,6 +72,42 @@ impl Language for Slovene {
         s
     }
 
+    /// biti's table (sl-infl-biti) tags its whole present block "negative":
+    /// the positive forms (səm), the negative ones (nísəm) and the future
+    /// (bom) alike; it also lists the old participle bȋvši as l-participle
+    /// forms. The short infinitive (dẹ́lat, the supine's form) is colloquial.
+    fn prepare(&self, e: &mut Entry) {
+        let has = |f: &Form, t: &str| f.tags.iter().any(|x| x == t);
+        let biti = e.forms.iter().any(|f| has(f, "inflection-template") && f.form == "sl-infl-biti");
+        let plain = |s: &str| -> String {
+            let map = unmark(UNMARK);
+            s.chars().filter(|c| !matches!(c, '\u{300}'..='\u{323}')).map(|c| map.iter().find(|m| m.0 == c).map_or(c, |m| m.1)).collect()
+        };
+        let mut out = Vec::new();
+        for mut f in std::mem::take(&mut e.forms) {
+            let p = plain(f.form.trim());
+            if biti && has(&f, "negative") && has(&f, "present") {
+                if p.starts_with("ni") {
+                    continue;
+                }
+                f.tags.retain(|t| t != "negative");
+                if p.starts_with('b') {
+                    for t in f.tags.iter_mut().filter(|t| *t == "present") {
+                        *t = "future".into();
+                    }
+                }
+            }
+            if biti && has(&f, "l-participle") && ["vši", "vša", "vše"].iter().any(|x| p.ends_with(x)) {
+                continue;
+            }
+            if has(&f, "infinitive") && f.source.is_some() && !(p.ends_with("ti") || p.ends_with("či")) {
+                f.tags.push("colloquial".into());
+            }
+            out.push(f);
+        }
+        e.forms = out;
+    }
+
     /// Adjective tables give the masculine accusative singular as the words
     /// "nominative (inanimate) or genitive (animate)": put the forms in.
     fn reshape(&self, pos: &PosSpec, e: &Entry) -> Option<Vec<Form>> {
@@ -102,8 +138,11 @@ impl Language for Slovene {
     fn retag(&self, pos: &PosSpec, form: &str, t: &mut Vec<String>) {
         if pos.name == "verb" && t.len() == 1 && t[0] == "error-unrecognized-form" {
             let plain: String = form.chars().filter(|c| c.is_alphabetic()).collect();
-            if ["ti", "či", "t", "č"].iter().any(|e| plain.ends_with(e)) {
+            if ["ti", "či"].iter().any(|e| plain.ends_with(e)) {
                 *t = tags("infinitive");
+            } else if ["t", "č"].iter().any(|e| plain.ends_with(e)) {
+                // The short infinitive (bit, delat) is colloquial.
+                *t = tags("infinitive colloquial");
             }
         }
     }
@@ -113,6 +152,10 @@ impl Language for Slovene {
         let raw = raw.trim();
         let stripped = [" m", " f", " n"].iter().find_map(|g| raw.strip_suffix(g)).unwrap_or(raw);
         vec![stripped.to_string()]
+    }
+
+    fn samples(&self) -> Vec<&'static str> {
+        vec!["žena", "mesto", "pes, psa", "delati", "biti", "raven", "glorpa", "zlimati"]
     }
 
     fn readme(&self) -> String {
