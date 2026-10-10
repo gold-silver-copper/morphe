@@ -46,6 +46,8 @@ Build, eyeball a few words, push, move on to the next language.
     (multi-letter folds such as ß → ss) and `canonical_spelling`.
   - Hooks: `prepare(&mut Entry)`, `reshape`, `retag(pos, form, tags)`,
     `split_form` and `samples()` (playground words).
+  - Kaikki's `raw_tags` appear in form tags with a `raw:` prefix
+    (`raw:jij`), so `retag` can use them instead of reading by position.
   - A "-" in a table is now stored as "this form doesn't exist" rather than
     being treated as unknown.
 - `crates/morphe-train/src/extract.rs`: how forms become cells. A form goes to

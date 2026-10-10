@@ -18,13 +18,34 @@ pub struct Entry {
     pub tags: Vec<String>,
 }
 
+/// A form. Kaikki's `raw_tags` (labels it couldn't map, like "jij" or
+/// "Präteritum") are kept in `tags` with a `raw:` prefix, so configs can use
+/// them in `retag` without ever matching a real tag by accident.
 #[derive(Clone, Debug, Deserialize)]
+#[serde(from = "RawForm")]
 pub struct Form {
     pub form: String,
-    #[serde(default)]
     pub tags: Vec<String>,
-    #[serde(default)]
     pub source: Option<String>,
+}
+
+#[derive(Deserialize)]
+struct RawForm {
+    form: String,
+    #[serde(default)]
+    tags: Vec<String>,
+    #[serde(default)]
+    raw_tags: Vec<String>,
+    #[serde(default)]
+    source: Option<String>,
+}
+
+impl From<RawForm> for Form {
+    fn from(r: RawForm) -> Form {
+        let mut tags = r.tags;
+        tags.extend(r.raw_tags.into_iter().map(|t| format!("raw:{t}")));
+        Form { form: r.form, tags, source: r.source }
+    }
 }
 
 #[derive(Debug, Deserialize)]
