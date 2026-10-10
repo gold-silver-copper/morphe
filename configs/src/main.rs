@@ -2,6 +2,14 @@
 
 use std::path::PathBuf;
 
+/// Print, ignoring a closed pipe (`morphe show … | head`).
+macro_rules! out {
+    ($($t:tt)*) => {{
+        use std::io::Write as _;
+        let _ = writeln!(std::io::stdout(), $($t)*);
+    }};
+}
+
 fn root() -> PathBuf {
     PathBuf::from(env!("CARGO_MANIFEST_DIR")).join("..")
 }
@@ -50,14 +58,14 @@ fn main() {
                 std::process::exit(1);
             };
             let p = &m.pos[pi];
-            println!("{word} ({pos}) → {}", m.lemma(pi, word).unwrap_or_default());
+            out!("{word} ({pos}) → {}", m.lemma(pi, word).unwrap_or_default());
             for (fi, f) in p.inherent.iter().enumerate() {
                 let vals: Vec<String> = m
                     .inherent(pi, fi, word)
                     .iter()
                     .map(|(v, s)| format!("{} {:.2}", f.values.get(*v as usize).map_or("?", |x| x.as_str()), s))
                     .collect();
-                println!("  {:<28} {}", f.name, vals.join(", "));
+                out!("  {:<28} {}", f.name, vals.join(", "));
             }
             for (ci, c) in p.cells.iter().enumerate() {
                 let forms = m.inflect(pi, ci as u32, word, morphe::Options::default());
@@ -65,7 +73,7 @@ fn main() {
                     continue;
                 }
                 let shown: Vec<String> = forms.iter().take(4).map(|(f, s)| format!("{f} {s:.2}")).collect();
-                println!("  {c:<28} {}", shown.join(", "));
+                out!("  {c:<28} {}", shown.join(", "));
             }
         }
         Some("analyze") => {
@@ -81,7 +89,7 @@ fn main() {
             for (a, p) in m.analyze(word).into_iter().take(10) {
                 let pos = m.pos.get(a.pos).map_or("?", |p| p.name.as_str());
                 let cell = a.cell.and_then(|c| m.pos.get(a.pos)?.cells.get(c as usize)).map_or("(lemma)", |c| c.as_str());
-                println!("  {p:.3}  {pos:<6} {:<20} {cell}", a.lemma);
+                out!("  {p:.3}  {pos:<6} {:<20} {cell}", a.lemma);
             }
         }
         Some("playground") => {
@@ -123,7 +131,7 @@ fn main() {
                 ));
             }
             let _ = std::fs::write(out.join("models.json"), format!("[{}]", entries.join(",")));
-            println!("{} languages → {}", entries.len(), out.display());
+            out!("{} languages → {}", entries.len(), out.display());
         }
         Some("tags") => {
             let Some(title) = args.get(1) else {
@@ -170,19 +178,19 @@ fn tags(title: &str, only: &[String]) {
             }
         }
     }
-    println!("lang_code: {lang}");
+    out!("lang_code: {lang}");
     let mut poses: Vec<(&String, &usize)> = entries.iter().collect();
     poses.sort_by(|a, b| b.1.cmp(a.1));
     for (pos, n) in poses {
-        println!("\n=== pos {pos}: {n} entries");
+        out!("\n=== pos {pos}: {n} entries");
         let mut keys: Vec<&(String, String)> = stats.keys().filter(|k| &k.0 == pos).collect();
         keys.sort();
         for k in keys {
             let mut v: Vec<(&String, &(usize, String))> = stats[k].iter().collect();
             v.sort_by(|a, b| b.1.0.cmp(&a.1.0).then(a.0.cmp(b.0)));
-            println!("  -- source {} ({} tag sets)", k.1, v.len());
+            out!("  -- source {} ({} tag sets)", k.1, v.len());
             for (t, (c, ex)) in v.into_iter().take(60) {
-                println!("    {c:>8}  [{t}]  e.g. {ex}");
+                out!("    {c:>8}  [{t}]  e.g. {ex}");
             }
         }
     }
