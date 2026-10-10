@@ -12,6 +12,8 @@ impl Language for Italian {
             "auxiliary alternative abbreviation diminutive augmentative pejorative derogatory relational enclitic apocopic dated",
         ));
         s.soft_tags.extend(tags("poetic literary Traditional traditional regional Tuscany"));
+        // Italian Wiktionary adds words English Wiktionary lacks.
+        s.extra_dumps = vec!["it/Italiano".into()];
         s.features = vec![
             feature("Number", &[("Singular", "!plural"), ("Plural", "plural")]),
             feature("Gender", &[("Masculine", "masculine"), ("Feminine", "feminine")]),
@@ -82,6 +84,125 @@ impl Language for Italian {
         let invariable = e.senses.iter().any(|s| s.tags.iter().any(|t| t == "invariable"));
         if invariable && (e.pos == "noun" || e.pos == "adj") && !e.forms.iter().any(|f| f.tags.iter().any(|t| t == "plural")) {
             e.forms.push(Form { form: e.word.clone(), tags: vec!["plural".into()], source: None });
+        }
+    }
+
+    /// Italian Wiktionary's tables: indicative forms carry no mood (the
+    /// passato remoto is "past-remote"), and the conditional, subjunctive and
+    /// imperative rows carry no person: they come in a fixed order (io, tu,
+    /// lui, noi, voi, essi; the imperative adds "non" + infinitive after tu).
+    /// Noun forms list the counterpart's plural with gender tags.
+    fn prepare_extra(&self, _dump: &str, e: &mut Entry) {
+        let tagged = |f: &Form, t: &str| f.tags.iter().any(|x| x == t);
+        let only = |f: &Form, t: &[&str]| f.tags.iter().map(String::as_str).eq(t.iter().copied());
+        let word = e.word.clone();
+        if e.tags.iter().any(|t| t == "form-of") {
+            e.forms.clear();
+            return;
+        }
+        let forms: Vec<Form> = std::mem::take(&mut e.forms)
+            .into_iter()
+            .flat_map(|f| f.form.split('\n').map(|x| Form { form: x.trim().to_string(), ..f.clone() }).collect::<Vec<_>>())
+            .filter(|f| !f.form.is_empty() && !f.form.contains(['(', ')']))
+            .collect();
+        let gender = ["masculine", "feminine"];
+        match e.pos.as_str() {
+            "noun" => {
+                let own = |g: &str| e.tags.iter().any(|t| t == g);
+                let known = gender.iter().any(|g| own(g));
+                for mut f in forms {
+                    if !f.tags.iter().all(|t| matches!(t.as_str(), "masculine" | "feminine" | "singular" | "plural")) {
+                        continue;
+                    }
+                    let g: Vec<&str> = gender.iter().copied().filter(|g| tagged(&f, g)).collect();
+                    let other = known && g.len() == 1 && !own(g[0]);
+                    if tagged(&f, "plural") {
+                        if other {
+                            continue;
+                        }
+                        f.tags = vec!["plural".into()];
+                    } else if other {
+                        f.tags = vec![g[0].into()];
+                    } else {
+                        continue;
+                    }
+                    e.forms.push(f);
+                }
+                if e.tags.iter().any(|t| t == "invariable") && !e.forms.iter().any(|f| tagged(f, "plural")) {
+                    e.forms.push(Form { form: word, tags: vec!["plural".into()], source: None });
+                }
+            }
+            "adj" => {
+                // A gender-less plural next to gendered ones repeats the masculine.
+                let gendered = forms.iter().any(|f| tagged(f, "plural") && gender.iter().any(|g| tagged(f, g)));
+                for f in forms {
+                    if tagged(&f, "superlative") && !(tagged(&f, "masculine") && !tagged(&f, "plural")) {
+                        continue;
+                    }
+                    if gendered && only(&f, &["plural"]) {
+                        continue;
+                    }
+                    e.forms.push(f);
+                }
+            }
+            "verb" => {
+                // Pronominal verbs (arrendersi) are left to English Wiktionary.
+                if word.ends_with("rsi") || word.contains(' ') {
+                    return;
+                }
+                e.forms.push(Form { form: word.clone(), tags: vec!["infinitive".into()], source: None });
+                const PERSONS: [&str; 6] =
+                    ["first-person", "second-person", "third-person", "first-person plural", "second-person plural", "third-person plural"];
+                let count = |t: &[&str]| forms.iter().filter(|f| only(f, t)).count();
+                let ordered = count(&["present"]) == 12 && count(&["imperfect"]) == 6 && count(&["imperative"]) == 6;
+                let (mut present, mut imperfect, mut imperative) = (0, 0, 0);
+                for mut f in forms {
+                    let person = |i: usize| PERSONS.get(i).map(|p| p.split(' ').map(String::from).collect::<Vec<_>>());
+                    if only(&f, &["present"]) {
+                        present += 1;
+                        let Some(p) = person((present - 1) % 6).filter(|_| ordered) else { continue };
+                        let mood = if present <= 6 { "conditional" } else { "subjunctive" };
+                        f.tags = vec![mood.into()];
+                        if mood == "subjunctive" {
+                            f.tags.push("present".into());
+                        }
+                        f.tags.extend(p);
+                    } else if only(&f, &["imperfect"]) {
+                        imperfect += 1;
+                        let Some(p) = person(imperfect - 1).filter(|_| ordered) else { continue };
+                        f.tags = vec!["subjunctive".into(), "imperfect".into()];
+                        f.tags.extend(p);
+                    } else if only(&f, &["imperative"]) {
+                        imperative += 1;
+                        // tu, non + infinitive, lui, noi, voi, essi
+                        let (i, negative) = match imperative {
+                            2 => (1, true),
+                            1 => (1, false),
+                            n => (n - 1, false),
+                        };
+                        let Some(p) = person(i).filter(|_| ordered) else { continue };
+                        f.tags = vec!["imperative".into()];
+                        if negative {
+                            let Some(rest) = f.form.strip_prefix("non ") else { continue };
+                            f.form = rest.to_string();
+                            f.tags.push("negative".into());
+                        }
+                        f.tags.extend(p);
+                    } else if ["perfect", "pluperfect", "historic", "reflexive", "past"].iter().any(|t| tagged(&f, t))
+                        && !tagged(&f, "participle")
+                    {
+                        continue;
+                    } else if tagged(&f, "past-remote") {
+                        f.tags.retain(|t| t != "past-remote");
+                        f.tags.extend(["historic".to_string(), "past".to_string()]);
+                    }
+                    if f.form.contains(' ') {
+                        continue;
+                    }
+                    e.forms.push(f);
+                }
+            }
+            _ => e.forms.clear(),
         }
     }
 
