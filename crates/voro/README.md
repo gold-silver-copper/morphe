@@ -24,11 +24,11 @@ present).
 
 | Part of speech | Entries | Cells | Edits | Classes | Tree nodes | Lexicon |
 |---|---|---|---|---|---|---|
-| noun | 312 | 28 | 2465 | 327 | 56 | 208 |
-| adj | 38 | 29 | 732 | 65 | 4 | 34 |
+| noun | 160 | 28 | 2377 | 210 | 35 | 72 |
+| adj | 35 | 29 | 728 | 62 | 4 | 26 |
 | verb | 53 | 3 | 56 | 43 | 13 | 40 |
 
-Model size: 108108 bytes.
+Model size: 101622 bytes.
 
 **noun** cells: `NominativeSingular`, `NominativePlural`, `AccusativeSingular`, `AccusativePlural`, `GenitiveSingular`, `GenitivePlural`, `PartitiveSingular`, `PartitivePlural`, `IllativeSingular`, `IllativePlural`, `InessiveSingular`, `InessivePlural`, `ElativeSingular`, `ElativePlural`, `AllativeSingular`, `AllativePlural`, `AdessiveSingular`, `AdessivePlural`, `AblativeSingular`, `AblativePlural`, `TranslativeSingular`, `TranslativePlural`, `TerminativeSingular`, `TerminativePlural`, `AbessiveSingular`, `AbessivePlural`, `ComitativeSingular`, `ComitativePlural`
 

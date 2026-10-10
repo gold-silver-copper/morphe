@@ -61,20 +61,13 @@ impl Language for CrimeanTatar {
         s
     }
 
-    /// Mass nouns' tables name only the case. Head-word lines give the
-    /// accusative and plural alone.
+    /// Mass nouns' tables name only the case.
     fn prepare(&self, e: &mut Entry) {
-        for f in e.forms.iter_mut() {
+        for f in e.forms.iter_mut().filter(|f| f.source.is_some()) {
             let case = f.tags.iter().any(|t| CASES.contains(&t.as_str()));
             let number = f.tags.iter().any(|t| t == "singular" || t == "plural");
-            if f.source.is_some() && case && !number {
+            if case && !number {
                 f.tags.push("singular".into());
-            } else if f.source.is_none() && f.tags.len() == 1 {
-                match f.tags.first().map(String::as_str) {
-                    Some("accusative") => f.tags.push("singular".into()),
-                    Some("plural") => f.tags.push("nominative".into()),
-                    _ => {}
-                }
             }
         }
     }

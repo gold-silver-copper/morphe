@@ -1,4 +1,3 @@
-use morphe_train::kaikki::Entry;
 use morphe_train::spec::*;
 
 pub struct Voro;
@@ -49,19 +48,6 @@ impl Language for Voro {
             .head_first(),
         ];
         s
-    }
-
-    /// Headword lines give the genitive and partitive singular without
-    /// their number.
-    fn prepare(&self, e: &mut Entry) {
-        if e.pos == "verb" {
-            return;
-        }
-        for f in e.forms.iter_mut().filter(|f| f.source.is_none()) {
-            if f.tags.len() == 1 && (f.tags[..] == ["genitive"] || f.tags[..] == ["partitive"]) {
-                f.tags.push("singular".into());
-            }
-        }
     }
 
     fn samples(&self) -> Vec<&'static str> {

@@ -24,10 +24,10 @@ gerunds and the converb. Input matching ignores the circumflex (â).
 
 | Part of speech | Entries | Cells | Edits | Classes | Tree nodes | Lexicon |
 |---|---|---|---|---|---|---|
-| noun | 2529 | 12 | 315 | 61 | 117 | 719 |
+| noun | 2528 | 12 | 315 | 58 | 114 | 718 |
 | verb | 422 | 61 | 320 | 23 | 31 | 65 |
 
-Model size: 49021 bytes.
+Model size: 48962 bytes.
 
 **noun** cells: `NominativeSingular`, `NominativePlural`, `GenitiveSingular`, `GenitivePlural`, `DativeSingular`, `DativePlural`, `AccusativeSingular`, `AccusativePlural`, `LocativeSingular`, `LocativePlural`, `AblativeSingular`, `AblativePlural`
 

@@ -68,8 +68,7 @@ impl Language for OldArmenian {
     }
 
     /// A verb's second table is its mediopassive, and so is a lone table in
-    /// -իմ; neither is tagged. The headword line gives the aorist's first
-    /// person alone.
+    /// -իմ; neither is tagged.
     fn prepare(&self, e: &mut Entry) {
         if e.pos != "verb" {
             return;
@@ -79,12 +78,6 @@ impl Language for OldArmenian {
         let mut passive = deponent;
         for f in e.forms.iter_mut() {
             if f.source.is_none() {
-                if f.tags.len() == 2 && f.tags.iter().all(|t| t == "aorist" || t == "indicative") {
-                    f.tags.extend(tags("first-person singular"));
-                    if deponent {
-                        f.tags.push("mediopassive".into());
-                    }
-                }
                 continue;
             }
             if f.tags.iter().any(|t| t == "table-tags") {
@@ -126,7 +119,7 @@ numbers. Verbs are looked up by the first person present (խնդրեմ) and
 have the present, imperfect and aorist indicative and the present and
 aorist subjunctive, active and mediopassive, for six persons, plus the
 imperative, cohortative and prohibitive, the infinitives and the
-participle. Many verbs are known from their aorist alone. Input matching
+participle. Input matching
 ignores the stress and question marks (՛ ՜ ՞) and reads և as եւ.
 "#
         .into()

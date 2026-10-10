@@ -22,7 +22,7 @@ numbers. Verbs are looked up by the first person present (խնդրեմ) and
 have the present, imperfect and aorist indicative and the present and
 aorist subjunctive, active and mediopassive, for six persons, plus the
 imperative, cohortative and prohibitive, the infinitives and the
-participle. Many verbs are known from their aorist alone. Input matching
+participle. Input matching
 ignores the stress and question marks (՛ ՜ ՞) and reads և as եւ.
 
 ## Coverage
@@ -31,11 +31,11 @@ ignores the stress and question marks (՛ ՜ ՞) and reads և as եւ.
 |---|---|---|---|---|---|---|
 | noun | 3063 | 14 | 1189 | 745 | 348 | 1357 |
 | adj | 812 | 14 | 369 | 203 | 101 | 309 |
-| verb | 927 | 75 | 1217 | 231 | 63 | 294 |
+| verb | 924 | 75 | 1217 | 229 | 64 | 290 |
 | pron | 48 | 14 | 225 | 54 | 8 | 32 |
 | num | 123 | 14 | 121 | 44 | 16 | 45 |
 
-Model size: 265312 bytes.
+Model size: 265243 bytes.
 
 **noun** cells: `NominativeSingular`, `NominativePlural`, `AccusativeSingular`, `AccusativePlural`, `GenitiveSingular`, `GenitivePlural`, `DativeSingular`, `DativePlural`, `LocativeSingular`, `LocativePlural`, `AblativeSingular`, `AblativePlural`, `InstrumentalSingular`, `InstrumentalPlural`
 
