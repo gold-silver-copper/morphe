@@ -34,7 +34,7 @@ them, and `marks(false)` removes them from output.
 | verb | 1133 | 59 | 8890 | 748 | 177 | 334 |
 | pron | 20 | 22 | 66 | 26 | 4 | 11 |
 
-Model size: 855294 bytes.
+Model size: 855302 bytes.
 
 **noun** cells: `NominativeSingular`, `NominativePlural`, `GenitiveSingular`, `GenitivePlural`, `AccusativeSingular`, `AccusativePlural`, `IllativeSingular`, `IllativePlural`, `LocativeSingular`, `LocativePlural`, `ComitativeSingular`, `ComitativePlural`, `Essive`, `PossessiveFirstSingular`, `PossessiveFirstDual`, `PossessiveFirstPlural`, `PossessiveSecondSingular`, `PossessiveSecondDual`, `PossessiveSecondPlural`, `PossessiveThirdSingular`, `PossessiveThirdDual`, `PossessiveThirdPlural`
 

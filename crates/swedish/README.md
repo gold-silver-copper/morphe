@@ -34,7 +34,7 @@ are not covered.
 | det | 18 | 2 | 14 | 11 | 4 | 12 |
 | num | 9 | 8 | 8 | 1 | 2 | 0 |
 
-Model size: 1545988 bytes.
+Model size: 599535 bytes.
 
 **noun** cells: `IndefiniteNominativeSingular`, `IndefiniteNominativePlural`, `IndefiniteGenitiveSingular`, `IndefiniteGenitivePlural`, `DefiniteNominativeSingular`, `DefiniteNominativePlural`, `DefiniteGenitiveSingular`, `DefiniteGenitivePlural`
 

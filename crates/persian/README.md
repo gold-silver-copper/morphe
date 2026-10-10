@@ -31,11 +31,11 @@ the non-joiner (میخورم for می‌خورم).
 
 | Part of speech | Entries | Cells | Edits | Classes | Tree nodes | Lexicon |
 |---|---|---|---|---|---|---|
-| noun | 3095 | 1 | 304 | 359 | 251 | 1143 |
+| noun | 3095 | 1 | 305 | 360 | 253 | 1144 |
 | adj | 397 | 2 | 7 | 4 | 7 | 47 |
 | verb | 1135 | 73 | 6482 | 381 | 40 | 916 |
 
-Model size: 115925 bytes.
+Model size: 115929 bytes.
 
 **noun** cells: `Plural`
 

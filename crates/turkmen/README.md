@@ -30,7 +30,7 @@ input matching ignores them, and `marks(false)` removes them from output.
 | verb | 82 | 74 | 505 | 24 | 11 | 10 |
 | pron | 5 | 12 | 42 | 5 | 2 | 3 |
 
-Model size: 45212 bytes.
+Model size: 45220 bytes.
 
 **noun** cells: `NominativeSingular`, `NominativePlural`, `GenitiveSingular`, `GenitivePlural`, `DativeSingular`, `DativePlural`, `AccusativeSingular`, `AccusativePlural`, `LocativeSingular`, `LocativePlural`, `AblativeSingular`, `AblativePlural`
 

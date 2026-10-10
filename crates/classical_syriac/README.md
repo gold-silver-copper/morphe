@@ -27,7 +27,7 @@ unpointed.
 | noun | 2856 | 16 | 806 | 389 | 143 | 697 |
 | adj | 96 | 12 | 17 | 10 | 2 | 11 |
 
-Model size: 70211 bytes.
+Model size: 70219 bytes.
 
 **noun** cells: `AbsoluteSingular`, `AbsolutePlural`, `ConstructSingular`, `ConstructPlural`, `EmphaticSingular`, `EmphaticPlural`, `PossessedFirstSingular`, `PossessedSecondMasculineSingular`, `PossessedSecondFeminineSingular`, `PossessedThirdMasculineSingular`, `PossessedThirdFeminineSingular`, `PossessedFirstPlural`, `PossessedSecondMasculinePlural`, `PossessedSecondFemininePlural`, `PossessedThirdMasculinePlural`, `PossessedThirdFemininePlural`
 

@@ -26,11 +26,11 @@ input.
 
 | Part of speech | Entries | Cells | Edits | Classes | Tree nodes | Lexicon |
 |---|---|---|---|---|---|---|
-| noun | 2320 | 17 | 1366 | 1781 | 649 | 1537 |
+| noun | 2320 | 17 | 1356 | 1778 | 658 | 1534 |
 | adj | 497 | 35 | 322 | 405 | 95 | 329 |
-| verb | 1046 | 220 | 5537 | 981 | 198 | 748 |
+| verb | 1046 | 220 | 5387 | 929 | 224 | 763 |
 
-Model size: 362996 bytes.
+Model size: 362524 bytes.
 
 **noun** cells: `NominativeSingular`, `NominativeDual`, `NominativePlural`, `VocativeSingular`, `VocativeDual`, `VocativePlural`, `AccusativeSingular`, `AccusativeDual`, `AccusativePlural`, `GenitiveSingular`, `GenitiveDual`, `GenitivePlural`, `DativeSingular`, `DativeDual`, `DativePlural`, `MutatedLenition`, `MutatedNasalization`
 

@@ -22,9 +22,9 @@ Sami conjugation tables.
 
 | Part of speech | Entries | Cells | Edits | Classes | Tree nodes | Lexicon |
 |---|---|---|---|---|---|---|
-| noun | 350 | 16 | 2079 | 312 | 65 | 209 |
+| noun | 350 | 16 | 1336 | 268 | 114 | 253 |
 
-Model size: 68472 bytes.
+Model size: 63145 bytes.
 
 **noun** cells: `NominativeSingular`, `NominativePlural`, `AccusativeSingular`, `AccusativePlural`, `GenitiveSingular`, `GenitivePlural`, `IllativeSingular`, `IllativePlural`, `LocativeSingular`, `LocativePlural`, `ComitativeSingular`, `ComitativePlural`, `AbessiveSingular`, `AbessivePlural`, `Essive`, `Partitive`
 

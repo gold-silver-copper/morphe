@@ -35,7 +35,7 @@ nouns and the verbal noun.
 | pron | 51 | 20 | 246 | 52 | 11 | 25 |
 | num | 68 | 20 | 85 | 16 | 10 | 9 |
 
-Model size: 217279 bytes.
+Model size: 217288 bytes.
 
 **noun** cells: `NominativeSingular`, `NominativePlural`, `AccusativeSingular`, `AccusativePlural`, `DativeSingular`, `DativePlural`, `BenefactiveSingular`, `BenefactivePlural`, `GenitiveSingular`, `GenitivePlural`, `LocativeSingular`, `LocativePlural`, `SociativeSingular`, `SociativePlural`, `InstrumentalSingular`, `InstrumentalPlural`, `AblativeSingular`, `AblativePlural`, `VocativeSingular`, `VocativePlural`
 

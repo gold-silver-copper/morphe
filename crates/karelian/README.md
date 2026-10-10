@@ -25,7 +25,7 @@ fourteen cases in both numbers. Wiktionary has no Karelian verb tables.
 | pron | 23 | 28 | 361 | 29 | 2 | 19 |
 | num | 15 | 28 | 257 | 14 | 2 | 6 |
 
-Model size: 128164 bytes.
+Model size: 128173 bytes.
 
 **noun** cells: `NominativeSingular`, `NominativePlural`, `GenitiveSingular`, `GenitivePlural`, `PartitiveSingular`, `PartitivePlural`, `IllativeSingular`, `IllativePlural`, `InessiveSingular`, `InessivePlural`, `ElativeSingular`, `ElativePlural`, `AdessiveSingular`, `AdessivePlural`, `AblativeSingular`, `AblativePlural`, `TranslativeSingular`, `TranslativePlural`, `EssiveSingular`, `EssivePlural`, `ComitativeSingular`, `ComitativePlural`, `AbessiveSingular`, `AbessivePlural`, `ProlativeSingular`, `ProlativePlural`, `InstructiveSingular`, `InstructivePlural`
 

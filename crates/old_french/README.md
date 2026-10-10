@@ -23,11 +23,11 @@ to the caller. Editorial accents (é, ë, ï) are optional on input.
 
 | Part of speech | Entries | Cells | Edits | Classes | Tree nodes | Lexicon |
 |---|---|---|---|---|---|---|
-| noun | 4583 | 4 | 145 | 181 | 227 | 1126 |
-| adj | 786 | 13 | 90 | 109 | 58 | 300 |
-| verb | 1960 | 47 | 7351 | 867 | 240 | 428 |
+| noun | 4583 | 4 | 112 | 158 | 270 | 1138 |
+| adj | 786 | 13 | 87 | 105 | 65 | 299 |
+| verb | 1960 | 47 | 7517 | 873 | 256 | 433 |
 
-Model size: 573063 bytes.
+Model size: 574751 bytes.
 
 **noun** cells: `NominativeSingular`, `NominativePlural`, `ObliqueSingular`, `ObliquePlural`
 

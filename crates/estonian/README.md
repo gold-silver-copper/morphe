@@ -31,13 +31,13 @@ and da-infinitives, the des-form and the participles. Compound tenses
 
 | Part of speech | Entries | Cells | Edits | Classes | Tree nodes | Lexicon |
 |---|---|---|---|---|---|---|
-| noun | 4312 | 28 | 4931 | 785 | 527 | 1493 |
-| adj | 690 | 30 | 1588 | 266 | 77 | 329 |
-| verb | 670 | 49 | 1767 | 126 | 47 | 179 |
+| noun | 4312 | 28 | 3918 | 714 | 542 | 1496 |
+| adj | 690 | 30 | 1551 | 264 | 78 | 329 |
+| verb | 670 | 49 | 1724 | 125 | 48 | 179 |
 | pron | 28 | 28 | 1554 | 51 | 3 | 26 |
 | num | 34 | 28 | 447 | 42 | 12 | 21 |
 
-Model size: 753138 bytes.
+Model size: 745367 bytes.
 
 **noun** cells: `NominativeSingular`, `NominativePlural`, `GenitiveSingular`, `GenitivePlural`, `PartitiveSingular`, `PartitivePlural`, `IllativeSingular`, `IllativePlural`, `InessiveSingular`, `InessivePlural`, `ElativeSingular`, `ElativePlural`, `AllativeSingular`, `AllativePlural`, `AdessiveSingular`, `AdessivePlural`, `AblativeSingular`, `AblativePlural`, `TranslativeSingular`, `TranslativePlural`, `TerminativeSingular`, `TerminativePlural`, `EssiveSingular`, `EssivePlural`, `AbessiveSingular`, `AbessivePlural`, `ComitativeSingular`, `ComitativePlural`
 

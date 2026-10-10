@@ -26,7 +26,7 @@ present.
 | adj | 453 | 50 | 383 | 81 | 38 | 73 |
 | verb | 1214 | 80 | 1773 | 254 | 171 | 240 |
 
-Model size: 685493 bytes.
+Model size: 247073 bytes.
 
 **noun** cells: `NominativeSingular`, `NominativePlural`, `VocativeSingular`, `VocativePlural`, `AccusativeSingular`, `AccusativePlural`, `GenitiveSingular`, `GenitivePlural`, `DativeSingular`, `DativePlural`
 

@@ -28,13 +28,13 @@ matching ignores the macrons and dots (ā ṃ ṭ ṇ…).
 
 | Part of speech | Entries | Cells | Edits | Classes | Tree nodes | Lexicon |
 |---|---|---|---|---|---|---|
-| noun | 1413 | 16 | 3472 | 913 | 199 | 790 |
-| adj | 450 | 48 | 2229 | 283 | 82 | 199 |
-| verb | 80 | 84 | 1086 | 100 | 29 | 39 |
-| pron | 20 | 48 | 134 | 32 | 2 | 12 |
-| num | 28 | 48 | 203 | 36 | 6 | 19 |
+| noun | 1413 | 16 | 239 | 126 | 232 | 802 |
+| adj | 450 | 48 | 213 | 57 | 103 | 199 |
+| verb | 80 | 84 | 409 | 70 | 26 | 50 |
+| pron | 20 | 48 | 105 | 31 | 3 | 12 |
+| num | 28 | 48 | 82 | 24 | 22 | 16 |
 
-Model size: 167528 bytes.
+Model size: 102121 bytes.
 
 **noun** cells: `NominativeSingular`, `NominativePlural`, `AccusativeSingular`, `AccusativePlural`, `InstrumentalSingular`, `InstrumentalPlural`, `DativeSingular`, `DativePlural`, `AblativeSingular`, `AblativePlural`, `GenitiveSingular`, `GenitivePlural`, `LocativeSingular`, `LocativePlural`, `VocativeSingular`, `VocativePlural`
 

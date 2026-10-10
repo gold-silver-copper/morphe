@@ -33,13 +33,13 @@ word is often several dictionary words (كتب is kataba "write" and kattaba
 
 | Part of speech | Entries | Cells | Edits | Classes | Tree nodes | Lexicon |
 |---|---|---|---|---|---|---|
-| noun | 15219 | 36 | 35243 | 5130 | 3883 | 11564 |
+| noun | 15219 | 36 | 35187 | 5130 | 3883 | 11564 |
 | adj | 3886 | 48 | 12381 | 1345 | 997 | 3065 |
-| verb | 7269 | 112 | 31490 | 5640 | 1874 | 4998 |
+| verb | 7269 | 112 | 31502 | 5640 | 1874 | 4998 |
 | pron | 73 | 24 | 98 | 29 | 34 | 58 |
 | num | 42 | 72 | 329 | 38 | 10 | 41 |
 
-Model size: 3165603 bytes.
+Model size: 3165546 bytes.
 
 **noun** cells: `IndefiniteNominativeSingular`, `IndefiniteNominativeDual`, `IndefiniteNominativePlural`, `IndefiniteAccusativeSingular`, `IndefiniteAccusativeDual`, `IndefiniteAccusativePlural`, `IndefiniteGenitiveSingular`, `IndefiniteGenitiveDual`, `IndefiniteGenitivePlural`, `IndefinitePausalSingular`, `IndefinitePausalDual`, `IndefinitePausalPlural`, `DefiniteNominativeSingular`, `DefiniteNominativeDual`, `DefiniteNominativePlural`, `DefiniteAccusativeSingular`, `DefiniteAccusativeDual`, `DefiniteAccusativePlural`, `DefiniteGenitiveSingular`, `DefiniteGenitiveDual`, `DefiniteGenitivePlural`, `DefinitePausalSingular`, `DefinitePausalDual`, `DefinitePausalPlural`, `ConstructNominativeSingular`, `ConstructNominativeDual`, `ConstructNominativePlural`, `ConstructAccusativeSingular`, `ConstructAccusativeDual`, `ConstructAccusativePlural`, `ConstructGenitiveSingular`, `ConstructGenitiveDual`, `ConstructGenitivePlural`, `ConstructPausalSingular`, `ConstructPausalDual`, `ConstructPausalPlural`
 

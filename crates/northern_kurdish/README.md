@@ -27,7 +27,7 @@ so verbs are left out.
 |---|---|---|---|---|---|---|
 | noun | 630 | 16 | 84 | 16 | 50 | 204 |
 
-Model size: 17496 bytes.
+Model size: 17504 bytes.
 
 **noun** cells: `NominativeSingular`, `NominativePlural`, `ConstructSingular`, `ConstructPlural`, `ObliqueSingular`, `ObliquePlural`, `DemonstrativeSingular`, `DemonstrativePlural`, `VocativeSingular`, `VocativePlural`, `IndefiniteNominativeSingular`, `IndefiniteNominativePlural`, `IndefiniteConstructSingular`, `IndefiniteConstructPlural`, `IndefiniteObliqueSingular`, `IndefiniteObliquePlural`
 

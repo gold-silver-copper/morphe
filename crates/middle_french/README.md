@@ -26,7 +26,7 @@ Compound tenses are left to the caller: avoir or estre plus
 | adj | 546 | 4 | 60 | 52 | 27 | 110 |
 | verb | 622 | 47 | 1085 | 78 | 24 | 39 |
 
-Model size: 85374 bytes.
+Model size: 85382 bytes.
 
 **noun** cells: `Plural`
 

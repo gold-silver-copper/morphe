@@ -32,7 +32,7 @@ forms are left out as dialectal or archaic.
 | adj | 3137 | 6 | 208 | 218 | 210 | 1113 |
 | verb | 3993 | 7 | 1049 | 1196 | 506 | 1435 |
 
-Model size: 665832 bytes.
+Model size: 304583 bytes.
 
 **noun** cells: `IndefiniteSingular`, `IndefinitePlural`, `DefiniteSingular`, `DefinitePlural`
 

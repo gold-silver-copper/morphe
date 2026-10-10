@@ -27,9 +27,9 @@ vowel length marks.
 | Part of speech | Entries | Cells | Edits | Classes | Tree nodes | Lexicon |
 |---|---|---|---|---|---|---|
 | noun | 320 | 8 | 219 | 119 | 114 | 247 |
-| verb | 519 | 60 | 334 | 14 | 117 | 179 |
+| verb | 519 | 60 | 334 | 14 | 116 | 184 |
 
-Model size: 22484 bytes.
+Model size: 22496 bytes.
 
 **noun** cells: `Plural`, `PossessedFirstSingular`, `PossessedSecondSingular`, `PossessedThirdSingular`, `PossessedFirstPlural`, `PossessedSecondPlural`, `PossessedThirdPlural`, `PossessedImpersonal`
 

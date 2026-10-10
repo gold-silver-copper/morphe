@@ -27,7 +27,7 @@ println!("{}", noun("hestur, hests, hestar", Definiteness::Indefinite, Case::Dat
 | adj | 644 | 39 | 414 | 231 | 80 | 288 |
 | verb | 798 | 13 | 513 | 215 | 103 | 282 |
 
-Model size: 573915 bytes.
+Model size: 277308 bytes.
 
 **noun** cells: `IndefiniteNominativeSingular`, `IndefiniteNominativePlural`, `IndefiniteAccusativeSingular`, `IndefiniteAccusativePlural`, `IndefiniteDativeSingular`, `IndefiniteDativePlural`, `IndefiniteGenitiveSingular`, `IndefiniteGenitivePlural`, `DefiniteNominativeSingular`, `DefiniteNominativePlural`, `DefiniteAccusativeSingular`, `DefiniteAccusativePlural`, `DefiniteDativeSingular`, `DefiniteDativePlural`, `DefiniteGenitiveSingular`, `DefiniteGenitivePlural`
 

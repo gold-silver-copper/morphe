@@ -26,7 +26,7 @@ Macrons are optional on input, and th matches þ and ð.
 | adj | 186 | 4 | 97 | 97 | 41 | 110 |
 | verb | 1653 | 16 | 1070 | 690 | 174 | 727 |
 
-Model size: 112278 bytes.
+Model size: 112286 bytes.
 
 **noun** cells: `Plural`, `GenitiveSingular`, `GenitivePlural`, `DativeSingular`, `DativePlural`
 

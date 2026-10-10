@@ -31,7 +31,7 @@ standard spelling leaves out: input matching ignores the marks, and
 | noun | 346 | 16 | 1971 | 407 | 108 | 192 |
 | verb | 41 | 53 | 766 | 31 | 19 | 17 |
 
-Model size: 91152 bytes.
+Model size: 91160 bytes.
 
 **noun** cells: `NominativeSingular`, `NominativePlural`, `GenitiveSingular`, `GenitivePlural`, `AccusativeSingular`, `AccusativePlural`, `IllativeSingular`, `IllativePlural`, `LocativeSingular`, `LocativePlural`, `ComitativeSingular`, `ComitativePlural`, `AbessiveSingular`, `AbessivePlural`, `Essive`, `Partitive`
 

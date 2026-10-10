@@ -31,7 +31,7 @@ given with confidences. Forms are given without "å" or "har".
 | adj | 3241 | 6 | 150 | 175 | 196 | 1019 |
 | verb | 2961 | 7 | 349 | 613 | 361 | 1347 |
 
-Model size: 589266 bytes.
+Model size: 253008 bytes.
 
 **noun** cells: `IndefiniteSingular`, `IndefinitePlural`, `DefiniteSingular`, `DefinitePlural`
 

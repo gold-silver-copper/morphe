@@ -30,13 +30,13 @@ drop "nas"/"as". Accents are optional on input.
 
 | Part of speech | Entries | Cells | Edits | Classes | Tree nodes | Lexicon |
 |---|---|---|---|---|---|---|
-| noun | 12653 | 18 | 1279 | 1934 | 2930 | 6933 |
+| noun | 12653 | 18 | 1255 | 1925 | 2937 | 6935 |
 | adj | 837 | 14 | 172 | 265 | 246 | 538 |
 | verb | 863 | 33 | 460 | 454 | 255 | 640 |
 | prep | 40 | 14 | 419 | 42 | 5 | 36 |
 | pron | 169 | 14 | 1385 | 154 | 55 | 93 |
 
-Model size: 296026 bytes.
+Model size: 295878 bytes.
 
 **noun** cells: `IndefiniteNominativeSingular`, `IndefiniteNominativePlural`, `IndefiniteGenitiveSingular`, `IndefiniteGenitivePlural`, `IndefiniteDativeSingular`, `IndefiniteDativePlural`, `DefiniteNominativeSingular`, `DefiniteNominativePlural`, `DefiniteGenitiveSingular`, `DefiniteGenitivePlural`, `DefiniteDativeSingular`, `DefiniteDativePlural`, `VocativeSingular`, `VocativePlural`, `MutatedLenition`, `MutatedEclipsis`, `MutatedHProthesis`, `MutatedTProthesis`
 

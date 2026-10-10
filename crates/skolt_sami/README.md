@@ -30,7 +30,7 @@ spelling; Wiktionary's learner marks (ẹ, ˈ) are ignored in input, and
 | noun | 255 | 16 | 1453 | 264 | 57 | 132 |
 | verb | 106 | 42 | 928 | 54 | 24 | 59 |
 
-Model size: 84041 bytes.
+Model size: 84048 bytes.
 
 **noun** cells: `NominativeSingular`, `NominativePlural`, `GenitiveSingular`, `GenitivePlural`, `AccusativeSingular`, `AccusativePlural`, `IllativeSingular`, `IllativePlural`, `LocativeSingular`, `LocativePlural`, `ComitativeSingular`, `ComitativePlural`, `AbessiveSingular`, `AbessivePlural`, `Essive`, `Partitive`
 

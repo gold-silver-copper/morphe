@@ -31,11 +31,11 @@ plural imperative and "gij" forms are left out as archaic or regional.
 |---|---|---|---|---|---|---|
 | noun | 143919 | 2 | 1807 | 3335 | 5552 | 47770 |
 | adj | 18219 | 18 | 327 | 441 | 1172 | 8097 |
-| verb | 13622 | 24 | 4141 | 4265 | 1525 | 8658 |
+| verb | 13622 | 24 | 4141 | 4369 | 1526 | 8658 |
 | det | 23 | 6 | 6 | 7 | 4 | 13 |
 | num | 14 | 6 | 3 | 1 | 2 | 0 |
 
-Model size: 1641168 bytes.
+Model size: 1635037 bytes.
 
 **noun** cells: `Plural`, `Diminutive`
 

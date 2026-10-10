@@ -30,7 +30,7 @@ Input matching ignores the short-vowel marks.
 | adj | 93 | 12 | 69 | 29 | 11 | 34 |
 | verb | 92 | 32 | 560 | 105 | 15 | 70 |
 
-Model size: 34158 bytes.
+Model size: 34167 bytes.
 
 **noun** cells: `DirectSingular`, `DirectPlural`, `ObliqueSingular`, `ObliquePlural`, `VocativeSingular`, `VocativePlural`
 

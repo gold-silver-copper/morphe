@@ -31,7 +31,7 @@ and left out. Input matching ignores the broken-tone apostrophe (’).
 | pron | 19 | 16 | 222 | 31 | 2 | 16 |
 | num | 46 | 16 | 230 | 35 | 10 | 22 |
 
-Model size: 240110 bytes.
+Model size: 240120 bytes.
 
 **noun** cells: `NominativeSingular`, `NominativePlural`, `GenitiveSingular`, `GenitivePlural`, `PartitiveSingular`, `PartitivePlural`, `DativeSingular`, `DativePlural`, `InstrumentalSingular`, `InstrumentalPlural`, `IllativeSingular`, `IllativePlural`, `InessiveSingular`, `InessivePlural`, `ElativeSingular`, `ElativePlural`
 

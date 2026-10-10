@@ -29,10 +29,10 @@ reads s and h as š and ḫ.
 
 | Part of speech | Entries | Cells | Edits | Classes | Tree nodes | Lexicon |
 |---|---|---|---|---|---|---|
-| noun | 100 | 16 | 391 | 102 | 19 | 94 |
-| verb | 96 | 40 | 1832 | 122 | 28 | 73 |
+| noun | 100 | 16 | 243 | 75 | 27 | 94 |
+| verb | 96 | 40 | 1617 | 106 | 31 | 73 |
 
-Model size: 75610 bytes.
+Model size: 72268 bytes.
 
 **noun** cells: `NominativeSingular`, `NominativePlural`, `VocativeSingular`, `VocativePlural`, `AccusativeSingular`, `AccusativePlural`, `GenitiveSingular`, `GenitivePlural`, `DativeLocativeSingular`, `DativeLocativePlural`, `AllativeSingular`, `AllativePlural`, `AblativeSingular`, `AblativePlural`, `InstrumentalSingular`, `InstrumentalPlural`
 

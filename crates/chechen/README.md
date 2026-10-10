@@ -28,7 +28,7 @@ Input may write the palochka as ӏ, I or 1.
 | noun | 358 | 16 | 1686 | 206 | 54 | 240 |
 | num | 24 | 8 | 56 | 16 | 3 | 16 |
 
-Model size: 54715 bytes.
+Model size: 54725 bytes.
 
 **noun** cells: `NominativeSingular`, `NominativePlural`, `GenitiveSingular`, `GenitivePlural`, `DativeSingular`, `DativePlural`, `ErgativeSingular`, `ErgativePlural`, `AllativeSingular`, `AllativePlural`, `InstrumentalSingular`, `InstrumentalPlural`, `LativeSingular`, `LativePlural`, `ComparativeSingular`, `ComparativePlural`
 

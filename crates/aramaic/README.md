@@ -27,11 +27,11 @@ usually written. Words are in Hebrew square script.
 
 | Part of speech | Entries | Cells | Edits | Classes | Tree nodes | Lexicon |
 |---|---|---|---|---|---|---|
-| noun | 1066 | 6 | 94 | 115 | 70 | 504 |
+| noun | 1066 | 6 | 95 | 116 | 68 | 505 |
 | adj | 236 | 12 | 25 | 25 | 15 | 78 |
 | verb | 8 | 28 | 87 | 9 | 2 | 4 |
 
-Model size: 15873 bytes.
+Model size: 15940 bytes.
 
 **noun** cells: `AbsoluteSingular`, `AbsolutePlural`, `ConstructSingular`, `ConstructPlural`, `EmphaticSingular`, `EmphaticPlural`
 

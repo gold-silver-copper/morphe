@@ -27,7 +27,7 @@ Typographic and straight apostrophes are interchangeable on input (c’h = c'h).
 | adj | 44 | 6 | 35 | 30 | 12 | 21 |
 | verb | 62 | 55 | 858 | 47 | 8 | 45 |
 
-Model size: 50372 bytes.
+Model size: 50378 bytes.
 
 **noun** cells: `Plural`, `Singulative`, `Dual`, `MutatedSoft`, `MutatedHard`, `MutatedAspirate`, `MutatedMixed`, `MutatedPluralSoft`, `MutatedPluralHard`, `MutatedPluralAspirate`, `MutatedPluralMixed`
 

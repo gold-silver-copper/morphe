@@ -33,7 +33,7 @@ Wiktionary gives as formulas rather than forms.
 | noun | 6440 | 1 | 193 | 206 | 162 | 1999 |
 | verb | 3254 | 29 | 111 | 52 | 62 | 601 |
 
-Model size: 92665 bytes.
+Model size: 92672 bytes.
 
 **noun** cells: `Plural`
 

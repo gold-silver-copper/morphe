@@ -32,7 +32,7 @@ the gerunds.
 | noun_definite | 180 | 6 | 62 | 16 | 19 | 58 |
 | verb | 55 | 108 | 290 | 64 | 10 | 43 |
 
-Model size: 28004 bytes.
+Model size: 28012 bytes.
 
 **noun** cells: `NominativeSingular`, `NominativePlural`, `GenitiveSingular`, `GenitivePlural`, `DativeSingular`, `DativePlural`, `AblativeSingular`, `AblativePlural`, `InessiveSingular`, `InessivePlural`, `ElativeSingular`, `ElativePlural`, `IllativeSingular`, `IllativePlural`, `LativeSingular`, `LativePlural`, `ProlativeSingular`, `ProlativePlural`, `CausativeSingular`, `CausativePlural`, `TranslativeSingular`, `TranslativePlural`, `AbessiveSingular`, `AbessivePlural`, `ComparativeSingular`, `ComparativePlural`
 

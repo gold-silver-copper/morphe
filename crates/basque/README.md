@@ -34,7 +34,7 @@ verbs are mostly periphrastic, built on these with an auxiliary.
 | pron | 32 | 68 | 2538 | 61 | 2 | 23 |
 | num | 108 | 68 | 137 | 8 | 7 | 19 |
 
-Model size: 179612 bytes.
+Model size: 179620 bytes.
 
 **noun** cells: `AbsolutiveIndefinite`, `AbsolutiveSingular`, `AbsolutivePlural`, `AbsolutiveProximal`, `ErgativeIndefinite`, `ErgativeSingular`, `ErgativePlural`, `ErgativeProximal`, `DativeIndefinite`, `DativeSingular`, `DativePlural`, `DativeProximal`, `GenitiveIndefinite`, `GenitiveSingular`, `GenitivePlural`, `GenitiveProximal`, `ComitativeIndefinite`, `ComitativeSingular`, `ComitativePlural`, `ComitativeProximal`, `CausativeIndefinite`, `CausativeSingular`, `CausativePlural`, `CausativeProximal`, `BenefactiveIndefinite`, `BenefactiveSingular`, `BenefactivePlural`, `BenefactiveProximal`, `InstrumentalIndefinite`, `InstrumentalSingular`, `InstrumentalPlural`, `InstrumentalProximal`, `InessiveIndefinite`, `InessiveSingular`, `InessivePlural`, `InessiveProximal`, `LocativeIndefinite`, `LocativeSingular`, `LocativePlural`, `LocativeProximal`, `AllativeIndefinite`, `AllativeSingular`, `AllativePlural`, `AllativeProximal`, `TerminativeIndefinite`, `TerminativeSingular`, `TerminativePlural`, `TerminativeProximal`, `DirectiveIndefinite`, `DirectiveSingular`, `DirectivePlural`, `DirectiveProximal`, `DestinativeIndefinite`, `DestinativeSingular`, `DestinativePlural`, `DestinativeProximal`, `AblativeIndefinite`, `AblativeSingular`, `AblativePlural`, `AblativeProximal`, `PartitiveIndefinite`, `PartitiveSingular`, `PartitivePlural`, `PartitiveProximal`, `ProlativeIndefinite`, `ProlativeSingular`, `ProlativePlural`, `ProlativeProximal`
 

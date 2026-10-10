@@ -25,7 +25,7 @@ learn from; verbs are left out.
 |---|---|---|---|---|---|---|
 | noun | 643 | 15 | 498 | 76 | 42 | 94 |
 
-Model size: 32544 bytes.
+Model size: 32550 bytes.
 
 **noun** cells: `AbsolutiveSingular`, `AbsolutivePlural`, `ErgativeSingular`, `ErgativePlural`, `InstrumentalSingular`, `InstrumentalPlural`, `AllativeSingular`, `AllativePlural`, `AblativeSingular`, `AblativePlural`, `LocativeSingular`, `LocativePlural`, `ProlativeSingular`, `ProlativePlural`, `Equative`
 

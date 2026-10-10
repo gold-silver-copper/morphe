@@ -29,14 +29,14 @@ modelled: build them from the simple forms.
 | Part of speech | Entries | Cells | Edits | Classes | Tree nodes | Lexicon |
 |---|---|---|---|---|---|---|
 | noun | 222574 | 3 | 2197 | 2820 | 3807 | 56838 |
-| adj | 72997 | 5 | 893 | 692 | 772 | 3119 |
+| adj | 73048 | 5 | 1088 | 1112 | 1020 | 3446 |
 | verb | 30425 | 49 | 3249 | 373 | 437 | 905 |
 | pron | 60 | 4 | 66 | 47 | 10 | 54 |
 | det | 56 | 5 | 49 | 28 | 11 | 25 |
 | article | 8 | 4 | 10 | 6 | 2 | 1 |
 | num | 42 | 4 | 4 | 3 | 6 | 2 |
 
-Model size: 2258628 bytes.
+Model size: 2278738 bytes.
 
 **noun** cells: `Plural`, `CounterpartMasculine`, `CounterpartFeminine`
 

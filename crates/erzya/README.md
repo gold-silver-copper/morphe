@@ -26,7 +26,7 @@ Erzya conjugation tables.
 | noun | 108 | 22 | 38 | 10 | 13 | 15 |
 | noun_definite | 29 | 20 | 59 | 5 | 6 | 8 |
 
-Model size: 8036 bytes.
+Model size: 8044 bytes.
 
 **noun** cells: `NominativeSingular`, `NominativePlural`, `GenitiveSingular`, `GenitivePlural`, `DativeSingular`, `DativePlural`, `AblativeSingular`, `AblativePlural`, `InessiveSingular`, `InessivePlural`, `ElativeSingular`, `ElativePlural`, `IllativeSingular`, `IllativePlural`, `ProlativeSingular`, `ProlativePlural`, `TranslativeSingular`, `TranslativePlural`, `AbessiveSingular`, `AbessivePlural`, `ComparativeSingular`, `ComparativePlural`
 

@@ -27,7 +27,7 @@ are too few to learn from and are left out.
 | pron | 22 | 28 | 86 | 19 | 7 | 8 |
 | num | 9 | 28 | 29 | 5 | 2 | 4 |
 
-Model size: 28084 bytes.
+Model size: 28093 bytes.
 
 **noun** cells: `NominativeSingular`, `NominativePlural`, `GenitiveSingular`, `GenitivePlural`, `DativeSingular`, `DativePlural`, `AccusativeSingular`, `AccusativePlural`, `InstrumentalSingular`, `InstrumentalPlural`, `LocativeSingular`, `LocativePlural`, `VocativeSingular`, `VocativePlural`
 

@@ -31,7 +31,7 @@ participles; compound tenses and negatives are left out.
 | pron | 14 | 46 | 229 | 14 | 4 | 12 |
 | num | 37 | 46 | 270 | 25 | 19 | 24 |
 
-Model size: 304728 bytes.
+Model size: 304738 bytes.
 
 **noun** cells: `NominativeSingular`, `NominativePlural`, `AccusativeSingular`, `AccusativePlural`, `GenitiveSingular`, `GenitivePlural`, `PartitiveSingular`, `PartitivePlural`, `EssiveInstructiveSingular`, `EssiveInstructivePlural`, `TranslativeSingular`, `TranslativePlural`, `InessiveSingular`, `InessivePlural`, `ElativeSingular`, `ElativePlural`, `IllativeSingular`, `IllativePlural`, `AdessiveSingular`, `AdessivePlural`, `AblativeSingular`, `AblativePlural`, `AllativeSingular`, `AllativePlural`, `AbessiveSingular`, `AbessivePlural`, `ComitativeSingular`, `ComitativePlural`, `ProlativeSingular`, `ProlativePlural`, `ApproximativeISingular`, `ApproximativeIPlural`, `ApproximativeIISingular`, `ApproximativeIIPlural`, `EgressiveSingular`, `EgressivePlural`, `TerminativeISingular`, `TerminativeIPlural`, `TerminativeIISingular`, `TerminativeIIPlural`, `TerminativeIIISingular`, `TerminativeIIIPlural`, `AdditiveISingular`, `AdditiveIPlural`, `AdditiveIISingular`, `AdditiveIIPlural`
 

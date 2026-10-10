@@ -36,7 +36,7 @@ pronouns are separate words. Definite forms include the article.
 | adj | 4255 | 15 | 650 | 1454 | 872 | 1728 |
 | verb | 1558 | 63 | 5334 | 1005 | 391 | 810 |
 
-Model size: 715173 bytes.
+Model size: 715180 bytes.
 
 **noun** cells: `GenitiveSingular`, `Plural`, `DefiniteNominativeSingular`, `DefiniteNominativePlural`, `DefiniteGenitiveSingular`, `DefiniteGenitivePlural`, `DefiniteDativeSingular`, `DefiniteDativePlural`, `Lenition`, `Eclipsis`
 

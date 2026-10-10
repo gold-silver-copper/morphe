@@ -25,7 +25,7 @@ line gives.
 | noun | 249 | 12 | 319 | 100 | 26 | 123 |
 | verb | 190 | 2 | 20 | 26 | 17 | 67 |
 
-Model size: 19154 bytes.
+Model size: 19161 bytes.
 
 **noun** cells: `NominativeSingular`, `NominativePlural`, `GenitiveSingular`, `GenitivePlural`, `DativeSingular`, `DativePlural`, `AccusativeSingular`, `AccusativePlural`, `LocativeSingular`, `LocativePlural`, `AblativeSingular`, `AblativePlural`
 

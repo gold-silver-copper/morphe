@@ -29,14 +29,14 @@ accent is kept (`darò`, `città`).
 | Part of speech | Entries | Cells | Edits | Classes | Tree nodes | Lexicon |
 |---|---|---|---|---|---|---|
 | noun | 71139 | 3 | 751 | 864 | 1477 | 11128 |
-| adj | 28999 | 6 | 222 | 190 | 371 | 1538 |
+| adj | 28999 | 6 | 223 | 190 | 371 | 1538 |
 | verb | 14886 | 58 | 2405 | 826 | 476 | 2034 |
 | pron | 90 | 4 | 39 | 33 | 19 | 30 |
 | det | 54 | 4 | 14 | 15 | 8 | 15 |
 | article | 9 | 4 | 31 | 16 | 2 | 2 |
 | num | 9 | 1 | 3 | 3 | 2 | 1 |
 
-Model size: 907736 bytes.
+Model size: 907491 bytes.
 
 **noun** cells: `Plural`, `CounterpartMasculine`, `CounterpartFeminine`
 

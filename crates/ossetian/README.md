@@ -24,7 +24,7 @@ conjugation tables for too few verbs to learn from.
 |---|---|---|---|---|---|---|
 | noun | 11 | 18 | 83 | 8 | 2 | 8 |
 
-Model size: 2073 bytes.
+Model size: 2080 bytes.
 
 **noun** cells: `NominativeSingular`, `NominativePlural`, `GenitiveSingular`, `GenitivePlural`, `DativeSingular`, `DativePlural`, `AllativeSingular`, `AllativePlural`, `AblativeSingular`, `AblativePlural`, `InessiveSingular`, `InessivePlural`, `AdessiveSingular`, `AdessivePlural`, `EquativeSingular`, `EquativePlural`, `ComitativeSingular`, `ComitativePlural`
 
