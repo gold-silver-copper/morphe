@@ -26,13 +26,13 @@ get their stress predicted from similar words, which is often wrong.
 
 | Part of speech | Entries | Cells | Edits | Classes | Tree nodes | Lexicon |
 |---|---|---|---|---|---|---|
-| noun | 28413 | 18 | 11068 | 3925 | 3858 | 13556 |
-| adj | 9764 | 54 | 1467 | 649 | 1164 | 4180 |
-| verb | 12824 | 25 | 4314 | 2259 | 2011 | 5804 |
-| pron | 99 | 48 | 3005 | 139 | 54 | 74 |
-| num | 151 | 36 | 308 | 131 | 30 | 104 |
+| noun | 133261 | 18 | 34958 | 11566 | 16330 | 66291 |
+| adj | 35728 | 54 | 15986 | 7425 | 5909 | 21698 |
+| verb | 48548 | 25 | 11094 | 6588 | 6453 | 24769 |
+| pron | 400 | 48 | 3302 | 205 | 90 | 225 |
+| num | 235 | 36 | 689 | 210 | 51 | 156 |
 
-Model size: 4759077 bytes.
+Model size: 18484766 bytes.
 
 **noun** cells: `NominativeSingular`, `NominativePlural`, `GenitiveSingular`, `GenitivePlural`, `DativeSingular`, `DativePlural`, `AccusativeSingular`, `AccusativePlural`, `InstrumentalSingular`, `InstrumentalPlural`, `PrepositionalSingular`, `PrepositionalPlural`, `PartitiveSingular`, `PartitivePlural`, `LocativeSingular`, `LocativePlural`, `VocativeSingular`, `VocativePlural`
 

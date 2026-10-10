@@ -72,6 +72,13 @@ dependencies = [
 ]
 
 [[package]]
+name = "bengali"
+version = "0.1.0"
+dependencies = [
+ "morphe",
+]
+
+[[package]]
 name = "breton"
 version = "0.1.0"
 dependencies = [
@@ -307,7 +314,28 @@ dependencies = [
 ]
 
 [[package]]
+name = "limburgish"
+version = "0.1.0"
+dependencies = [
+ "morphe",
+]
+
+[[package]]
 name = "lithuanian"
+version = "0.1.0"
+dependencies = [
+ "morphe",
+]
+
+[[package]]
+name = "low_german"
+version = "0.1.0"
+dependencies = [
+ "morphe",
+]
+
+[[package]]
+name = "lule_sami"
 version = "0.1.0"
 dependencies = [
  "morphe",
@@ -332,6 +360,13 @@ name = "memchr"
 version = "2.8.3"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "cf8baf1c55e62ffcace7a9f06f4bd9cd3f0c4beb022d3b367256b91b87513d98"
+
+[[package]]
+name = "middle_dutch"
+version = "0.1.0"
+dependencies = [
+ "morphe",
+]
 
 [[package]]
 name = "middle_english"
@@ -437,6 +472,13 @@ dependencies = [
 ]
 
 [[package]]
+name = "old_armenian"
+version = "0.1.0"
+dependencies = [
+ "morphe",
+]
+
+[[package]]
 name = "old_church_slavonic"
 version = "0.1.0"
 dependencies = [
@@ -527,6 +569,13 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "985e7ec9bb745e6ce6535b544d84d6cd6f7ad8bd711c398938ae983b91a766d9"
 dependencies = [
  "unicode-ident",
+]
+
+[[package]]
+name = "punjabi"
+version = "0.1.0"
+dependencies = [
+ "morphe",
 ]
 
 [[package]]
