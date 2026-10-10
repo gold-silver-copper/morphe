@@ -53,6 +53,19 @@ pub fn learn(ex: &Extractor, threads: usize) -> (Model, Vec<Stats>) {
     }
     mark_bases.sort_unstable();
     mark_bases.dedup();
+    let mut alphabet: Vec<char> = ex.records.iter().flatten().flat_map(|r| r.canon.chars()).filter(|c| *c != ' ').collect();
+    alphabet.sort_unstable();
+    alphabet.dedup();
+    let marked = |c: &char| spec.marks.contains(c) || spec.unmark.iter().any(|u| u.0 == *c);
+    let max_marks = ex
+        .records
+        .iter()
+        .flatten()
+        .flat_map(|r| std::iter::once(&r.canon).chain(r.cells.iter().flatten().map(|(f, _)| f)))
+        .filter(|w| !w.contains(' '))
+        .map(|w| w.chars().filter(marked).count() as u32)
+        .max()
+        .unwrap_or(0);
     let mut model =
         Model {
             name: spec.name.clone(),
@@ -60,6 +73,8 @@ pub fn learn(ex: &Extractor, threads: usize) -> (Model, Vec<Stats>) {
             unmark: spec.unmark.clone(),
             fold: spec.fold.clone(),
             fold_strs: spec.fold_strs.clone(),
+            alphabet,
+            max_marks,
             mark_bases,
             pos: Vec::new(),
         };
@@ -101,7 +116,7 @@ pub fn learn(ex: &Extractor, threads: usize) -> (Model, Vec<Stats>) {
         // unknown phrase is inflected through its head word.
         let single = |r: &&Record| !r.plain.contains(' ');
         let para_data: Vec<(String, u32, f64)> =
-            recs.iter().zip(&full).filter(|(r, _)| single(r)).map(|(r, c)| (r.plain.clone(), class_id[c], 1.0)).collect();
+            recs.iter().zip(&full).filter(|(r, _)| single(r)).map(|(r, c)| (r.canon.clone(), class_id[c], 1.0)).collect();
         let rest_data: Vec<(String, u32, f64)> =
             recs.iter().zip(&rest).filter(|(r, _)| single(r)).map(|(r, e)| (r.plain.clone(), restore_id[e], 1.0)).collect();
         let inh_data: Vec<Vec<(String, u32, f64)>> = (0..ps.inherent.len())

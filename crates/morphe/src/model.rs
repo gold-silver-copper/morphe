@@ -21,6 +21,12 @@ pub struct Model {
     /// Spellings users write interchangeably, longer than one letter
     /// (ß → ss), applied after `fold` when matching.
     pub fold_strs: Vec<(String, String)>,
+    /// Every letter of the dictionary spellings: a typed spelling is used as
+    /// given only when it is written in these letters (same encoding).
+    pub alphabet: Vec<char>,
+    /// Most marked letters (marks and marked letters) any attested form has:
+    /// generated forms with more are rejected.
+    pub max_marks: u32,
     /// Letters that marks follow in the data (vowels, for stress).
     pub mark_bases: Vec<char>,
     pub pos: Vec<Pos>,
@@ -269,8 +275,12 @@ impl Model {
         k
     }
 
-    /// Every mark follows a letter that carries marks in the data.
+    /// Every mark follows a letter that carries marks in the data, and there
+    /// are no more marked letters than the data ever has.
     fn marks_placed(&self, s: &str) -> bool {
+        if self.max_marks > 0 && self.count_marks(s) > self.max_marks {
+            return false;
+        }
         let mut prev = None;
         for c in s.chars() {
             if self.marks.contains(&c) && !prev.is_some_and(|p| self.mark_bases.contains(&p)) {
@@ -279,6 +289,11 @@ impl Model {
             prev = Some(c);
         }
         true
+    }
+
+    /// Marks plus marked letters in a word.
+    pub fn count_marks(&self, s: &str) -> u32 {
+        s.chars().filter(|c| self.marks.contains(c) || self.unmark.iter().any(|u| u.0 == *c)).count() as u32
     }
 
     fn query(&self, input: &str) -> Query {
@@ -294,7 +309,10 @@ impl Model {
         };
         let lower = lemma.to_lowercase();
         let plain = self.strip(&lower);
-        let typed = (lower != plain && self.marks_placed(&lower)).then_some(lower);
+        let typed = (lower != plain
+            && self.marks_placed(&lower)
+            && (self.alphabet.is_empty() || lower.chars().all(|c| c == ' ' || self.alphabet.contains(&c))))
+        .then_some(lower);
         Query { casing, key: self.key(lemma), plain, typed, parts: parts.map(String::from).collect() }
     }
 
@@ -403,7 +421,9 @@ impl Model {
                     })
                     && cites(&canon, class)
             };
-            let mut classes = pos.paradigm.predict(&q.plain, applies);
+            // The class tree reads the dictionary spelling, marks included:
+            // where the stress or accent falls often decides the class.
+            let mut classes = pos.paradigm.predict(&canon, applies);
             if classes.is_empty() && !q.parts.is_empty() {
                 // The citation rules out every class the tree knows here:
                 // search all classes.
@@ -449,7 +469,7 @@ impl Model {
         let mut memo: std::collections::HashMap<u32, bool> = std::collections::HashMap::new();
         let (class, _) = *pos
             .paradigm
-            .predict(plain, |c| {
+            .predict(&canon, |c| {
                 pos.classes.get(c as usize).is_some_and(|cells| {
                     cells.iter().flatten().all(|&(e, _)| {
                         *memo.entry(e).or_insert_with(|| {
@@ -766,6 +786,9 @@ impl Model {
                 }
             }
         }
+        w.s("alphabet-1");
+        w.s(&self.alphabet.iter().collect::<String>());
+        w.u(u64::from(self.max_marks));
         w.s("fold-strs-1");
         w.u(self.fold_strs.len() as u64);
         for (a, b) in &self.fold_strs {
@@ -865,7 +888,8 @@ impl Model {
                 reverse: Vec::new(),
             })
         })?;
-        let mut model = Model { name, marks, unmark, fold, fold_strs: Vec::new(), mark_bases, pos };
+        let mut model =
+            Model { name, marks, unmark, fold, fold_strs: Vec::new(), alphabet: Vec::new(), max_marks: 0, mark_bases, pos };
         if r.s().as_deref() == Some("analysis-1") {
             for p in &mut model.pos {
                 let (Some(t), Some(inv)) = (read_tree(&mut r), r.vec(|r| Some((r.u32()?, r.edit()?)))) else { break };
@@ -885,6 +909,11 @@ impl Model {
                 let Some(rev) = rev else { break };
                 p.reverse = rev;
             }
+            tag = r.s();
+        }
+        if tag.as_deref() == Some("alphabet-1") {
+            model.alphabet = r.s().map(|a| a.chars().collect()).unwrap_or_default();
+            model.max_marks = r.u32().unwrap_or(0);
             tag = r.s();
         }
         if tag.as_deref() == Some("fold-strs-1") {
