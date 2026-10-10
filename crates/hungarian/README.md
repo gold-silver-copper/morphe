@@ -34,11 +34,11 @@ whatever parts fit and predicted for the rest.
 |---|---|---|---|---|---|---|
 | noun | 21627 | 46 | 2797 | 724 | 1111 | 2550 |
 | adj | 9630 | 36 | 864 | 394 | 416 | 2216 |
-| verb | 4723 | 63 | 1690 | 504 | 358 | 1174 |
-| pron | 235 | 34 | 328 | 47 | 38 | 53 |
+| verb | 5206 | 63 | 1914 | 589 | 390 | 1350 |
+| pron | 243 | 34 | 428 | 55 | 38 | 61 |
 | num | 334 | 34 | 380 | 49 | 46 | 36 |
 
-Model size: 2731244 bytes.
+Model size: 1009024 bytes.
 
 **noun** cells: `NominativeSingular`, `NominativePlural`, `AccusativeSingular`, `AccusativePlural`, `DativeSingular`, `DativePlural`, `InstrumentalSingular`, `InstrumentalPlural`, `CausalFinalSingular`, `CausalFinalPlural`, `TranslativeSingular`, `TranslativePlural`, `TerminativeSingular`, `TerminativePlural`, `EssiveFormalSingular`, `EssiveFormalPlural`, `InessiveSingular`, `InessivePlural`, `SuperessiveSingular`, `SuperessivePlural`, `AdessiveSingular`, `AdessivePlural`, `IllativeSingular`, `IllativePlural`, `SublativeSingular`, `SublativePlural`, `AllativeSingular`, `AllativePlural`, `ElativeSingular`, `ElativePlural`, `DelativeSingular`, `DelativePlural`, `AblativeSingular`, `AblativePlural`, `PossessiveFirstSingularOne`, `PossessiveFirstSingularMany`, `PossessiveSecondSingularOne`, `PossessiveSecondSingularMany`, `PossessiveThirdSingularOne`, `PossessiveThirdSingularMany`, `PossessiveFirstPluralOne`, `PossessiveFirstPluralMany`, `PossessiveSecondPluralOne`, `PossessiveSecondPluralMany`, `PossessiveThirdPluralOne`, `PossessiveThirdPluralMany`
 

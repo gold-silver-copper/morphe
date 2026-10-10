@@ -97,6 +97,14 @@ impl Language for Hungarian {
         e.forms.extend(retagged.into_iter().map(|(form, t)| Form { form, tags: tags(&t), source: Some("conjugation".into()) }));
     }
 
+    /// Personal pronoun tables list one number only and don't tag it.
+    fn retag(&self, pos: &PosSpec, form: &str, tags: &mut Vec<String>) {
+        let numbered = tags.iter().any(|t| t == "singular" || t == "plural");
+        if pos.name == "pron" && !form.is_empty() && !numbered && !tags.iter().any(|t| t == "possessive") {
+            tags.push("singular".into());
+        }
+    }
+
     fn samples(&self) -> Vec<&'static str> {
         vec!["ház", "ló", "olvas", "eszik", "szép", "kert", "blorgol", "zsimbók"]
     }
@@ -230,7 +238,8 @@ fn sections<'a>(run: &[&'a Slot]) -> Vec<Section<'a>> {
             cur.lak = Some(s);
         } else if cur.lak.is_some() && is_lak(s) {
             // A second -lak cell is an archaic variant.
-        } else if !cur.def.is_empty() || cur.lak.is_some() {
+        } else if !cur.def.is_empty() || cur.lak.is_some() || cur.indef.len() == 6 {
+            // Intransitive tables have no definite row to end a tense.
             out.push(std::mem::replace(&mut cur, Section { indef: vec![s], def: Vec::new(), lak: None }));
         } else {
             cur.indef.push(s);
@@ -295,7 +304,16 @@ fn read_conjugation(forms: &[&Form]) -> Vec<(String, String)> {
 
     // Present and past open the table.
     let Some((first, _)) = runs.first() else { return out };
-    let first = sections(first);
+    let mut first = sections(first);
+    // Intransitive tables put a note ("definite forms are not used")
+    // between the present and the past.
+    let volna = runs.iter().position(|r| r.1.contains("volna"));
+    let legyen = runs.iter().position(|r| r.1.contains("légyen"));
+    if first.len() == 1 && volna != Some(1) && legyen != Some(1) {
+        if let Some(s) = runs.get(1).and_then(|r| sections(&r.0).into_iter().next()) {
+            first.push(s);
+        }
+    }
     let present_def: Vec<&Slot> = first.first().map(|s| s.def.clone()).unwrap_or_default();
     if let Some(s) = first.first() {
         put(s, "present", &[], &mut emit);
@@ -305,8 +323,6 @@ fn read_conjugation(forms: &[&Form]) -> Vec<(String, String)> {
     }
     // The conditional is the last tense before the note on "volna", the
     // subjunctive the tense before the note on "légyen".
-    let volna = runs.iter().position(|r| r.1.contains("volna"));
-    let legyen = runs.iter().position(|r| r.1.contains("légyen"));
     if let Some(i) = volna {
         if let Some(s) = runs.get(i).map(|r| sections(&r.0)).and_then(|v| v.into_iter().last()) {
             put(&s, "conditional", &[], &mut emit);
