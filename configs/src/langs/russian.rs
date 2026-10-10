@@ -79,6 +79,10 @@ impl Language for Russian {
         s
     }
 
+    fn extra_code(&self) -> String {
+        include_str!("russian_extra.rs").into()
+    }
+
     fn samples(&self) -> Vec<&'static str> {
         vec!["кракозябра", "путь, пути", "писать", "бузять", "кофе", "книг", "большой", "тетрадь"]
     }
