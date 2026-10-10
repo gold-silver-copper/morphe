@@ -54,7 +54,7 @@ impl Language for Portuguese {
                     group("PersonalInfinitive", "infinitive !impersonal", "Person Number"),
                     group("Gerund", "gerund", ""),
                     group("Participle", "participle past !short-form", "Gender Number"),
-                    group("ShortParticiple", "participle past short-form", "").declines("adj", ""),
+                    group("ShortParticiple", "participle past short-form !feminine !plural", "").declines("adj", ""),
                     group("Indicative", indicative, "Tense Person Number"),
                     group("Conditional", "conditional", "Person Number"),
                     group("Subjunctive", "subjunctive", "Tense[Present,Imperfect,Future] Person Number"),
