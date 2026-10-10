@@ -24,11 +24,11 @@ without their article. Compound tenses are left to the caller.
 
 | Part of speech | Entries | Cells | Edits | Classes | Tree nodes | Lexicon |
 |---|---|---|---|---|---|---|
-| noun | 345 | 8 | 183 | 140 | 58 | 216 |
+| noun | 345 | 8 | 183 | 140 | 57 | 216 |
 | adj | 38 | 50 | 142 | 36 | 9 | 19 |
-| verb | 180 | 28 | 822 | 157 | 69 | 125 |
+| verb | 180 | 28 | 822 | 157 | 68 | 122 |
 
-Model size: 165233 bytes.
+Model size: 67848 bytes.
 
 **noun** cells: `NominativeSingular`, `NominativePlural`, `GenitiveSingular`, `GenitivePlural`, `DativeSingular`, `DativePlural`, `AccusativeSingular`, `AccusativePlural`
 

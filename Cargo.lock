@@ -44,6 +44,13 @@ dependencies = [
 ]
 
 [[package]]
+name = "aromanian"
+version = "0.1.0"
+dependencies = [
+ "morphe",
+]
+
+[[package]]
 name = "azerbaijani"
 version = "0.1.0"
 dependencies = [
@@ -104,6 +111,13 @@ name = "cfg-if"
 version = "1.0.5"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "4e7648175b45a9a48536d676f68d918270699102aa8dab5496df06904c914600"
+
+[[package]]
+name = "classical_syriac"
+version = "0.1.0"
+dependencies = [
+ "morphe",
+]
 
 [[package]]
 name = "corsican"
@@ -217,6 +231,13 @@ dependencies = [
 ]
 
 [[package]]
+name = "gagauz"
+version = "0.1.0"
+dependencies = [
+ "morphe",
+]
+
+[[package]]
 name = "galician"
 version = "0.1.0"
 dependencies = [
@@ -321,6 +342,20 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "8f42a60cbdf9a97f5d2305f08a87dc4e09308d1276d28c869c684d7777685682"
 
 [[package]]
+name = "kannada"
+version = "0.1.0"
+dependencies = [
+ "morphe",
+]
+
+[[package]]
+name = "karelian"
+version = "0.1.0"
+dependencies = [
+ "morphe",
+]
+
+[[package]]
 name = "kazakh"
 version = "0.1.0"
 dependencies = [
@@ -336,6 +371,13 @@ dependencies = [
 
 [[package]]
 name = "ladin"
+version = "0.1.0"
+dependencies = [
+ "morphe",
+]
+
+[[package]]
+name = "latgalian"
 version = "0.1.0"
 dependencies = [
  "morphe",
@@ -370,6 +412,13 @@ dependencies = [
 ]
 
 [[package]]
+name = "livonian"
+version = "0.1.0"
+dependencies = [
+ "morphe",
+]
+
+[[package]]
 name = "low_german"
 version = "0.1.0"
 dependencies = [
@@ -392,6 +441,13 @@ dependencies = [
 
 [[package]]
 name = "macedonian"
+version = "0.1.0"
+dependencies = [
+ "morphe",
+]
+
+[[package]]
+name = "malayalam"
 version = "0.1.0"
 dependencies = [
  "morphe",
@@ -480,6 +536,13 @@ dependencies = [
 
 [[package]]
 name = "morphe-wasm"
+version = "0.1.0"
+dependencies = [
+ "morphe",
+]
+
+[[package]]
+name = "neapolitan"
 version = "0.1.0"
 dependencies = [
  "morphe",
@@ -823,6 +886,13 @@ dependencies = [
 ]
 
 [[package]]
+name = "telugu"
+version = "0.1.0"
+dependencies = [
+ "morphe",
+]
+
+[[package]]
 name = "turkish"
 version = "0.1.0"
 dependencies = [
@@ -864,7 +934,28 @@ dependencies = [
 ]
 
 [[package]]
+name = "uyghur"
+version = "0.1.0"
+dependencies = [
+ "morphe",
+]
+
+[[package]]
 name = "uzbek"
+version = "0.1.0"
+dependencies = [
+ "morphe",
+]
+
+[[package]]
+name = "venetan"
+version = "0.1.0"
+dependencies = [
+ "morphe",
+]
+
+[[package]]
+name = "veps"
 version = "0.1.0"
 dependencies = [
  "morphe",

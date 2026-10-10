@@ -27,7 +27,7 @@ participle. Nouns have no grammatical gender.
 | adj | 727 | 5 | 99 | 107 | 58 | 173 |
 | verb | 511 | 4 | 113 | 149 | 60 | 254 |
 
-Model size: 93775 bytes.
+Model size: 50934 bytes.
 
 **noun** cells: `Plural`, `Diminutive`
 

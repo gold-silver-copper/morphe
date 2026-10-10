@@ -36,7 +36,7 @@ drop "nas"/"as". Accents are optional on input.
 | prep | 40 | 14 | 447 | 43 | 5 | 36 |
 | pron | 169 | 14 | 1378 | 154 | 58 | 92 |
 
-Model size: 660170 bytes.
+Model size: 258149 bytes.
 
 **noun** cells: `IndefiniteNominativeSingular`, `IndefiniteNominativePlural`, `IndefiniteGenitiveSingular`, `IndefiniteGenitivePlural`, `IndefiniteDativeSingular`, `IndefiniteDativePlural`, `DefiniteNominativeSingular`, `DefiniteNominativePlural`, `DefiniteGenitiveSingular`, `DefiniteGenitivePlural`, `DefiniteDativeSingular`, `DefiniteDativePlural`, `VocativeSingular`, `VocativePlural`, `MutatedLenition`, `MutatedEclipsis`, `MutatedHProthesis`, `MutatedTProthesis`
 

@@ -35,7 +35,7 @@ on input.
 | num | 222 | 4 | 35 | 22 | 14 | 26 |
 | pron | 13 | 4 | 23 | 13 | 2 | 5 |
 
-Model size: 2040576 bytes.
+Model size: 892829 bytes.
 
 **noun** cells: `Plural`, `Singulative`, `MutatedSoft`, `MutatedNasal`, `MutatedAspirate`, `MutatedHProthesis`
 
@@ -43,7 +43,7 @@ Citation form: `Lemma, Plural` (comma-separated; parts you give are output exact
 
 **adj** cells: `Feminine`, `Plural`, `Equative`, `Comparative`, `Superlative`, `MutatedSoft`, `MutatedNasal`, `MutatedAspirate`, `MutatedHProthesis`
 
-Citation form: `Lemma, FormFeminine, FormPlural` (comma-separated; parts you give are output exactly and narrow the prediction).
+Citation form: `Lemma, Feminine, Plural` (comma-separated; parts you give are output exactly and narrow the prediction).
 
 **verb** cells: `PresentFirstSingular`, `PresentSecondSingular`, `PresentThirdSingular`, `PresentFirstPlural`, `PresentSecondPlural`, `PresentThirdPlural`, `PresentImpersonal`, `FutureFirstSingular`, `FutureSecondSingular`, `FutureThirdSingular`, `FutureFirstPlural`, `FutureSecondPlural`, `FutureThirdPlural`, `FutureImpersonal`, `PreteriteFirstSingular`, `PreteriteSecondSingular`, `PreteriteThirdSingular`, `PreteriteFirstPlural`, `PreteriteSecondPlural`, `PreteriteThirdPlural`, `PreteriteImpersonal`, `ImperfectFirstSingular`, `ImperfectSecondSingular`, `ImperfectThirdSingular`, `ImperfectFirstPlural`, `ImperfectSecondPlural`, `ImperfectThirdPlural`, `ImperfectImpersonal`, `ConditionalFirstSingular`, `ConditionalSecondSingular`, `ConditionalThirdSingular`, `ConditionalFirstPlural`, `ConditionalSecondPlural`, `ConditionalThirdPlural`, `ConditionalImpersonal`, `PluperfectFirstSingular`, `PluperfectSecondSingular`, `PluperfectThirdSingular`, `PluperfectFirstPlural`, `PluperfectSecondPlural`, `PluperfectThirdPlural`, `PluperfectImpersonal`, `SubjunctiveFirstSingular`, `SubjunctiveSecondSingular`, `SubjunctiveThirdSingular`, `SubjunctiveFirstPlural`, `SubjunctiveSecondPlural`, `SubjunctiveThirdPlural`, `SubjunctiveImpersonal`, `ImperativeFirstSingular`, `ImperativeSecondSingular`, `ImperativeThirdSingular`, `ImperativeFirstPlural`, `ImperativeSecondPlural`, `ImperativeThirdPlural`, `ImperativeImpersonal`, `Participle`, `MutatedSoft`, `MutatedNasal`, `MutatedAspirate`, `MutatedHProthesis`
 

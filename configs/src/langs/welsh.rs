@@ -84,7 +84,7 @@ impl Language for Welsh {
                 .initial(2)
                 .head_first(),
             pos("adj", "adj", vec![group("", "!first-person", "Form"), mutated()])
-                .citation("Lemma FormFeminine FormPlural")
+                .citation("Lemma Feminine Plural")
                 .initial(2),
             pos(
                 "verb",
