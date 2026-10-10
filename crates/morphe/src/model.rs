@@ -163,16 +163,26 @@ impl Tree {
         out
     }
 
-    /// The deepest distribution whose labels pass `keep`, renormalized.
+    /// The deepest distribution where most of the mass passes `keep`,
+    /// renormalized. A node where only stragglers apply (its main classes
+    /// can't apply to this word) defers to a shallower one; if none
+    /// qualifies, the deepest with anything applicable is used.
     pub fn predict(&self, word: &str, mut keep: impl FnMut(u32) -> bool) -> Vec<(u32, f32)> {
+        let mut fallback: Option<Vec<(u32, f32)>> = None;
         for dist in self.path(word) {
+            let all: f32 = dist.iter().map(|x| x.1).sum();
             let kept: Vec<(u32, f32)> = dist.iter().copied().filter(|(l, _)| keep(*l)).collect();
             let total: f32 = kept.iter().map(|x| x.1).sum();
-            if total > 0.0 {
-                return kept.into_iter().map(|(l, p)| (l, p / total)).collect();
+            if total <= 0.0 {
+                continue;
             }
+            let norm: Vec<(u32, f32)> = kept.into_iter().map(|(l, p)| (l, p / total)).collect();
+            if total >= 0.5 * all {
+                return norm;
+            }
+            fallback.get_or_insert(norm);
         }
-        Vec::new()
+        fallback.unwrap_or_default()
     }
 }
 
