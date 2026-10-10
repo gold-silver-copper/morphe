@@ -1,0 +1,14 @@
+[package]
+name = "middle_french"
+version = "0.1.0"
+description = "MiddleFrench inflection learned from Wiktionary: any word, attested or not, with confidences"
+edition = "2024"
+license = "(MIT OR Apache-2.0) AND CC-BY-SA-4.0"
+repository = "https://github.com/gold-silver-copper/morphe"
+readme = "README.md"
+keywords = ["inflection", "morphology", "middlefrench", "wiktionary", "linguistics"]
+categories = ["text-processing"]
+include = ["src/**", "README.md", "Cargo.toml"]
+
+[dependencies]
+morphe = { path = "../morphe", version = "0.1" }
