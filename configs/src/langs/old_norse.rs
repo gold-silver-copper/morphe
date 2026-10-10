@@ -1,4 +1,4 @@
-use morphe_train::kaikki::Entry;
+use morphe_train::kaikki::{Entry, Form};
 use morphe_train::spec::*;
 
 pub struct OldNorse;
@@ -69,6 +69,11 @@ impl Language for OldNorse {
     }
 
     fn prepare(&self, e: &mut Entry) {
+        // Headword lines carry no canonical form; the title keeps its length
+        // marks (bók, stórr), which the plain key drops.
+        if !e.forms.iter().any(|f| has(&f.tags, "canonical")) {
+            e.forms.push(Form { form: e.word.clone(), tags: vec!["canonical".into()], source: None });
+        }
         // A verb's second table is the mediopassive (takask); an adjective's
         // table marked "weak" is the weak declension.
         let mut tables = 0;

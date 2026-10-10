@@ -25,11 +25,11 @@ optional on input, and ö may be typed for ǫ.
 
 | Part of speech | Entries | Cells | Edits | Classes | Tree nodes | Lexicon |
 |---|---|---|---|---|---|---|
-| noun | 2122 | 16 | 3441 | 823 | 366 | 1099 |
-| adj | 163 | 50 | 234 | 99 | 37 | 86 |
-| verb | 644 | 60 | 3597 | 474 | 101 | 428 |
+| noun | 2122 | 16 | 1206 | 530 | 470 | 1089 |
+| adj | 163 | 50 | 155 | 80 | 35 | 89 |
+| verb | 644 | 60 | 2661 | 400 | 146 | 419 |
 
-Model size: 357212 bytes.
+Model size: 333497 bytes.
 
 **noun** cells: `IndefiniteNominativeSingular`, `IndefiniteNominativePlural`, `IndefiniteAccusativeSingular`, `IndefiniteAccusativePlural`, `IndefiniteDativeSingular`, `IndefiniteDativePlural`, `IndefiniteGenitiveSingular`, `IndefiniteGenitivePlural`, `DefiniteNominativeSingular`, `DefiniteNominativePlural`, `DefiniteAccusativeSingular`, `DefiniteAccusativePlural`, `DefiniteDativeSingular`, `DefiniteDativePlural`, `DefiniteGenitiveSingular`, `DefiniteGenitivePlural`
 
