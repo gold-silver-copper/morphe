@@ -100,3 +100,7 @@ get their stress predicted from similar words, which is often wrong.
         .into()
     }
 }
+
+pub fn language() -> Box<dyn Language> {
+    Box::new(Russian)
+}

@@ -32,7 +32,7 @@ get their stress predicted from similar words, which is often wrong.
 | pron | 99 | 48 | 3005 | 139 | 53 | 71 |
 | num | 151 | 36 | 308 | 131 | 31 | 105 |
 
-Model size: 2435226 bytes.
+Model size: 2435227 bytes.
 
 **noun** cells: `NominativeSingular`, `NominativePlural`, `GenitiveSingular`, `GenitivePlural`, `DativeSingular`, `DativePlural`, `AccusativeSingular`, `AccusativePlural`, `InstrumentalSingular`, `InstrumentalPlural`, `PrepositionalSingular`, `PrepositionalPlural`, `PartitiveSingular`, `PartitivePlural`, `LocativeSingular`, `LocativePlural`, `VocativeSingular`, `VocativePlural`
 

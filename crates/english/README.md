@@ -44,7 +44,7 @@ verb_participle("walk", Tense::Present);                 // "walking"
 | adj | 69087 | 2 | 196 | 211 | 683 | 2925 |
 | adv | 13228 | 2 | 72 | 51 | 89 | 202 |
 
-Model size: 3597212 bytes.
+Model size: 3597213 bytes.
 
 **noun** cells: `Plural`
 

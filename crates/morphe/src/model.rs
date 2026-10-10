@@ -12,6 +12,9 @@ pub struct Model {
     /// Characters that users don't type (stress marks): removed from input,
     /// and from output when marks are turned off.
     pub marks: Vec<char>,
+    /// Marked letters users type plain (ā → a): mapped on input, and on
+    /// output when marks are turned off.
+    pub unmark: Vec<(char, char)>,
     /// Letter pairs that users write interchangeably (ё → е), applied only
     /// when matching input against known words.
     pub fold: Vec<(char, char)>,
@@ -193,7 +196,10 @@ struct Query {
 
 impl Model {
     fn strip(&self, s: &str) -> String {
-        s.chars().filter(|c| !self.marks.contains(c)).collect()
+        s.chars()
+            .filter(|c| !self.marks.contains(c))
+            .map(|c| self.unmark.iter().find(|u| u.0 == c).map_or(c, |u| u.1))
+            .collect()
     }
 
     /// Lowercase, without marks, with letter folds: how two spellings are compared.
@@ -435,6 +441,11 @@ impl Model {
         w.s(MAGIC);
         w.s(&self.name);
         w.s(&self.marks.iter().collect::<String>());
+        w.u(self.unmark.len() as u64);
+        for (a, b) in &self.unmark {
+            w.u(u64::from(*a));
+            w.u(u64::from(*b));
+        }
         w.u(self.fold.len() as u64);
         for (a, b) in &self.fold {
             w.u(u64::from(*a));
@@ -536,6 +547,7 @@ impl Model {
         }
         let name = r.s()?;
         let marks = r.s()?.chars().collect();
+        let unmark = r.vec(|r| Some((char::from_u32(r.u32()?)?, char::from_u32(r.u32()?)?)))?;
         let fold = r.vec(|r| Some((char::from_u32(r.u32()?)?, char::from_u32(r.u32()?)?)))?;
         let mark_bases = r.s()?.chars().collect();
         let pos = r.vec(|r| {
@@ -602,7 +614,7 @@ impl Model {
             })?;
             Some(Pos { name, cells, citation, edits, classes, restore, restores, paradigm, lexicon, known, inherent, head })
         })?;
-        Some(Model { name, marks, fold, mark_bases, pos })
+        Some(Model { name, marks, unmark, fold, mark_bases, pos })
     }
 }
 

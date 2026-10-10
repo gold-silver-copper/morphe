@@ -51,7 +51,14 @@ pub fn learn(ex: &Extractor, threads: usize) -> (Model, Vec<Stats>) {
     mark_bases.sort_unstable();
     mark_bases.dedup();
     let mut model =
-        Model { name: spec.name.clone(), marks: spec.marks.clone(), fold: spec.fold.clone(), mark_bases, pos: Vec::new() };
+        Model {
+            name: spec.name.clone(),
+            marks: spec.marks.clone(),
+            unmark: spec.unmark.clone(),
+            fold: spec.fold.clone(),
+            mark_bases,
+            pos: Vec::new(),
+        };
     let mut stats = Vec::new();
     for (pi, ps) in spec.pos.iter().enumerate() {
         let recs = &ex.records[pi];

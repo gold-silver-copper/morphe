@@ -32,6 +32,8 @@ pub struct Spec {
     pub sentinels: Vec<String>,
     /// Characters users don't type (stress marks).
     pub marks: Vec<char>,
+    /// Marked letters users type plain (ā → a).
+    pub unmark: Vec<(char, char)>,
     /// Letters users write interchangeably, for matching (ё → е).
     pub fold: Vec<(char, char)>,
     /// Tag of the form that gives the lemma's dictionary spelling.
@@ -202,6 +204,17 @@ pub trait Language: Sync {
 }
 
 /// Builder helpers for writing configs tersely.
+/// `unmark("āa ēe īi")`: pairs of (marked, plain) letters.
+pub fn unmark(pairs: &str) -> Vec<(char, char)> {
+    pairs
+        .split_whitespace()
+        .filter_map(|p| {
+            let mut c = p.chars();
+            Some((c.next()?, c.next()?))
+        })
+        .collect()
+}
+
 pub fn tags(s: &str) -> Vec<String> {
     s.split_whitespace().map(String::from).collect()
 }
@@ -280,6 +293,7 @@ impl Spec {
             soft_tags: tags("nonstandard dialectal colloquial informal rare humorous proscribed uncommon"),
             sentinels: vec!["-".into(), "—".into(), "–".into(), "no-table-tags".into(), "".into()],
             marks: Vec::new(),
+            unmark: Vec::new(),
             fold: Vec::new(),
             canonical_tag: Some("canonical".into()),
             features: Vec::new(),

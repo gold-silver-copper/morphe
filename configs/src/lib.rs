@@ -1,10 +1,4 @@
-//! Language descriptions. Adding a language means adding a module here.
+//! Language descriptions. Adding a language means adding `src/langs/<name>.rs`
+//! with `pub fn language() -> Box<dyn Language>`; it is picked up automatically.
 
-pub mod english;
-pub mod russian;
-
-use morphe_train::spec::Language;
-
-pub fn all() -> Vec<Box<dyn Language>> {
-    vec![Box::new(english::English), Box::new(russian::Russian)]
-}
+include!(concat!(env!("OUT_DIR"), "/langs.rs"));

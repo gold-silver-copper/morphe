@@ -39,7 +39,10 @@ impl<'a> Extractor<'a> {
     }
 
     pub fn strip(&self, s: &str) -> String {
-        s.chars().filter(|c| !self.spec.marks.contains(c)).collect()
+        s.chars()
+            .filter(|c| !self.spec.marks.contains(c))
+            .map(|c| self.spec.unmark.iter().find(|u| u.0 == c).map_or(c, |u| u.1))
+            .collect()
     }
 
     pub fn add(&mut self, e: &Entry) {

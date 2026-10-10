@@ -80,3 +80,7 @@ verb_participle("walk", Tense::Present);                 // "walking"
         .into()
     }
 }
+
+pub fn language() -> Box<dyn Language> {
+    Box::new(English)
+}

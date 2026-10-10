@@ -68,6 +68,65 @@ fn main() {
                 println!("  {c:<28} {}", shown.join(", "));
             }
         }
-        _ => eprintln!("usage: morphe train <lang|all>… | morphe show <lang> <pos> <word>"),
+        Some("tags") => {
+            let Some(title) = args.get(1) else {
+                eprintln!("usage: morphe tags <Kaikki title, e.g. Russian> [pos…]");
+                std::process::exit(2);
+            };
+            tags(title, &args[2..]);
+        }
+        _ => eprintln!("usage: morphe train <lang|all>… | morphe show <lang> <pos> <word> | morphe tags <Title> [pos…]"),
+    }
+}
+
+/// Tag sets of forms per part of speech, most common first, with examples:
+/// what a config is written from.
+fn tags(title: &str, only: &[String]) {
+    use std::collections::HashMap;
+    use std::io::BufRead;
+    let path = dumps().join(format!("{title}.jsonl"));
+    let Ok(file) = std::fs::File::open(&path) else {
+        eprintln!("can't open {}", path.display());
+        std::process::exit(1);
+    };
+    // (pos, source) → tag set → (count, example)
+    let mut stats: HashMap<(String, String), HashMap<String, (usize, String)>> = HashMap::new();
+    let mut entries: HashMap<String, usize> = HashMap::new();
+    let mut lang = String::new();
+    for line in std::io::BufReader::with_capacity(1 << 22, file).lines().map_while(Result::ok) {
+        let Ok(e) = serde_json::from_str::<morphe_train::kaikki::Entry>(&line) else { continue };
+        if lang.is_empty() {
+            lang.clone_from(&e.lang_code);
+        }
+        if e.lang_code != lang || (!only.is_empty() && !only.contains(&e.pos)) {
+            continue;
+        }
+        *entries.entry(e.pos.clone()).or_default() += 1;
+        for f in &e.forms {
+            let src = f.source.clone().unwrap_or_else(|| "head".into());
+            let mut t = f.tags.clone();
+            t.sort();
+            let slot = stats.entry((e.pos.clone(), src)).or_default().entry(t.join(" ")).or_insert((0, String::new()));
+            slot.0 += 1;
+            if slot.1.is_empty() {
+                slot.1 = format!("{} → {}", e.word, f.form);
+            }
+        }
+    }
+    println!("lang_code: {lang}");
+    let mut poses: Vec<(&String, &usize)> = entries.iter().collect();
+    poses.sort_by(|a, b| b.1.cmp(a.1));
+    for (pos, n) in poses {
+        println!("\n=== pos {pos}: {n} entries");
+        let mut keys: Vec<&(String, String)> = stats.keys().filter(|k| &k.0 == pos).collect();
+        keys.sort();
+        for k in keys {
+            let mut v: Vec<(&String, &(usize, String))> = stats[k].iter().collect();
+            v.sort_by(|a, b| b.1.0.cmp(&a.1.0).then(a.0.cmp(b.0)));
+            println!("  -- source {} ({} tag sets)", k.1, v.len());
+            for (t, (c, ex)) in v.into_iter().take(60) {
+                println!("    {c:>8}  [{t}]  e.g. {ex}");
+            }
+        }
     }
 }
