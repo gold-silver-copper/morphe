@@ -84,20 +84,19 @@ impl Language for Russian {
         s
     }
 
-    /// Russian Wiktionary's proper nouns, possessive adjectives filed as
-    /// pronouns and ordinals filed as numerals don't fit; English Wiktionary
-    /// already covers the real pronouns and numerals.
-    fn keep_entry(&self, e: &Entry) -> bool {
-        e.lang != RU_WIKT || !(matches!(e.pos.as_str(), "pron" | "num") || e.word.starts_with(char::is_uppercase))
-    }
-
-    /// Russian Wiktionary calls perfective verbs "perfect", and tags the
-    /// stressed headword "stressed".
     fn prepare(&self, e: &mut Entry) {
         if e.pos == "pron" {
             keep_own_person(e);
         }
-        if e.lang != RU_WIKT {
+    }
+
+    /// Russian Wiktionary: its proper nouns, possessive adjectives filed as
+    /// pronouns and ordinals filed as numerals don't fit (English Wiktionary
+    /// already covers the real pronouns and numerals). It calls perfective
+    /// verbs "perfect" and tags the stressed headword "stressed".
+    fn prepare_extra(&self, _dump: &str, e: &mut Entry) {
+        if matches!(e.pos.as_str(), "pron" | "num") || e.word.starts_with(char::is_uppercase) {
+            e.forms.clear();
             return;
         }
         for t in &mut e.tags {
@@ -109,6 +108,9 @@ impl Language for Russian {
             if f.tags.iter().any(|t| t == "stressed") {
                 f.tags.push("canonical".into());
             }
+        }
+        if e.pos == "verb" {
+            complete_ru_verb(e);
         }
     }
 
@@ -208,8 +210,49 @@ fn keep_own_person(e: &mut Entry) {
     e.forms.retain(|f| row(f).is_none_or(fits));
 }
 
-/// The language name in Russian Wiktionary's dump.
-const RU_WIKT: &str = "Русский";
+/// Russian Wiktionary's conjugations leave out the infinitive, and a
+/// perfective verb's missing present forms, which English Wiktionary's write
+/// as "-", and an imperfective verb's analytic future. The infinitive takes its stress from the past masculine
+/// (запакова́л → запакова́ть).
+fn complete_ru_verb(e: &mut Entry) {
+    use morphe_train::kaikki::Form;
+    let plain = |s: &str| s.chars().filter(|c| !matches!(c, '\u{301}' | '\u{300}')).collect::<String>();
+    let past = e
+        .forms
+        .iter()
+        .find(|f| f.tags.iter().any(|t| t == "past") && f.tags.iter().any(|t| t == "masculine") && !f.tags.iter().any(|t| t == "participle"))
+        .map(|f| f.form.trim().to_string());
+    let infinitive = past
+        .as_deref()
+        .and_then(|p| p.strip_suffix('л'))
+        .map(|stem| format!("{stem}ть"))
+        .filter(|inf| plain(inf) == e.word)
+        .unwrap_or_else(|| e.word.clone());
+    let row = |form: &str, t: &str| Form { form: form.into(), tags: tags(t), source: Some("conjugation".into()) };
+    for f in &mut e.forms {
+        f.source = Some("conjugation".into());
+    }
+    if e.forms.iter().all(|f| !f.tags.iter().any(|t| t == "infinitive")) {
+        e.forms.push(row(&infinitive, "infinitive"));
+    }
+    if e.tags.iter().any(|t| t == "perfective") {
+        for p in ["first-person", "second-person", "third-person"] {
+            for n in ["singular", "plural"] {
+                e.forms.push(row("-", &format!("present {p} {n}")));
+            }
+        }
+        for t in ["active participle present", "passive participle present", "adverbial participle present"] {
+            e.forms.push(row("-", t));
+        }
+    } else if e.tags.iter().any(|t| t == "imperfective") {
+        // The analytic future, which the table gives only as "бу́ду/бу́дешь… X".
+        let aux = [("бу́ду", "first-person singular"), ("бу́дешь", "second-person singular"), ("бу́дет", "third-person singular"),
+            ("бу́дем", "first-person plural"), ("бу́дете", "second-person plural"), ("бу́дут", "third-person plural")];
+        for (a, t) in aux {
+            e.forms.push(row(&format!("{a} {infinitive}"), &format!("future {t}")));
+        }
+    }
+}
 
 pub fn language() -> Box<dyn Language> {
     Box::new(Russian)

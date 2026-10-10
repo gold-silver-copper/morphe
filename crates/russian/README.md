@@ -28,11 +28,11 @@ get their stress predicted from similar words, which is often wrong.
 |---|---|---|---|---|---|---|
 | noun | 123284 | 18 | 32614 | 10654 | 14845 | 60841 |
 | adj | 35686 | 54 | 15470 | 7342 | 5926 | 21695 |
-| verb | 48548 | 25 | 10449 | 6641 | 6467 | 24795 |
+| verb | 192317 | 25 | 10763 | 6925 | 6984 | 32153 |
 | pron | 97 | 48 | 551 | 133 | 52 | 74 |
 | num | 151 | 36 | 308 | 131 | 30 | 105 |
 
-Model size: 5638140 bytes.
+Model size: 5837699 bytes.
 
 **noun** cells: `NominativeSingular`, `NominativePlural`, `GenitiveSingular`, `GenitivePlural`, `DativeSingular`, `DativePlural`, `AccusativeSingular`, `AccusativePlural`, `InstrumentalSingular`, `InstrumentalPlural`, `PrepositionalSingular`, `PrepositionalPlural`, `PartitiveSingular`, `PartitivePlural`, `LocativeSingular`, `LocativePlural`, `VocativeSingular`, `VocativePlural`
 
