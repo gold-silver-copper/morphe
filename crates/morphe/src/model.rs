@@ -47,6 +47,19 @@ pub struct Pos {
     pub inherent: Vec<Inherent>,
     /// Which word of an unknown multi-word phrase inflects.
     pub head: Head,
+    /// Predicts (cell, inverse edit) from a form, for analysis. Labels
+    /// index `inverse`.
+    pub analysis: Tree,
+    pub inverse: Vec<(u32, Edit)>,
+}
+
+/// One analysis of a form: part of speech, lemma, and cell (`None` when the
+/// form is the lemma itself).
+#[derive(Clone, Debug, PartialEq)]
+pub struct Analysis {
+    pub pos: usize,
+    pub lemma: String,
+    pub cell: Option<u32>,
 }
 
 #[derive(Clone, Copy, Debug, Default, PartialEq, Eq)]
@@ -195,6 +208,11 @@ struct Query {
 }
 
 impl Model {
+    /// Without marks: what a user types.
+    pub fn plain(&self, s: &str) -> String {
+        self.strip(&s.to_lowercase())
+    }
+
     fn strip(&self, s: &str) -> String {
         s.chars()
             .filter(|c| !self.marks.contains(c))
@@ -424,6 +442,44 @@ impl Model {
         self.readings(p, &q, u32::MAX).into_iter().next().map(|r| self.finish(&r.0, q.casing, Options::default()))
     }
 
+    /// Every analysis of a form, best first: which lemma and cell it could
+    /// be. Candidates come from the analysis tree and are kept only if
+    /// inflecting the lemma back gives the form.
+    pub fn analyze(&self, input: &str) -> Vec<(Analysis, f32)> {
+        let q = self.query(input);
+        if q.plain.is_empty() {
+            return Vec::new();
+        }
+        let mut out: Vec<(Analysis, f32)> = Vec::new();
+        let mut push = |a: Analysis, w: f32| match out.iter_mut().find(|x| x.0 == a) {
+            Some(x) => x.1 += w,
+            None => out.push((a, w)),
+        };
+        for (pi, p) in self.pos.iter().enumerate() {
+            if self.is_known(p, &q.key) {
+                if let Some(l) = self.lemma(pi, input) {
+                    push(Analysis { pos: pi, lemma: l, cell: None }, 0.5);
+                }
+            }
+            let cands = p.analysis.predict(&q.plain, |l| p.inverse.get(l as usize).is_some_and(|(_, e)| e.apply(&q.plain).is_some()));
+            for (l, pr) in cands {
+                let Some((cell, e)) = p.inverse.get(l as usize) else { continue };
+                let Some(lemma) = e.apply(&q.plain) else { continue };
+                let forms = self.inflect(pi, *cell, &lemma, Options::default());
+                let Some((_, fp)) = forms.iter().find(|(f, _)| self.key(f) == q.key) else { continue };
+                let known = if self.is_known(p, &self.key(&lemma)) { 1.0 } else { 0.1 };
+                let lemma = self.finish(&self.lemma(pi, &lemma).unwrap_or(lemma), q.casing, Options::default());
+                push(Analysis { pos: pi, lemma, cell: Some(*cell) }, pr * fp * known);
+            }
+        }
+        let total: f32 = out.iter().map(|x| x.1).sum();
+        if total > 0.0 {
+            out.iter_mut().for_each(|x| x.1 /= total);
+        }
+        out.sort_by(|a, b| b.1.total_cmp(&a.1));
+        out
+    }
+
     /// Scored values of an inherent feature (e.g. gender) of a word.
     pub fn inherent(&self, pos: usize, feature: usize, input: &str) -> Vec<(u32, f32)> {
         let Some(f) = self.pos.get(pos).and_then(|p| p.inherent.get(feature)) else { return Vec::new() };
@@ -537,6 +593,17 @@ impl Model {
                 }
             }
         }
+        // Optional trailing sections: decoders that don't know them stop
+        // before them.
+        w.s("analysis-1");
+        for p in &self.pos {
+            write_tree(&mut w, &p.analysis);
+            w.u(p.inverse.len() as u64);
+            for (c, e) in &p.inverse {
+                w.u(u64::from(*c));
+                w.edit(e);
+            }
+        }
         w.buf
     }
 
@@ -612,9 +679,32 @@ impl Model {
                 })?;
                 Some(Inherent { name, values, tree, lexicon })
             })?;
-            Some(Pos { name, cells, citation, edits, classes, restore, restores, paradigm, lexicon, known, inherent, head })
+            Some(Pos {
+                name,
+                cells,
+                citation,
+                edits,
+                classes,
+                restore,
+                restores,
+                paradigm,
+                lexicon,
+                known,
+                inherent,
+                head,
+                analysis: Tree::default(),
+                inverse: Vec::new(),
+            })
         })?;
-        Some(Model { name, marks, unmark, fold, mark_bases, pos })
+        let mut model = Model { name, marks, unmark, fold, mark_bases, pos };
+        if r.s().as_deref() == Some("analysis-1") {
+            for p in &mut model.pos {
+                let (Some(t), Some(inv)) = (read_tree(&mut r), r.vec(|r| Some((r.u32()?, r.edit()?)))) else { break };
+                p.analysis = t;
+                p.inverse = inv;
+            }
+        }
+        Some(model)
     }
 }
 

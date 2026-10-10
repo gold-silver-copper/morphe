@@ -743,6 +743,31 @@ pub fn num_lemma(word: &str) -> String {
     Russian::default().num_lemma(word)
 }
 
+/// One reading of a form: its part of speech, lemma, and cell (`None` when
+/// the form is the lemma itself).
+#[derive(Clone, Debug, PartialEq)]
+pub struct Analysis {
+    pub pos: &'static str,
+    pub lemma: String,
+    pub cell: Option<&'static str>,
+}
+
+/// Which lemma and cell a form could be, best first. Works for unknown words too.
+pub fn analyze(word: &str) -> Scored<Analysis> {
+    let Some(m) = model() else { return Vec::new() };
+    m.analyze(word)
+        .into_iter()
+        .filter_map(|(a, p)| {
+            let pos = m.pos.get(a.pos)?;
+            let cell = match a.cell {
+                Some(c) => Some(pos.cells.get(c as usize)?.as_str()),
+                None => None,
+            };
+            Some((Analysis { pos: pos.name.as_str(), lemma: a.lemma, cell }, p))
+        })
+        .collect()
+}
+
 /// Inflect by names, e.g. `inflect("noun", "GenitivePlural", word)`.
 pub fn inflect(pos: &str, cell: &str, word: &str) -> Scored<String> {
     let Some(m) = model() else { return Vec::new() };

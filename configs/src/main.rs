@@ -68,6 +68,22 @@ fn main() {
                 println!("  {c:<28} {}", shown.join(", "));
             }
         }
+        Some("analyze") => {
+            let (Some(lang), Some(word)) = (args.get(1), args.get(2)) else {
+                eprintln!("usage: morphe analyze <lang> <form>");
+                std::process::exit(2);
+            };
+            let path = root().join("crates").join(lang).join("src/model.bin");
+            let Some(m) = std::fs::read(&path).ok().and_then(|b| morphe::Model::decode(&b)) else {
+                eprintln!("can't read {}", path.display());
+                std::process::exit(1);
+            };
+            for (a, p) in m.analyze(word).into_iter().take(10) {
+                let pos = m.pos.get(a.pos).map_or("?", |p| p.name.as_str());
+                let cell = a.cell.and_then(|c| m.pos.get(a.pos)?.cells.get(c as usize)).map_or("(lemma)", |c| c.as_str());
+                println!("  {p:.3}  {pos:<6} {:<20} {cell}", a.lemma);
+            }
+        }
         Some("tags") => {
             let Some(title) = args.get(1) else {
                 eprintln!("usage: morphe tags <Kaikki title, e.g. Russian> [pos…]");

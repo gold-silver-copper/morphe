@@ -106,7 +106,32 @@ pub fn learn(ex: &Extractor, threads: usize) -> (Model, Vec<Stats>) {
             })
             .collect();
 
-        let (paradigm, restore, inh_trees) = std::thread::scope(|s| {
+        // Analysis: (cell, inverse edit) from single-word forms.
+        let strip = |f: &str| -> String {
+            f.to_lowercase()
+                .chars()
+                .filter(|c| !spec.marks.contains(c))
+                .map(|c| spec.unmark.iter().find(|u| u.0 == c).map_or(c, |u| u.1))
+                .collect()
+        };
+        let inv_pairs: Vec<(String, (u32, Edit))> = recs
+            .iter()
+            .filter(single)
+            .flat_map(|r| {
+                r.cells.iter().enumerate().flat_map(move |(ci, vs)| {
+                    vs.iter().filter(|(f, _)| !f.contains(' ')).map(move |(f, _)| {
+                        let fp = strip(f);
+                        let e = Edit::between(&fp, &r.plain);
+                        (fp, (ci as u32, e))
+                    })
+                })
+            })
+            .collect();
+        let (inverse, inverse_id) = index(inv_pairs.iter().map(|x| x.1.clone()));
+        let ana_data: Vec<(String, u32, f64)> = inv_pairs.iter().map(|(f, l)| (f.clone(), inverse_id[l], 1.0)).collect();
+
+        let (paradigm, restore, inh_trees, analysis) = std::thread::scope(|s| {
+            let d = s.spawn(|| tree::train(&[], &ana_data, Params { top_k: 24, ..Params::default() }));
             let a = s.spawn(|| tree::train(&ps.key, &para_data, Params::default()));
             let b = s.spawn(|| tree::train(&[], &rest_data, Params { top_k: 4, ..Params::default() }));
             let c: Vec<_> = inh_data
@@ -117,6 +142,7 @@ pub fn learn(ex: &Extractor, threads: usize) -> (Model, Vec<Stats>) {
                 a.join().unwrap_or_default(),
                 b.join().unwrap_or_default(),
                 c.into_iter().map(|h| h.join().unwrap_or_default()).collect::<Vec<_>>(),
+                d.join().unwrap_or_default(),
             )
         });
         let nodes = paradigm.nodes.len() + restore.nodes.len();
@@ -140,6 +166,8 @@ pub fn learn(ex: &Extractor, threads: usize) -> (Model, Vec<Stats>) {
             known: Vec::new(),
             inherent: Vec::new(),
             head: ps.head,
+            analysis,
+            inverse,
         };
         let probe = Model { pos: Vec::new(), ..model.clone() };
 

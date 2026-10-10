@@ -9,7 +9,7 @@ pub mod edit;
 pub mod model;
 
 pub use edit::Edit;
-pub use model::{Model, Options};
+pub use model::{Analysis, Model, Options};
 
 /// Candidates with confidences, best first.
 pub type Scored<T> = Vec<(T, f32)>;
