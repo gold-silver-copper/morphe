@@ -587,6 +587,13 @@ dependencies = [
 ]
 
 [[package]]
+name = "maltese"
+version = "0.1.0"
+dependencies = [
+ "morphe",
+]
+
+[[package]]
 name = "manx"
 version = "0.1.0"
 dependencies = [
@@ -629,6 +636,20 @@ dependencies = [
 
 [[package]]
 name = "middle_high_german"
+version = "0.1.0"
+dependencies = [
+ "morphe",
+]
+
+[[package]]
+name = "middle_irish"
+version = "0.1.0"
+dependencies = [
+ "morphe",
+]
+
+[[package]]
+name = "middle_welsh"
 version = "0.1.0"
 dependencies = [
  "morphe",

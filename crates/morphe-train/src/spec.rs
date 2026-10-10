@@ -47,6 +47,9 @@ pub struct Spec {
     /// Use only an entry's first inflection table (later ones are often
     /// archaic, dialectal or alternative-orthography variants).
     pub first_table_only: bool,
+    /// The words of each table's header form (`table-tags`) become tags of
+    /// every form in that table (strong/weak, tense banners).
+    pub header_tags: bool,
     /// More dumps (paths relative to the main dump's directory, without
     /// `.jsonl`), e.g. another Wiktionary edition; they only add words the
     /// main dump lacks.
@@ -383,6 +386,7 @@ impl Spec {
             canonical_tag: Some("canonical".into()),
             canonical_spelling: true,
             first_table_only: false,
+            header_tags: false,
             extra_dumps: Vec::new(),
             strip_words: Vec::new(),
             inherent_form_tags: Vec::new(),

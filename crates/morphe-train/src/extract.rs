@@ -105,10 +105,17 @@ impl<'a> Extractor<'a> {
         let mut raw: Vec<(usize, String, bool, bool)> = Vec::new();
         // Tables start with a "table-tags" header form.
         let mut table_no = 0usize;
+        let mut header: Vec<String> = Vec::new();
         for f in forms {
             let table = f.source.is_some();
             if table && f.tags.iter().any(|t| t == "table-tags") {
                 table_no += 1;
+                // The header's words (strong, weak, present…) label the table.
+                header = if spec.header_tags {
+                    f.form.split_whitespace().map(str::to_lowercase).filter(|w| w != "no-table-tags").collect()
+                } else {
+                    Vec::new()
+                };
             }
             if spec.first_table_only && table && table_no > 1 {
                 continue;
@@ -116,7 +123,13 @@ impl<'a> Extractor<'a> {
             if (spec.source == Source::Head && table) || (spec.source == Source::Table && !table) {
                 continue;
             }
-            let tags = retagged(f.form.trim(), &f.tags);
+            let tags = if table && !header.is_empty() {
+                let mut t = f.tags.clone();
+                t.extend(header.iter().filter(|h| !f.tags.contains(h)).cloned());
+                retagged(f.form.trim(), &t)
+            } else {
+                retagged(f.form.trim(), &f.tags)
+            };
             if tags.iter().any(|t| spec.drop_tags.contains(t)) {
                 continue;
             }
