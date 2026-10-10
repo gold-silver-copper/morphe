@@ -35,7 +35,7 @@ on input.
 | num | 222 | 4 | 35 | 22 | 14 | 26 |
 | pron | 13 | 4 | 23 | 13 | 2 | 5 |
 
-Model size: 891966 bytes.
+Model size: 891975 bytes.
 
 **noun** cells: `Plural`, `Singulative`, `MutatedSoft`, `MutatedNasal`, `MutatedAspirate`, `MutatedHProthesis`
 
