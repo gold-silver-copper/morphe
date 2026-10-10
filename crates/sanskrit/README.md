@@ -37,7 +37,7 @@ verbs are predicted.
 | det | 8 | 72 | 95 | 7 | 2 | 4 |
 | num | 68 | 72 | 96 | 14 | 6 | 7 |
 
-Model size: 1836900 bytes.
+Model size: 1835899 bytes.
 
 **noun** cells: `NominativeSingular`, `NominativeDual`, `NominativePlural`, `AccusativeSingular`, `AccusativeDual`, `AccusativePlural`, `InstrumentalSingular`, `InstrumentalDual`, `InstrumentalPlural`, `DativeSingular`, `DativeDual`, `DativePlural`, `AblativeSingular`, `AblativeDual`, `AblativePlural`, `GenitiveSingular`, `GenitiveDual`, `GenitivePlural`, `LocativeSingular`, `LocativeDual`, `LocativePlural`, `VocativeSingular`, `VocativeDual`, `VocativePlural`
 
