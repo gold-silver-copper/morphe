@@ -58,7 +58,7 @@ impl Language for Finnish {
                 "adj",
                 vec![
                     group("", PLAIN, &format!("{CASES} Number")),
-                    group("Comitative", "comitative plural !possessive", ""),
+                    group("Comitative", &format!("comitative plural {PLAIN}"), ""),
                     group("Comparative", "comparative", ""),
                     group("Superlative", "superlative", ""),
                 ],

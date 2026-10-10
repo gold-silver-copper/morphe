@@ -30,12 +30,12 @@ are built from `olla`/`ei` plus a participle or the connegative.
 | Part of speech | Entries | Cells | Edits | Classes | Tree nodes | Lexicon |
 |---|---|---|---|---|---|---|
 | noun | 128918 | 27 | 20562 | 2890 | 4117 | 7312 |
-| adj | 17707 | 29 | 2489 | 691 | 940 | 6553 |
+| adj | 17707 | 29 | 2397 | 597 | 937 | 6540 |
 | verb | 12392 | 52 | 6753 | 454 | 362 | 667 |
 | pron | 80 | 28 | 1072 | 116 | 9 | 70 |
 | num | 81 | 26 | 1013 | 104 | 39 | 45 |
 
-Model size: 11346274 bytes.
+Model size: 3665412 bytes.
 
 **noun** cells: `NominativeSingular`, `NominativePlural`, `GenitiveSingular`, `GenitivePlural`, `PartitiveSingular`, `PartitivePlural`, `InessiveSingular`, `InessivePlural`, `ElativeSingular`, `ElativePlural`, `IllativeSingular`, `IllativePlural`, `AdessiveSingular`, `AdessivePlural`, `AblativeSingular`, `AblativePlural`, `AllativeSingular`, `AllativePlural`, `EssiveSingular`, `EssivePlural`, `TranslativeSingular`, `TranslativePlural`, `AbessiveSingular`, `AbessivePlural`, `InstructiveSingular`, `InstructivePlural`, `Comitative`
 
