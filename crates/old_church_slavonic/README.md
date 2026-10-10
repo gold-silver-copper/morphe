@@ -28,13 +28,13 @@ Adjectives have short (indefinite) forms, `adj`, and long (definite) forms,
 
 | Part of speech | Entries | Cells | Edits | Classes | Tree nodes | Lexicon |
 |---|---|---|---|---|---|---|
-| noun | 1977 | 21 | 759 | 153 | 120 | 400 |
-| adj | 319 | 126 | 417 | 20 | 17 | 19 |
-| verb | 712 | 46 | 1231 | 182 | 85 | 140 |
+| noun | 1977 | 21 | 731 | 151 | 118 | 401 |
+| adj | 319 | 126 | 417 | 20 | 18 | 19 |
+| verb | 712 | 46 | 1215 | 182 | 85 | 140 |
 | pron | 29 | 54 | 355 | 36 | 4 | 19 |
 | num | 17 | 54 | 62 | 13 | 4 | 6 |
 
-Model size: 533563 bytes.
+Model size: 224880 bytes.
 
 **noun** cells: `NominativeSingular`, `NominativeDual`, `NominativePlural`, `AccusativeSingular`, `AccusativeDual`, `AccusativePlural`, `GenitiveSingular`, `GenitiveDual`, `GenitivePlural`, `DativeSingular`, `DativeDual`, `DativePlural`, `InstrumentalSingular`, `InstrumentalDual`, `InstrumentalPlural`, `LocativeSingular`, `LocativeDual`, `LocativePlural`, `VocativeSingular`, `VocativeDual`, `VocativePlural`
 

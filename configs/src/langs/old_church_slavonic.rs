@@ -18,6 +18,8 @@ impl Language for OldChurchSlavonic {
         let mut s = Spec::new("old_church_slavonic", "OldChurchSlavonic", "cu");
         // Palatalization hook, titlo, stress.
         s.marks = vec!['\u{484}', '\u{483}', '\u{301}'];
+        // Negated forms of бꙑти (нѣсмь) are a separate word.
+        s.drop_tags.push("negative".into());
         // Letters written interchangeably in the manuscripts.
         s.fold = vec![('і', 'и'), ('ї', 'и'), ('ѡ', 'о'), ('ꙃ', 'ѕ'), ('ꙁ', 'з')];
         s.fold_strs = vec![("ꙋ".into(), "оу".into()), ("ѹ".into(), "оу".into())];
@@ -130,6 +132,10 @@ impl Language for OldChurchSlavonic {
                 f.tags.push("participle".into());
             }
         }
+    }
+
+    fn samples(&self) -> Vec<&'static str> {
+        vec!["градъ", "рѫка", "правити", "бꙑти", "добръ", "кракъ", "блюпати", "село"]
     }
 
     fn readme(&self) -> String {
