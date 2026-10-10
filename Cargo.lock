@@ -105,6 +105,13 @@ dependencies = [
 ]
 
 [[package]]
+name = "hebrew"
+version = "0.1.0"
+dependencies = [
+ "morphe",
+]
+
+[[package]]
 name = "hungarian"
 version = "0.1.0"
 dependencies = [
@@ -186,6 +193,13 @@ dependencies = [
 
 [[package]]
 name = "polish"
+version = "0.1.0"
+dependencies = [
+ "morphe",
+]
+
+[[package]]
+name = "portuguese"
 version = "0.1.0"
 dependencies = [
  "morphe",
