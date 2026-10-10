@@ -13,6 +13,7 @@ impl Language for English {
             "dialectal alternative nonstandard humorous pronunciation-spelling rare dated informal sometimes \
              colloquial hypercorrect slang Internet childish proscribed uncommon nonce-word misspelling eye-dialect",
         );
+        s.drop_tags.push("clitic".into());
         s.features = vec![
             feature("Number", &[("Singular", "singular"), ("Plural", "plural")]),
             feature("Person", &[("First", "first-person"), ("Second", "second-person"), ("Third", "third-person")]),
@@ -40,6 +41,14 @@ impl Language for English {
 
     fn samples(&self) -> Vec<&'static str> {
         vec!["octopus", "lie", "spling", "glorp", "fun", "mice", "passer-by", "be"]
+    }
+
+    /// Clitic contractions in the tables ('m, 're, 's) aren't standalone
+    /// inflections.
+    fn retag(&self, _pos: &PosSpec, form: &str, tags: &mut Vec<String>) {
+        if form.starts_with('\'') {
+            tags.push("clitic".into());
+        }
     }
 
     fn keep_entry(&self, e: &Entry) -> bool {
