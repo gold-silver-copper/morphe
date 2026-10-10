@@ -107,6 +107,10 @@ impl Language for Hebrew {
         forms.retain(|f| f.1.chars().any(is_point) || !pointed.contains(&f.0));
     }
 
+    fn samples(&self) -> Vec<&'static str> {
+        vec!["ספר", "ילד", "עיר", "שמר", "דיבר", "גדול", "גרבוץ", "זרקט"]
+    }
+
     fn readme(&self) -> String {
         r#"## Example
 
@@ -126,8 +130,7 @@ println!("{}", plain.verb("שמר", Tense::Past, Person::FirstSingular)); // ש�
 
 Input matching ignores niqqud and cantillation. Pointed forms follow the
 dictionary's defective spelling, so `marks(false)` gives ktiv haser
-(שלחנות), not the everyday full spelling (שולחנות). Several future and
-imperative forms are given unpointed in Wiktionary and come out unpointed.
+(שלחנות), not the everyday full spelling (שולחנות).
 "#
         .into()
     }

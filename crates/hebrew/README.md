@@ -23,18 +23,17 @@ println!("{}", plain.verb("שמר", Tense::Past, Person::FirstSingular)); // ש�
 
 Input matching ignores niqqud and cantillation. Pointed forms follow the
 dictionary's defective spelling, so `marks(false)` gives ktiv haser
-(שלחנות), not the everyday full spelling (שולחנות). Several future and
-imperative forms are given unpointed in Wiktionary and come out unpointed.
+(שלחנות), not the everyday full spelling (שולחנות).
 
 ## Coverage
 
 | Part of speech | Entries | Cells | Edits | Classes | Tree nodes | Lexicon |
 |---|---|---|---|---|---|---|
-| noun | 4885 | 29 | 16399 | 2726 | 1644 | 4273 |
-| adj | 1675 | 4 | 1049 | 530 | 390 | 1523 |
-| verb | 2133 | 31 | 12036 | 1662 | 780 | 1676 |
+| noun | 4885 | 29 | 16399 | 2726 | 1644 | 4229 |
+| adj | 1675 | 4 | 1049 | 530 | 390 | 1512 |
+| verb | 2133 | 31 | 12036 | 1662 | 780 | 1625 |
 
-Model size: 2300844 bytes.
+Model size: 703794 bytes.
 
 **noun** cells: `IndefiniteSingular`, `IndefinitePlural`, `IndefiniteDual`, `DefiniteSingular`, `DefinitePlural`, `DefiniteDual`, `ConstructSingular`, `ConstructPlural`, `ConstructDual`, `PossessedFirstSingular`, `PossessedFirstPlural`, `PossessedSecondMasculineSingular`, `PossessedSecondFeminineSingular`, `PossessedSecondMasculinePlural`, `PossessedSecondFemininePlural`, `PossessedThirdMasculineSingular`, `PossessedThirdFeminineSingular`, `PossessedThirdMasculinePlural`, `PossessedThirdFemininePlural`, `PossessedPluralFirstSingular`, `PossessedPluralFirstPlural`, `PossessedPluralSecondMasculineSingular`, `PossessedPluralSecondFeminineSingular`, `PossessedPluralSecondMasculinePlural`, `PossessedPluralSecondFemininePlural`, `PossessedPluralThirdMasculineSingular`, `PossessedPluralThirdFeminineSingular`, `PossessedPluralThirdMasculinePlural`, `PossessedPluralThirdFemininePlural`
 
