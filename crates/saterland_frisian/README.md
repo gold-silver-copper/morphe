@@ -25,10 +25,10 @@ without the article "do". Umlauts and accents are optional on input.
 |---|---|---|---|---|---|---|
 | noun | 450 | 1 | 61 | 67 | 98 | 189 |
 | adj | 63 | 5 | 63 | 30 | 11 | 46 |
-| verb | 138 | 22 | 502 | 122 | 54 | 80 |
+| verb | 138 | 22 | 502 | 122 | 53 | 79 |
 | det | 12 | 5 | 15 | 9 | 6 | 7 |
 
-Model size: 76528 bytes.
+Model size: 76599 bytes.
 
 **noun** cells: `Plural`
 

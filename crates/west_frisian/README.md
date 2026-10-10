@@ -26,11 +26,11 @@ superlative is given without "it".
 
 | Part of speech | Entries | Cells | Edits | Classes | Tree nodes | Lexicon |
 |---|---|---|---|---|---|---|
-| noun | 1593 | 2 | 133 | 211 | 217 | 545 |
+| noun | 1593 | 2 | 133 | 211 | 217 | 543 |
 | adj | 219 | 18 | 110 | 73 | 50 | 85 |
 | verb | 260 | 25 | 694 | 187 | 70 | 133 |
 
-Model size: 162667 bytes.
+Model size: 162786 bytes.
 
 **noun** cells: `Plural`, `Diminutive`
 
