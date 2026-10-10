@@ -1,4 +1,4 @@
-use morphe_train::kaikki::Entry;
+use morphe_train::kaikki::{Entry, Form};
 use morphe_train::spec::*;
 
 pub struct Turkish;
@@ -9,6 +9,8 @@ impl Language for Turkish {
         // Circumflexes (kâr, hâlâ) are often left out.
         s.unmark = unmark("âa îi ûu ÂA ÎI ÛU");
         s.soft_tags.extend(tags("dated"));
+        // Turkish Wiktionary adds words English Wiktionary lacks.
+        s.extra_dumps = vec!["tr/Türkçe".into()];
         s.features = vec![
             feature(
                 "Case",
@@ -154,6 +156,105 @@ impl Language for Turkish {
             // are dropped.
             f.tags = tags(&new.unwrap_or_else(|| "table-tags".into()));
             k += 1;
+        }
+    }
+
+    /// Turkish Wiktionary's tables name little beyond the case or tense,
+    /// so they are read by position. A noun table runs bare, then each
+    /// possessor (my, your, his, our, your, their); each block gives the six
+    /// cases, each case its singular (one possessed) then plural (many). In
+    /// verb tables each tense's first three singular and three plural forms
+    /// are the simple ones (copula forms follow); the plain aorist, optative
+    /// and conditional share tags, so only the first (the aorist) is kept.
+    fn prepare_extra(&self, _dump: &str, e: &mut Entry) {
+        let word = e.word.clone();
+        let forms = std::mem::take(&mut e.forms);
+        if word.contains(' ') || word.starts_with(char::is_uppercase) {
+            return;
+        }
+        let tagged = |f: &Form, t: &str| f.tags.iter().any(|x| x == t);
+        let push = |e: &mut Entry, form: &str, t: String| {
+            e.forms.push(Form { form: form.to_string(), tags: t.split(' ').map(String::from).collect(), source: None })
+        };
+        const CASES: [&str; 6] = ["nominative", "accusative", "dative", "locative", "ablative", "genitive"];
+        const PERSONS: [&str; 6] = [
+            "first-person singular",
+            "second-person singular",
+            "third-person singular",
+            "first-person plural",
+            "second-person plural",
+            "third-person plural",
+        ];
+        match e.pos.as_str() {
+            "noun" => {
+                let Some(start) = forms.iter().position(|f| f.tags.iter().map(String::as_str).eq(["nominative"])) else { return };
+                let table = forms.get(start..start + 84).unwrap_or(&[]);
+                let fits = table.len() == 84 && table.iter().enumerate().all(|(k, f)| tagged(f, CASES[(k % 12) / 2]));
+                if !fits {
+                    return;
+                }
+                for (k, f) in table.iter().enumerate() {
+                    let (block, case, many) = (k / 12, CASES[(k % 12) / 2], k % 2 == 1);
+                    let t = match block.checked_sub(1).and_then(|p| PERSONS.get(p)) {
+                        None => format!("{case} {}", if many { "plural" } else { "singular" }),
+                        Some(p) => format!("possessive {p} {} {case}", if many { "possessed-many" } else { "possessed-single" }),
+                    };
+                    push(e, f.form.trim(), t);
+                }
+            }
+            "verb" => {
+                // Entries without a conjugation table are inflected forms.
+                if forms.iter().filter(|f| tagged(f, "positive")).count() < 30 {
+                    return;
+                }
+                push(e, &word, "infinitive".into());
+                const TENSES: [(&str, &str); 6] = [
+                    ("definite past", "past"),
+                    ("indefinite past", "inferential"),
+                    ("present", "progressive"),
+                    ("future", "future"),
+                    ("necessitative", "necessitative"),
+                    ("", "aorist"),
+                ];
+                let mut seen: Vec<(String, usize)> = Vec::new();
+                for f in forms {
+                    let positive = tagged(&f, "positive");
+                    if !(positive || tagged(&f, "negative")) || tagged(&f, "conditional") || f.form.contains(' ') {
+                        continue;
+                    }
+                    let Some(number) = ["singular", "plural"].into_iter().find(|n| tagged(&f, n)) else { continue };
+                    let rest: Vec<&str> = f
+                        .tags
+                        .iter()
+                        .map(String::as_str)
+                        .filter(|t| !matches!(*t, "positive" | "negative" | "singular" | "plural"))
+                        .collect();
+                    let Some((_, tense)) = TENSES.iter().find(|(t, _)| {
+                        let want: Vec<&str> = t.split(' ').filter(|x| !x.is_empty()).collect();
+                        want.len() == rest.len() && want.iter().all(|w| rest.contains(w))
+                    }) else {
+                        continue;
+                    };
+                    let key = format!("{positive} {number} {tense}");
+                    let i = match seen.iter_mut().find(|x| x.0 == key) {
+                        Some(x) => {
+                            x.1 += 1;
+                            x.1
+                        }
+                        None => {
+                            seen.push((key, 0));
+                            0
+                        }
+                    };
+                    if i >= 3 {
+                        continue;
+                    }
+                    let Some(person) = PERSONS.get(i + if number == "plural" { 3 } else { 0 }) else { continue };
+                    let pol = if positive { "" } else { "negative " };
+                    push(e, f.form.trim(), format!("finite {pol}{tense} {person}"));
+                }
+            }
+            _ => {}
         }
     }
 
