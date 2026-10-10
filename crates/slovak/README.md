@@ -30,12 +30,12 @@ analytic (`robil som`, `robil by som`, `budem robiť`): build them from
 |---|---|---|---|---|---|---|
 | noun | 5487 | 12 | 1266 | 670 | 452 | 2057 |
 | adj | 1397 | 62 | 130 | 40 | 46 | 222 |
-| verb | 819 | 19 | 731 | 177 | 83 | 390 |
+| verb | 819 | 19 | 782 | 182 | 86 | 382 |
 | pron | 37 | 120 | 168 | 34 | 10 | 20 |
 | det | 1 | 60 | 12 | 1 | 2 | 0 |
 | num | 3 | 120 | 33 | 3 | 2 | 0 |
 
-Model size: 527324 bytes.
+Model size: 242614 bytes.
 
 **noun** cells: `NominativeSingular`, `NominativePlural`, `GenitiveSingular`, `GenitivePlural`, `DativeSingular`, `DativePlural`, `AccusativeSingular`, `AccusativePlural`, `LocativeSingular`, `LocativePlural`, `InstrumentalSingular`, `InstrumentalPlural`
 

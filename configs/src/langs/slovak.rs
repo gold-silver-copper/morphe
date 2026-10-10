@@ -119,6 +119,21 @@ impl Language for Slovak {
         s
     }
 
+    /// A perfective verb's table gives its non-past forms (urobím) as the
+    /// future: they fill the present cells, as in imperfective verbs.
+    fn prepare(&self, e: &mut Entry) {
+        if e.pos != "verb" || e.forms.iter().any(|f| has(&f.tags, "present") && has(&f.tags, "indicative")) {
+            return;
+        }
+        for f in &mut e.forms {
+            if has(&f.tags, "future") && !has(&f.tags, "past") && !f.form.trim().contains(' ') {
+                for t in f.tags.iter_mut().filter(|t| *t == "future") {
+                    *t = "present".into();
+                }
+            }
+        }
+    }
+
     /// Kaikki reads Slovak noun tables as a flat list of untagged strings:
     /// column headers, then each case name followed by its forms. It also
     /// drops a form that repeats an earlier one, so a row may be short. The
@@ -246,6 +261,10 @@ impl Language for Slovak {
         if !reflexive(lemma) {
             forms.retain(|(_, f, _)| !reflexive(f));
         }
+    }
+
+    fn samples(&self) -> Vec<&'static str> {
+        vec!["žena", "chlap", "pes, psa", "robiť", "urobiť", "bystrý", "glorpa", "zlimať"]
     }
 
     fn readme(&self) -> String {
