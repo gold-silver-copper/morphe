@@ -1,3 +1,4 @@
+use morphe_train::kaikki::Entry;
 use morphe_train::spec::*;
 
 pub struct Belarusian;
@@ -103,6 +104,19 @@ impl Language for Belarusian {
         s
     }
 
+    /// Some entries are typed with Latin look-alikes of Cyrillic letters
+    /// (ŭ for ў, i for і): шва́браŭ, ба́цькаўскi.
+    fn prepare(&self, e: &mut Entry) {
+        e.word = cyrillic(&e.word);
+        for f in &mut e.forms {
+            f.form = cyrillic(&f.form);
+        }
+    }
+
+    fn samples(&self) -> Vec<&'static str> {
+        vec!["кніга", "брат", "кот, ката", "пісаць", "напісаць", "добры", "кракозябра", "бузяць"]
+    }
+
     fn readme(&self) -> String {
         r#"## Example
 
@@ -127,6 +141,28 @@ often wrong.
 "#
         .into()
     }
+}
+
+/// Latin look-alikes inside a Cyrillic word, as their Cyrillic letters.
+fn cyrillic(s: &str) -> String {
+    let words: Vec<String> = s
+        .split(' ')
+        .map(|w| {
+            if !w.chars().any(|c| matches!(c, '\u{400}'..='\u{4ff}')) {
+                return w.to_string();
+            }
+            w.chars()
+                .map(|c| match c {
+                    'ŭ' => 'ў',
+                    'Ŭ' => 'Ў',
+                    'i' => 'і',
+                    'I' => 'І',
+                    c => c,
+                })
+                .collect()
+        })
+        .collect();
+    words.join(" ")
 }
 
 pub fn language() -> Box<dyn Language> {
