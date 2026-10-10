@@ -30,6 +30,8 @@ impl Language for Catalan {
             )
             .inherent("Gender")
             .citation("Lemma Plural")
+            // Only nouns with a gendered counterpart (gat, gata) have one.
+            .missing_is_absent()
             .head_first(),
             pos("adj", "adj", vec![group("", "", "Gender? Number")]).citation("MasculineSingular FeminineSingular").head_first(),
             pos(
@@ -56,6 +58,14 @@ impl Language for Catalan {
         s
     }
 
+    /// The formal imperative (parli, parlin: vostè, vostès) is grammatically
+    /// third person.
+    fn retag(&self, _pos: &PosSpec, _form: &str, tags: &mut Vec<String>) {
+        if tags.iter().any(|t| t == "second-person-semantically") {
+            tags.push("third-person".into());
+        }
+    }
+
     fn keep_entry(&self, e: &Entry) -> bool {
         e.word.chars().any(char::is_alphabetic) && !e.word.chars().any(|c| c.is_ascii_digit())
     }
@@ -67,7 +77,11 @@ impl Language for Catalan {
             s.pos.iter().map(|p| (p.name.clone(), s.cells(p).into_iter().map(|c| c.name).collect())).collect()
         });
         let Some((_, names)) = cells.iter().find(|c| c.0 == pos.name) else { return };
-        fill_lemma(names, lemma, forms);
+        if pos.name == "noun" {
+            fill_counterpart(names, lemma, forms);
+        } else {
+            fill_lemma(names, lemma, forms);
+        }
     }
 
     fn samples(&self) -> Vec<&'static str> {
@@ -97,6 +111,30 @@ are left out. The periphrastic past (`vaig parlar`) and negative imperatives
 "#
         .into()
     }
+}
+
+/// A noun with a counterpart of the other gender (gat, gata) is itself the
+/// counterpart of its own gender: gata's feminine counterpart is gata.
+fn fill_counterpart(names: &[String], lemma: &str, forms: &mut Vec<(usize, String, bool)>) {
+    let idx = |n: &str| names.iter().position(|c| c == n);
+    let (Some(plural), Some(ms), Some(mp), Some(fs), Some(fp)) = (
+        idx("Plural"),
+        idx("CounterpartMasculineSingular"),
+        idx("CounterpartMasculinePlural"),
+        idx("CounterpartFeminineSingular"),
+        idx("CounterpartFemininePlural"),
+    ) else {
+        return;
+    };
+    let has = |ci: usize| forms.iter().any(|f| f.0 == ci);
+    let own = match (has(ms) || has(mp), has(fs) || has(fp)) {
+        (true, false) => (fs, fp),
+        (false, true) => (ms, mp),
+        _ => return,
+    };
+    let plurals: Vec<(usize, String, bool)> = forms.iter().filter(|f| f.0 == plural).map(|f| (own.1, f.1.clone(), f.2)).collect();
+    forms.push((own.0, lemma.to_string(), false));
+    forms.extend(plurals);
 }
 
 /// The dictionary form is a cell Wiktionary doesn't list: the masculine
