@@ -28,7 +28,7 @@ Macrons are optional on input; output carries them.
 | det | 6 | 24 | 18 | 5 | 2 | 3 |
 | num | 2 | 12 | 13 | 4 | 2 | 1 |
 
-Model size: 19161 bytes.
+Model size: 19169 bytes.
 
 **noun** cells: `NominativeSingular`, `NominativePlural`, `AccusativeSingular`, `AccusativePlural`, `GenitiveSingular`, `GenitivePlural`, `DativeSingular`, `DativePlural`
 

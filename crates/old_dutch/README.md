@@ -27,7 +27,7 @@ paradigms are largely reconstructed from the sparse record.
 | adj | 218 | 32 | 194 | 40 | 35 | 81 |
 | verb | 745 | 29 | 1542 | 458 | 140 | 320 |
 
-Model size: 136604 bytes.
+Model size: 136612 bytes.
 
 **noun** cells: `NominativeSingular`, `NominativePlural`, `AccusativeSingular`, `AccusativePlural`, `GenitiveSingular`, `GenitivePlural`, `DativeSingular`, `DativePlural`
 

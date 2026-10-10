@@ -26,7 +26,7 @@ out. Diacritics are optional on input.
 | adj | 241 | 44 | 86 | 51 | 50 | 109 |
 | verb | 290 | 45 | 691 | 148 | 65 | 150 |
 
-Model size: 77217 bytes.
+Model size: 77225 bytes.
 
 **noun** cells: `NominativeSingular`, `NominativePlural`, `GenitiveSingular`, `GenitivePlural`, `DativeSingular`, `DativePlural`, `AccusativeSingular`, `AccusativePlural`, `InstrumentalSingular`, `InstrumentalPlural`, `LocativeSingular`, `LocativePlural`, `VocativeSingular`, `VocativePlural`, `Diminutive`, `Augmentative`
 

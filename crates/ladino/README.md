@@ -26,7 +26,7 @@ style); Hebrew-script words are left out. Accents are optional on input.
 | adj | 100 | 3 | 14 | 14 | 11 | 46 |
 | verb | 79 | 60 | 491 | 29 | 5 | 24 |
 
-Model size: 24694 bytes.
+Model size: 24700 bytes.
 
 **noun** cells: `Plural`
 

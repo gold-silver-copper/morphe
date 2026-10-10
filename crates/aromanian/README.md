@@ -27,7 +27,7 @@ input.
 | adj | 328 | 3 | 110 | 144 | 75 | 171 |
 | verb | 987 | 29 | 441 | 361 | 196 | 549 |
 
-Model size: 79303 bytes.
+Model size: 79311 bytes.
 
 **noun** cells: `IndefiniteDirectSingular`, `IndefiniteDirectPlural`, `IndefiniteObliqueSingular`, `IndefiniteObliquePlural`, `DefiniteDirectSingular`, `DefiniteDirectPlural`, `DefiniteObliqueSingular`, `DefiniteObliquePlural`
 

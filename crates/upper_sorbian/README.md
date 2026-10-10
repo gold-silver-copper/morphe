@@ -27,7 +27,7 @@ nonvirile forms. Diacritics are optional on input.
 | adj | 105 | 48 | 44 | 18 | 19 | 45 |
 | verb | 91 | 61 | 324 | 45 | 25 | 57 |
 
-Model size: 61977 bytes.
+Model size: 61985 bytes.
 
 **noun** cells: `NominativeSingular`, `NominativeDual`, `NominativePlural`, `GenitiveSingular`, `GenitiveDual`, `GenitivePlural`, `DativeSingular`, `DativeDual`, `DativePlural`, `AccusativeSingular`, `AccusativeDual`, `AccusativePlural`, `InstrumentalSingular`, `InstrumentalDual`, `InstrumentalPlural`, `LocativeSingular`, `LocativeDual`, `LocativePlural`, `VocativeSingular`, `VocativeDual`, `VocativePlural`, `Diminutive`
 

@@ -25,7 +25,7 @@ conjugation tables for only a handful.
 | noun | 554 | 16 | 665 | 548 | 170 | 482 |
 | adj | 216 | 38 | 123 | 61 | 57 | 159 |
 
-Model size: 51954 bytes.
+Model size: 51961 bytes.
 
 **noun** cells: `NominativeSingular`, `NominativePlural`, `GenitiveSingular`, `GenitivePlural`, `DativeSingular`, `DativePlural`, `AccusativeSingular`, `AccusativePlural`, `InstrumentalSingular`, `InstrumentalPlural`, `LocativeSingular`, `LocativePlural`, `VocativeSingular`, `VocativePlural`, `Diminutive`, `Augmentative`
 

@@ -25,7 +25,7 @@ Accents are optional on input.
 | adj | 242 | 2 | 11 | 12 | 32 | 43 |
 | verb | 106 | 51 | 605 | 133 | 28 | 79 |
 
-Model size: 36490 bytes.
+Model size: 36497 bytes.
 
 **noun** cells: `Plural`
 

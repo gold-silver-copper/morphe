@@ -27,7 +27,7 @@ type of spelling. Accents are optional on input.
 | adj | 93 | 35 | 93 | 66 | 25 | 76 |
 | verb | 259 | 48 | 509 | 176 | 86 | 190 |
 
-Model size: 49693 bytes.
+Model size: 49701 bytes.
 
 **noun** cells: `Plural`, `Diminutive`
 

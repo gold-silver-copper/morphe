@@ -26,7 +26,7 @@ Accents are optional on input, and l matches the standard spelling's ł.
 | adj | 302 | 3 | 27 | 22 | 40 | 142 |
 | verb | 383 | 45 | 380 | 81 | 40 | 95 |
 
-Model size: 45873 bytes.
+Model size: 45881 bytes.
 
 **noun** cells: `Plural`
 

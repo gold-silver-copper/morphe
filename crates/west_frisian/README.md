@@ -30,7 +30,7 @@ superlative is given without "it".
 | adj | 219 | 18 | 110 | 73 | 50 | 85 |
 | verb | 260 | 25 | 694 | 187 | 70 | 133 |
 
-Model size: 77615 bytes.
+Model size: 77623 bytes.
 
 **noun** cells: `Plural`, `Diminutive`
 

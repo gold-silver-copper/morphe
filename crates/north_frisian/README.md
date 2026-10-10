@@ -27,7 +27,7 @@ or Mooring). Compound tenses are left out. Umlauts are optional on input.
 | adj | 56 | 30 | 156 | 38 | 5 | 42 |
 | verb | 309 | 13 | 864 | 251 | 71 | 217 |
 
-Model size: 48719 bytes.
+Model size: 48726 bytes.
 
 **noun** cells: `Plural`
 
