@@ -30,9 +30,8 @@ impl Edit {
 
     /// Apply to `w`, or `None` if `w` doesn't have the shape this edit needs.
     pub fn apply(&self, w: &str) -> Option<String> {
-        let chars: Vec<char> = w.chars().collect();
         let mut out = String::with_capacity(w.len() + 8);
-        apply(self, &chars, &mut out).then_some(out)
+        apply(self, w, &mut out).then_some(out)
     }
 
     /// True if this edit leaves every string unchanged.
@@ -80,10 +79,10 @@ fn longest_common(a: &[char], b: &[char]) -> (usize, usize, usize) {
     best
 }
 
-fn apply(e: &Edit, w: &[char], out: &mut String) -> bool {
+fn apply(e: &Edit, w: &str, out: &mut String) -> bool {
     match e {
         Edit::Subst { from, to } => {
-            if from.chars().eq(w.iter().copied()) {
+            if from == w {
                 out.push_str(to);
                 true
             } else {
@@ -92,11 +91,29 @@ fn apply(e: &Edit, w: &[char], out: &mut String) -> bool {
         }
         Edit::Match { pre, suf, left, right } => {
             let (pre, suf) = (*pre as usize, *suf as usize);
-            if w.len() < pre + suf + 1 {
+            // Byte offsets after the first `pre` chars and before the last `suf`.
+            let mut it = w.char_indices();
+            let start = if pre == 0 {
+                0
+            } else {
+                match it.nth(pre - 1) {
+                    Some((i, c)) => i + c.len_utf8(),
+                    None => return false,
+                }
+            };
+            let mut back = w[start..].char_indices().rev();
+            let end = if suf == 0 {
+                w.len()
+            } else {
+                match back.nth(suf - 1) {
+                    Some((i, _)) => start + i,
+                    None => return false,
+                }
+            };
+            if end <= start {
                 return false;
             }
-            let (w1, rest) = w.split_at(pre);
-            let (mid, w2) = rest.split_at(rest.len() - suf);
+            let (w1, mid, w2) = (&w[..start], &w[start..end], &w[end..]);
             let ok_left = match left {
                 Some(l) => apply(l, w1, out),
                 None => w1.is_empty(),
@@ -104,7 +121,7 @@ fn apply(e: &Edit, w: &[char], out: &mut String) -> bool {
             if !ok_left {
                 return false;
             }
-            out.extend(mid.iter());
+            out.push_str(mid);
             match right {
                 Some(r) => apply(r, w2, out),
                 None => w2.is_empty(),
