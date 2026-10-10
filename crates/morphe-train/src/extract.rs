@@ -81,14 +81,20 @@ impl<'a> Extractor<'a> {
         let plain = self.strip(&word.to_lowercase());
         let reshaped = self.lang.reshape(pos, e);
         let forms: &[Form] = reshaped.as_deref().unwrap_or(&e.forms);
+        // The dictionary spelling: the first canonical form that matches the
+        // headword, else the headword itself as written (marks kept).
         let canon = spec
             .canonical_tag
             .as_ref()
             .filter(|_| spec.canonical_spelling)
-            .and_then(|t| forms.iter().find(|f| f.tags.contains(t)))
-            .map(|f| f.form.trim().to_lowercase())
-            .filter(|c| self.strip(c) == plain)
-            .unwrap_or_else(|| plain.clone());
+            .and_then(|t| {
+                forms
+                    .iter()
+                    .filter(|f| f.tags.contains(t))
+                    .map(|f| f.form.trim().to_lowercase())
+                    .find(|c| self.strip(c) == plain)
+            })
+            .unwrap_or_else(|| if spec.canonical_spelling { word.to_lowercase() } else { plain.clone() });
 
         let retagged = |form: &str, t: &[String]| {
             let mut t = t.to_vec();

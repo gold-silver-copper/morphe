@@ -148,7 +148,28 @@ dependencies = [
 ]
 
 [[package]]
+name = "classical_nahuatl"
+version = "0.1.0"
+dependencies = [
+ "morphe",
+]
+
+[[package]]
 name = "classical_syriac"
+version = "0.1.0"
+dependencies = [
+ "morphe",
+]
+
+[[package]]
+name = "coptic"
+version = "0.1.0"
+dependencies = [
+ "morphe",
+]
+
+[[package]]
+name = "cornish"
 version = "0.1.0"
 dependencies = [
  "morphe",
@@ -200,6 +221,13 @@ dependencies = [
 
 [[package]]
 name = "eastern_mari"
+version = "0.1.0"
+dependencies = [
+ "morphe",
+]
+
+[[package]]
+name = "egyptian"
 version = "0.1.0"
 dependencies = [
  "morphe",
@@ -559,6 +587,13 @@ dependencies = [
 ]
 
 [[package]]
+name = "manx"
+version = "0.1.0"
+dependencies = [
+ "morphe",
+]
+
+[[package]]
 name = "marathi"
 version = "0.1.0"
 dependencies = [
@@ -654,6 +689,13 @@ dependencies = [
 ]
 
 [[package]]
+name = "navajo"
+version = "0.1.0"
+dependencies = [
+ "morphe",
+]
+
+[[package]]
 name = "neapolitan"
 version = "0.1.0"
 dependencies = [
@@ -725,6 +767,13 @@ dependencies = [
 
 [[package]]
 name = "old_dutch"
+version = "0.1.0"
+dependencies = [
+ "morphe",
+]
+
+[[package]]
+name = "old_east_slavic"
 version = "0.1.0"
 dependencies = [
  "morphe",
@@ -859,6 +908,13 @@ dependencies = [
 ]
 
 [[package]]
+name = "quechua"
+version = "0.1.0"
+dependencies = [
+ "morphe",
+]
+
+[[package]]
 name = "quote"
 version = "1.0.47"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -961,6 +1017,13 @@ dependencies = [
 
 [[package]]
 name = "sicilian"
+version = "0.1.0"
+dependencies = [
+ "morphe",
+]
+
+[[package]]
+name = "silesian"
 version = "0.1.0"
 dependencies = [
  "morphe",
