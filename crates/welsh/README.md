@@ -28,14 +28,14 @@ on input.
 
 | Part of speech | Entries | Cells | Edits | Classes | Tree nodes | Lexicon |
 |---|---|---|---|---|---|---|
-| noun | 15092 | 6 | 2482 | 3877 | 1807 | 7682 |
-| adj | 3604 | 9 | 498 | 465 | 338 | 1917 |
-| verb | 4049 | 61 | 5548 | 1795 | 532 | 1901 |
+| noun | 15184 | 6 | 2542 | 3929 | 1813 | 7773 |
+| adj | 3613 | 9 | 499 | 475 | 336 | 1950 |
+| verb | 4055 | 61 | 5564 | 1820 | 534 | 1911 |
 | prep | 19 | 7 | 67 | 15 | 4 | 12 |
-| num | 203 | 4 | 35 | 21 | 14 | 7 |
+| num | 222 | 4 | 35 | 22 | 14 | 26 |
 | pron | 13 | 4 | 23 | 13 | 2 | 5 |
 
-Model size: 1905676 bytes.
+Model size: 1918442 bytes.
 
 **noun** cells: `Plural`, `Singulative`, `MutatedSoft`, `MutatedNasal`, `MutatedAspirate`, `MutatedHProthesis`
 

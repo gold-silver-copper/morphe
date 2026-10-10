@@ -1,7 +1,5 @@
-use morphe_train::kaikki::Entry;
+use morphe_train::kaikki::{Entry, Form};
 use morphe_train::spec::*;
-use std::collections::HashMap;
-use std::sync::OnceLock;
 
 pub struct Welsh;
 
@@ -11,25 +9,6 @@ const PRONOUNS: &[&str] = &["i", "fi", "di", "ti", "o", "fo", "e", "fe", "hi", "
 fn strip_pronoun(form: &str) -> Option<&str> {
     let (head, last) = form.rsplit_once(' ')?;
     (PRONOUNS.contains(&last) && !head.contains(' ')).then_some(head)
-}
-
-/// Indices of a part of speech's mutation cells.
-fn mutation_cells(pos: &PosSpec) -> Vec<usize> {
-    static CELLS: OnceLock<HashMap<String, Vec<usize>>> = OnceLock::new();
-    CELLS
-        .get_or_init(|| {
-            let s = Welsh.spec();
-            s.pos
-                .iter()
-                .map(|p| {
-                    let cells = s.cells(p).into_iter().enumerate();
-                    (p.name.clone(), cells.filter(|(_, c)| c.name.starts_with("Mutated")).map(|(i, _)| i).collect())
-                })
-                .collect()
-        })
-        .get(&pos.name)
-        .cloned()
-        .unwrap_or_default()
 }
 
 impl Language for Welsh {
@@ -140,6 +119,15 @@ impl Language for Welsh {
             };
             f.tags = vec![tag.into()];
         }
+        // A word with a mutation table but no form for some mutation keeps
+        // its radical there (b has no aspirate mutation).
+        if e.forms.iter().any(|f| f.source.as_deref() == Some("mutation")) {
+            for m in ["soft", "nasal", "aspirate", "prothesis-h"] {
+                if !e.forms.iter().any(|f| f.tags.iter().any(|t| t == m)) {
+                    e.forms.push(Form { form: e.word.clone(), tags: vec![m.into()], source: Some("mutation".into()) });
+                }
+            }
+        }
     }
 
     fn retag(&self, pos: &PosSpec, form: &str, tags: &mut Vec<String>) {
@@ -158,7 +146,7 @@ impl Language for Welsh {
         vec![raw.to_string()]
     }
 
-    fn adjust(&self, pos: &PosSpec, lemma: &str, forms: &mut Vec<(usize, String, bool)>) {
+    fn adjust(&self, pos: &PosSpec, _lemma: &str, forms: &mut Vec<(usize, String, bool)>) {
         match pos.name.as_str() {
             // Colloquial tables add the pronoun: "eurith o" is "eurith".
             // These colloquial forms rank after the literary ones.
@@ -173,16 +161,6 @@ impl Language for Welsh {
             }
             "prep" => forms.retain(|f| !f.1.contains(' ') && !PRONOUNS.contains(&f.1.as_str())),
             _ => {}
-        }
-        // A word with a mutation table but no form for some mutation keeps
-        // its radical there (b has no aspirate mutation).
-        let mutation = mutation_cells(pos);
-        if mutation.iter().any(|ci| forms.iter().any(|f| f.0 == *ci)) {
-            for &ci in &mutation {
-                if !forms.iter().any(|f| f.0 == ci) {
-                    forms.push((ci, lemma.to_string(), false));
-                }
-            }
         }
     }
 
