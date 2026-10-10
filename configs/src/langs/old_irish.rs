@@ -1,4 +1,4 @@
-use morphe_train::kaikki::Entry;
+use morphe_train::kaikki::{Entry, Form};
 use morphe_train::spec::*;
 
 pub struct OldIrish;
@@ -101,6 +101,11 @@ impl Language for OldIrish {
     }
 
     fn prepare(&self, e: &mut Entry) {
+        // Headword lines carry no canonical form; the title keeps its length
+        // marks (cú, mór), which the plain key drops.
+        if !e.forms.iter().any(|f| has(&f.tags, "canonical")) {
+            e.forms.push(Form { form: e.word.clone(), tags: vec!["canonical".into()], source: None });
+        }
         let mut seen: Vec<(Vec<String>, bool)> = Vec::new();
         let mut table_done = false;
         for f in e.forms.iter_mut() {
