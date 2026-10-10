@@ -39,7 +39,20 @@ pub struct Pos {
     pub paradigm: Tree,
     /// Known words whose answer the trees don't give: key → readings.
     pub lexicon: Vec<(String, Vec<Reading>)>,
+    /// Known words whose top prediction is exactly right (sorted keys).
+    pub known: Vec<String>,
     pub inherent: Vec<Inherent>,
+    /// Which word of an unknown multi-word phrase inflects.
+    pub head: Head,
+}
+
+#[derive(Clone, Copy, Debug, Default, PartialEq, Eq)]
+pub enum Head {
+    /// The phrase as a whole.
+    #[default]
+    Whole,
+    First,
+    Last,
 }
 
 /// One reading of a known word.
@@ -272,6 +285,14 @@ impl Model {
             }
         }
 
+        if pos.known.binary_search(&q.key).is_ok() {
+            if let Some((canon, class)) = self.top_reading(pos, &q.plain) {
+                if needs(class) && cites(&canon, class) {
+                    return vec![(canon, class, 1.0)];
+                }
+            }
+        }
+
         // Unknown word: restore its spelling, then predict its class.
         let restored = pos.restore.predict(&q.plain, |l| {
             pos.restores.get(l as usize).and_then(|e| e.apply(&q.plain)).is_some_and(|c| self.marks_placed(&c))
@@ -306,6 +327,32 @@ impl Model {
         out
     }
 
+    fn is_known(&self, p: &Pos, key: &str) -> bool {
+        p.known.binary_search_by(|k| k.as_str().cmp(key)).is_ok()
+            || p.lexicon.binary_search_by(|e| e.0.as_str().cmp(key)).is_ok()
+    }
+
+    /// The single most likely (dictionary spelling, class) of a word: the
+    /// best restoration, and the best class whose edits all apply to it.
+    pub fn top_reading(&self, pos: &Pos, plain: &str) -> Option<(String, u32)> {
+        let (r, _) = *pos
+            .restore
+            .predict(plain, |l| {
+                pos.restores.get(l as usize).and_then(|e| e.apply(plain)).is_some_and(|c| self.marks_placed(&c))
+            })
+            .first()?;
+        let canon = pos.restores.get(r as usize)?.apply(plain)?;
+        let (class, _) = *pos
+            .paradigm
+            .predict(plain, |c| {
+                pos.classes.get(c as usize).is_some_and(|cells| {
+                    cells.iter().flatten().all(|&(e, _)| pos.edits.get(e as usize).and_then(|e| e.apply(&canon)).is_some())
+                })
+            })
+            .first()?;
+        Some((canon, class))
+    }
+
     /// Every candidate form of `input` in `cell` of part of speech `pos`,
     /// best first, with confidences summing to 1. Empty only when nothing
     /// is known or predictable.
@@ -314,6 +361,23 @@ impl Model {
         let q = self.query(input);
         if q.plain.is_empty() {
             return Vec::new();
+        }
+        if p.head != Head::Whole && q.parts.is_empty() && q.plain.contains(' ') && !self.is_known(p, &q.key) {
+            let words: Vec<&str> = input.trim().split(' ').filter(|w| !w.is_empty()).collect();
+            let hi = if p.head == Head::First { 0 } else { words.len().saturating_sub(1) };
+            if let Some(head) = words.get(hi) {
+                return self
+                    .inflect(pos, cell, head, opts)
+                    .into_iter()
+                    .map(|(f, s)| {
+                        let mut w = words.clone();
+                        if let Some(slot) = w.get_mut(hi) {
+                            *slot = &f;
+                        }
+                        (w.join(" "), s)
+                    })
+                    .collect();
+            }
         }
         let readings = self.readings(p, &q, cell);
         // Principal parts the caller gave are output exactly.
@@ -434,6 +498,17 @@ impl Model {
                     }
                 }
             }
+            w.u(p.known.len() as u64);
+            let mut prev = "";
+            for k in &p.known {
+                write_key(&mut w, prev, k);
+                prev = k;
+            }
+            w.u(match p.head {
+                Head::Whole => 0,
+                Head::First => 1,
+                Head::Last => 2,
+            });
             w.u(p.inherent.len() as u64);
             for f in &p.inherent {
                 w.s(&f.name);
@@ -502,6 +577,17 @@ impl Model {
                     .collect::<Option<Vec<_>>>()?;
                 Some((k, rs))
             })?;
+            let mut prev = String::new();
+            let known = r.vec(|r| {
+                let k = read_key(r, &prev)?;
+                prev.clone_from(&k);
+                Some(k)
+            })?;
+            let head = match r.u()? {
+                1 => Head::First,
+                2 => Head::Last,
+                _ => Head::Whole,
+            };
             let inherent = r.vec(|r| {
                 let name = r.s()?;
                 let values = r.vec(|r| r.s())?;
@@ -514,7 +600,7 @@ impl Model {
                 })?;
                 Some(Inherent { name, values, tree, lexicon })
             })?;
-            Some(Pos { name, cells, citation, edits, classes, restore, restores, paradigm, lexicon, inherent })
+            Some(Pos { name, cells, citation, edits, classes, restore, restores, paradigm, lexicon, known, inherent, head })
         })?;
         Some(Model { name, marks, fold, mark_bases, pos })
     }

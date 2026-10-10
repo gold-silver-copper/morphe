@@ -66,6 +66,8 @@ pub struct PosSpec {
     /// part may name alternatives (`PresentFirstSingular|FutureFirstSingular`).
     pub citation: Vec<Vec<String>>,
     pub key: Vec<KeyFeature>,
+    /// Which word of an unknown phrase inflects.
+    pub head: morphe::model::Head,
 }
 
 /// A product of features, all sharing some fixed tags.
@@ -239,6 +241,7 @@ pub fn pos(name: &str, kaikki: &str, groups: Vec<Group>) -> PosSpec {
         inherent: Vec::new(),
         citation: Vec::new(),
         key: Vec::new(),
+        head: morphe::model::Head::Whole,
     }
 }
 
@@ -249,6 +252,14 @@ impl PosSpec {
     }
     pub fn citation(mut self, cells: &str) -> Self {
         self.citation = cells.split_whitespace().map(|p| p.split('|').map(String::from).collect()).collect();
+        self
+    }
+    pub fn head_first(mut self) -> Self {
+        self.head = morphe::model::Head::First;
+        self
+    }
+    pub fn head_last(mut self) -> Self {
+        self.head = morphe::model::Head::Last;
         self
     }
     pub fn syllables(mut self, vowels: &str, cap: u32) -> Self {

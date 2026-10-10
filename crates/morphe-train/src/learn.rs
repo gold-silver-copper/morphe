@@ -4,7 +4,7 @@
 use crate::extract::{Extractor, Record};
 use crate::tree::{self, Params};
 use morphe::model::{Inherent, Model, Pos, Reading};
-use morphe::{Edit, Options};
+use morphe::Edit;
 use std::collections::{BTreeMap, HashMap};
 
 type ClassKey = Vec<Vec<(u32, u16)>>;
@@ -79,13 +79,17 @@ pub fn learn(ex: &Extractor, threads: usize) -> (Model, Vec<Stats>) {
         let rest: Vec<Edit> = recs.iter().map(|r| Edit::between(&r.plain, &r.canon)).collect();
         let (restores, restore_id) = index(rest.iter().cloned());
 
+        // Trees learn from single words; phrases are idiosyncratic, and an
+        // unknown phrase is inflected through its head word.
+        let single = |r: &&Record| !r.plain.contains(' ');
         let para_data: Vec<(String, u32, f64)> =
-            recs.iter().zip(&primary).map(|(r, c)| (r.plain.clone(), class_id[c], 1.0)).collect();
+            recs.iter().zip(&full).filter(|(r, _)| single(r)).map(|(r, c)| (r.plain.clone(), class_id[c], 1.0)).collect();
         let rest_data: Vec<(String, u32, f64)> =
-            recs.iter().zip(&rest).map(|(r, e)| (r.plain.clone(), restore_id[e], 1.0)).collect();
+            recs.iter().zip(&rest).filter(|(r, _)| single(r)).map(|(r, e)| (r.plain.clone(), restore_id[e], 1.0)).collect();
         let inh_data: Vec<Vec<(String, u32, f64)>> = (0..ps.inherent.len())
             .map(|fi| {
                 recs.iter()
+                    .filter(single)
                     .flat_map(|r| {
                         let vs = &r.inherent[fi];
                         let w = 1.0 / vs.len().max(1) as f64;
@@ -126,7 +130,9 @@ pub fn learn(ex: &Extractor, threads: usize) -> (Model, Vec<Stats>) {
             restores,
             paradigm,
             lexicon: Vec::new(),
+            known: Vec::new(),
             inherent: Vec::new(),
+            head: ps.head,
         };
         let probe = Model { pos: Vec::new(), ..model.clone() };
 
@@ -161,36 +167,42 @@ pub fn learn(ex: &Extractor, threads: usize) -> (Model, Vec<Stats>) {
             })
             .collect();
 
-        // A word goes in the lexicon when the trees alone don't give its
-        // forms: same primary form, same set of alternatives, in every cell.
+        // A known word whose top prediction gives exactly its forms (every
+        // cell, every variant, in order) only needs its key stored; any
+        // other known word goes in the lexicon with its readings.
         let check = Model { pos: vec![pos.clone()], ..probe.clone() };
         let jobs: Vec<usize> = (0..groups.len()).collect();
-        let wrong: Vec<bool> = par_map(&jobs, threads, |&g| {
+        let exact: Vec<bool> = par_map(&jobs, threads, |&g| {
             let rs = &readings[g];
             if rs.len() != 1 {
-                return true;
+                return false;
             }
             let r = &rs[0];
+            let cp = &check.pos[0];
             let plain = r.plain.as_deref().unwrap_or(&groups[g].0);
-            let Some(canon) = check.pos[0].restores.get(r.restore as usize).and_then(|e| e.apply(plain)) else {
-                return true;
+            if r.plain.is_some() {
+                return false;
+            }
+            let forms = |canon: &str, class: u32| -> Option<Vec<Vec<String>>> {
+                cp.classes
+                    .get(class as usize)?
+                    .iter()
+                    .map(|vs| vs.iter().map(|&(e, _)| cp.edits.get(e as usize)?.apply(canon)).collect())
+                    .collect()
             };
-            let Some(class) = check.pos[0].classes.get(r.class as usize) else { return true };
-            class.iter().enumerate().any(|(ci, vs)| {
-                let want: Vec<String> =
-                    vs.iter().filter_map(|&(e, _)| check.pos[0].edits.get(e as usize)?.apply(&canon)).collect();
-                let got: Vec<String> =
-                    check.inflect(0, ci as u32, plain, Options::default()).into_iter().map(|x| x.0).collect();
-                want.first() != got.first() || want.len() != got.len() || !want.iter().all(|w| got.contains(w))
-            })
+            let Some(canon) = cp.restores.get(r.restore as usize).and_then(|e| e.apply(plain)) else { return false };
+            let Some((pc, pclass)) = check.top_reading(cp, plain) else { return false };
+            pc == canon && forms(&pc, pclass).is_some() && forms(&pc, pclass) == forms(&canon, r.class)
         });
-        pos.lexicon = groups
-            .iter()
-            .zip(readings)
-            .zip(&wrong)
-            .filter(|(_, w)| **w)
-            .map(|((g, rs), _)| (g.0.clone(), rs))
-            .collect();
+        let mut lexicon = Vec::new();
+        for ((g, rs), ok) in groups.iter().zip(readings).zip(&exact) {
+            if *ok {
+                pos.known.push(g.0.clone());
+            } else {
+                lexicon.push((g.0.clone(), rs));
+            }
+        }
+        pos.lexicon = lexicon;
 
         for (fi, fname) in ps.inherent.iter().enumerate() {
             let values = spec.feature(fname).map(|(_, f)| f.values.iter().map(|v| v.name.clone()).collect()).unwrap_or_default();
@@ -233,13 +245,14 @@ pub fn learn(ex: &Extractor, threads: usize) -> (Model, Vec<Stats>) {
             nodes,
         });
         eprintln!(
-            "[{}] {}: {} edits, {} classes, {} tree nodes, lexicon {}",
+            "[{}] {}: {} edits, {} classes, {} tree nodes, lexicon {}, known {}",
             spec.name,
             ps.name,
             pos.edits.len(),
             pos.classes.len(),
             nodes,
-            pos.lexicon.len()
+            pos.lexicon.len(),
+            pos.known.len()
         );
         model.pos.push(pos);
     }

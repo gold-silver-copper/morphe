@@ -21,7 +21,7 @@ impl Language for English {
         ];
         let vowels = "aeiouy";
         s.pos = vec![
-            pos("noun", "noun", vec![group("", "", "Number[Plural]")]).citation("Lemma Plural"),
+            pos("noun", "noun", vec![group("", "", "Number[Plural]")]).citation("Lemma Plural").head_last(),
             pos(
                 "verb",
                 "verb",
@@ -30,6 +30,7 @@ impl Language for English {
                     group("Participle", "participle", "Tense"),
                 ],
             )
+            .head_first()
             .citation("Lemma PastFirstSingular|PastSecondSingular|PastThirdSingular|PastFirstPlural|PastSecondPlural|PastThirdPlural ParticiplePast"),
             pos("adj", "adj", vec![group("", "", "Degree")]).syllables(vowels, 3).citation("Lemma Comparative Superlative"),
             pos("adv", "adv", vec![group("", "", "Degree")]).syllables(vowels, 3),

@@ -3,6 +3,13 @@
 version = 4
 
 [[package]]
+name = "english"
+version = "0.5.0"
+dependencies = [
+ "morphe",
+]
+
+[[package]]
 name = "itoa"
 version = "1.0.18"
 source = "registry+https://github.com/rust-lang/crates.io-index"

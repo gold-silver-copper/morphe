@@ -47,7 +47,8 @@ impl Language for Russian {
         s.pos = vec![
             pos("noun", "noun", vec![group("", "", "Case Number")])
                 .inherent("Gender Animacy")
-                .citation("NominativeSingular GenitiveSingular"),
+                .citation("NominativeSingular GenitiveSingular")
+                .head_last(),
             pos(
                 "adj",
                 "adj",
