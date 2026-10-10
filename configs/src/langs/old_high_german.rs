@@ -59,6 +59,13 @@ impl Language for OldHighGerman {
     }
 
     fn prepare(&self, e: &mut Entry) {
+        // A few forms mark length with a circumflex instead of the macron
+        // used everywhere else.
+        for f in &mut e.forms {
+            if f.form.contains(['â', 'ê', 'î', 'ô', 'û']) {
+                f.form = f.form.chars().map(|c| match c { 'â' => 'ā', 'ê' => 'ē', 'î' => 'ī', 'ô' => 'ō', 'û' => 'ū', c => c }).collect();
+            }
+        }
         if e.pos != "verb" {
             e.forms.retain(|f| !f.form.starts_with('*'));
             return;
