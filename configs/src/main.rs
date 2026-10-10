@@ -133,6 +133,55 @@ fn main() {
             let _ = std::fs::write(out.join("models.json"), format!("[{}]", entries.join(",")));
             out!("{} languages → {}", entries.len(), out.display());
         }
+        Some("summary") => {
+            // Rebuild the languages table in README.md from each crate's README.
+            let r = root();
+            let mut rows = Vec::new();
+            let mut specs: Vec<_> = langs.iter().map(|l| l.spec()).collect();
+            specs.sort_by(|a, b| a.title.cmp(&b.title));
+            let (mut tot_entries, mut tot_bytes) = (0usize, 0u64);
+            for spec in &specs {
+                let dir = r.join("crates").join(&spec.name);
+                let Ok(readme) = std::fs::read_to_string(dir.join("README.md")) else { continue };
+                let bytes = std::fs::metadata(dir.join("src/model.bin")).map(|m| m.len()).unwrap_or(0);
+                let mut poses = Vec::new();
+                let (mut entries, mut cells) = (0usize, 0usize);
+                for line in readme.lines() {
+                    let cols: Vec<&str> = line.split('|').map(str::trim).collect();
+                    if cols.len() >= 8 && cols[2].parse::<usize>().is_ok() {
+                        poses.push(cols[1].to_string());
+                        entries += cols[2].parse::<usize>().unwrap_or(0);
+                        cells += cols[3].parse::<usize>().unwrap_or(0);
+                    }
+                }
+                tot_entries += entries;
+                tot_bytes += bytes;
+                rows.push(format!(
+                    "| {} | `{}` | {} | {} | {} | {:.1} MB |",
+                    spec.title,
+                    spec.name,
+                    poses.join(", "),
+                    entries,
+                    cells,
+                    bytes as f64 / 1e6
+                ));
+            }
+            let table = format!(
+                "<!-- languages -->\n{} languages, {} dictionary entries, {:.0} MB of models.\n\n| Language | Crate | Parts of speech | Entries | Cells | Model |\n|---|---|---|---|---|---|\n{}\n<!-- /languages -->",
+                rows.len(),
+                tot_entries,
+                tot_bytes as f64 / 1e6,
+                rows.join("\n")
+            );
+            let path = r.join("README.md");
+            let readme = std::fs::read_to_string(&path).unwrap_or_default();
+            let new = match (readme.find("<!-- languages -->"), readme.find("<!-- /languages -->")) {
+                (Some(a), Some(b)) => format!("{}{}{}", &readme[..a], table, &readme[b + "<!-- /languages -->".len()..]),
+                _ => readme.replacen("## Layout", &format!("## Languages\n\n{table}\n\n## Layout"), 1),
+            };
+            let _ = std::fs::write(&path, new);
+            out!("{} languages", rows.len());
+        }
         Some("tags") => {
             let Some(title) = args.get(1) else {
                 eprintln!("usage: morphe tags <Kaikki title, e.g. Russian> [pos…]");

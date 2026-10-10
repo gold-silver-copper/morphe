@@ -16,6 +16,35 @@ russian::noun_gender("тетрадь")                                  // [(Fem
 russian::noun("путь, пути", Case::Instrumental, Number::Singular) // citation pins principal parts
 ```
 
+## Languages
+
+<!-- languages -->
+20 languages, 1507186 dictionary entries, 67 MB of models.
+
+| Language | Crate | Parts of speech | Entries | Cells | Model |
+|---|---|---|---|---|---|
+| Arabic | `arabic` | noun, adj, verb, pron, num | 26427 | 292 | 10.4 MB |
+| Bulgarian | `bulgarian` | noun, adj, verb, pron, det, num | 14686 | 198 | 1.6 MB |
+| Czech | `czech` | noun, adj, verb, pron, det, num | 36700 | 251 | 2.0 MB |
+| Danish | `danish` | noun, adj, verb | 20561 | 25 | 0.8 MB |
+| Dutch | `dutch` | noun, adj, verb, det, num | 55361 | 56 | 1.5 MB |
+| English | `english` | noun, verb, adj, adv | 494089 | 19 | 4.0 MB |
+| Finnish | `finnish` | noun, adj, verb, pron, num | 159153 | 162 | 11.3 MB |
+| French | `french` | noun, adj, verb, pron, det, article, num | 75890 | 74 | 1.6 MB |
+| German | `german` | noun, adj, verb, pron, det, article, num | 89293 | 265 | 4.0 MB |
+| Greek | `greek` | noun, adj, verb, pron, num, article | 23376 | 189 | 2.7 MB |
+| Hungarian | `hungarian` | noun, adj, verb, pron, num | 36549 | 213 | 2.7 MB |
+| Icelandic | `icelandic` | noun, adj, verb | 15573 | 189 | 1.7 MB |
+| Italian | `italian` | noun, adj, verb, pron, det, article, num | 109390 | 80 | 2.2 MB |
+| Latin | `latin` | noun, adj, verb, pron, det, num | 34240 | 285 | 4.7 MB |
+| Polish | `polish` | noun, adj, verb, pron, det, num | 68471 | 494 | 3.7 MB |
+| Russian | `russian` | noun, adj, verb, pron, num | 51251 | 181 | 4.5 MB |
+| Spanish | `spanish` | noun, adj, verb, pron, det, article, num | 103333 | 105 | 2.1 MB |
+| Swedish | `swedish` | noun, adj, verb, pron, det, num | 51886 | 47 | 1.5 MB |
+| Turkish | `turkish` | noun, verb, pron, num | 14938 | 266 | 1.6 MB |
+| Ukrainian | `ukrainian` | noun, adj, verb, pron, det, num | 26019 | 490 | 2.5 MB |
+<!-- /languages -->
+
 ## Layout
 
 ```
