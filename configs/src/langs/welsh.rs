@@ -17,7 +17,7 @@ impl Language for Welsh {
         s.unmark = unmark(
             "âa êe îi ôo ûu ŵw ŷy áa ée íi óo úu ẃw ýy àa èe ìi òo ùu ẁw ỳy äa ëe ïi öo üu ẅw ÿy",
         );
-        s.drop_tags.extend(tags("dated literary-only"));
+        s.drop_tags.extend(tags("dated literary-only negative interrogative"));
         s.soft_tags.extend(tags("literary North-Wales South-Wales poetic"));
         s.features = vec![
             feature("Gender", &[("Masculine", "masculine"), ("Feminine", "feminine")]),
