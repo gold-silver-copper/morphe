@@ -67,7 +67,7 @@ impl Language for Russian {
                     group("", "!participle !imperative !adverbial !infinitive", "Tense[Present,Future] Person Number"),
                     group("Past", "past !participle !adverbial", "GenderNumber"),
                     group("Imperative", "imperative", "Number"),
-                    group("Participle", "participle !adverbial", "Voice Tense[Present,Past]"),
+                    group("Participle", "participle !adverbial", "Voice Tense[Present,Past]").declines("adj", ""),
                     group("Gerund", "adverbial participle", "Tense[Present,Past]"),
                 ],
             )

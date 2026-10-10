@@ -80,6 +80,16 @@ pub struct Group {
     /// fits forms that name none of its values.
     pub features: Vec<(String, Option<Vec<String>>, bool)>,
     pub tags: Vec<String>,
+    /// The forms of this group inflect further like another part of speech's
+    /// group (participles declining as adjectives): (pos, group name).
+    pub declines: Option<(String, String)>,
+}
+
+impl Group {
+    pub fn declines(mut self, pos: &str, group: &str) -> Self {
+        self.declines = Some((pos.into(), group.into()));
+        self
+    }
 }
 
 /// One cell, resolved.
@@ -243,7 +253,7 @@ pub fn group(name: &str, fixed: &str, features: &str) -> Group {
             }
         })
         .collect();
-    Group { name: name.into(), features, tags: tags(fixed) }
+    Group { name: name.into(), features, tags: tags(fixed), declines: None }
 }
 
 pub fn pos(name: &str, kaikki: &str, groups: Vec<Group>) -> PosSpec {

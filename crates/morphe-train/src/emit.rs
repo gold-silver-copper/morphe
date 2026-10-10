@@ -37,6 +37,8 @@ fn param(s: &str) -> String {
 
 /// One generated function: name, typed parameters and cell arms.
 struct Func {
+    /// (pos, group) this group's forms decline like.
+    declines: Option<(String, String)>,
     name: String,
     doc: String,
     params: Vec<(String, String)>,
@@ -67,7 +69,7 @@ fn functions(spec: &Spec, pi: usize, cells: &[Cell]) -> Vec<Func> {
         } else {
             format!("A {} form{}.", ps.name, if g.name.is_empty() { String::new() } else { format!(" ({})", snake(&g.name).replace('_', " ")) })
         };
-        out.push(Func { name, doc: what, params, arms });
+        out.push(Func { declines: g.declines.clone(), name, doc: what, params, arms });
     }
     out
 }
@@ -128,8 +130,32 @@ pub fn emit(lang: &dyn Language, spec: &Spec, cells: &[Vec<Cell>], model: &Model
     let mut frees = String::new();
     let _ = writeln!(methods, "    /// Keep stress and similar marks in the output (on by default).");
     let _ = writeln!(methods, "    pub fn marks(mut self, on: bool) -> Self {{\n        self.options.marks = on;\n        self\n    }}\n");
+    let all_funcs: Vec<(String, Vec<Func>)> =
+        spec.pos.iter().enumerate().map(|(pi, ps)| (ps.name.clone(), functions(spec, pi, &cells[pi]))).collect();
     for (pi, ps) in spec.pos.iter().enumerate() {
         for f in functions(spec, pi, &cells[pi]) {
+            if let Some((tpos, tgroup)) = &f.declines {
+                let target_name = if tgroup.is_empty() { tpos.clone() } else { format!("{}_{}", tpos, snake(tgroup)) };
+                let target = all_funcs.iter().filter(|(p, _)| p == tpos).flat_map(|(_, fs)| fs.iter()).find(|t| t.name == target_name);
+                if let Some(t) = target {
+                    let tparams: Vec<(String, String)> = t
+                        .params
+                        .iter()
+                        .map(|(n, ty)| if f.params.iter().any(|p| &p.0 == n) { (format!("{n}_2"), ty.clone()) } else { (n.clone(), ty.clone()) })
+                        .collect();
+                    let sig: String = f.params.iter().chain(&tparams).map(|(n, t)| format!(", {n}: {t}")).collect();
+                    let own: String = f.params.iter().map(|(n, _)| format!(", {n}")).collect();
+                    let theirs: String = tparams.iter().map(|(n, _)| format!(", {n}")).collect();
+                    let dn = format!("{}_declined", f.name);
+                    let _ = writeln!(methods, "    /// {} Then declined like a {}: every candidate, best first.", f.doc, tpos);
+                    let _ = writeln!(methods, "    pub fn {dn}_scored(&self, word: &str{sig}) -> Scored<String> {{");
+                    let _ = writeln!(methods, "        let base = self.{}(word{own});\n        self.{}_scored(&base{theirs})\n    }}\n", f.name, t.name);
+                    let _ = writeln!(methods, "    /// {} Then declined like a {}.", f.doc, tpos);
+                    let _ = writeln!(methods, "    pub fn {dn}(&self, word: &str{sig}) -> String {{\n        best(self.{dn}_scored(word{own}{theirs}), word)\n    }}\n");
+                    let _ = writeln!(frees, "/// {} Then declined like a {}.", f.doc, tpos);
+                    let _ = writeln!(frees, "pub fn {dn}(word: &str{sig}) -> String {{\n    {ty}::default().{dn}(word{own}{theirs})\n}}\n");
+                }
+            }
             let sig: String = f.params.iter().map(|(n, t)| format!(", {n}: {t}")).collect();
             let args: String = f.params.iter().map(|(n, _)| format!(", {n}")).collect();
             let idx = if f.params.is_empty() {
