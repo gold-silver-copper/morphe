@@ -3,8 +3,36 @@
 version = 4
 
 [[package]]
+name = "czech"
+version = "0.1.0"
+dependencies = [
+ "morphe",
+]
+
+[[package]]
+name = "dutch"
+version = "0.1.0"
+dependencies = [
+ "morphe",
+]
+
+[[package]]
 name = "english"
 version = "0.5.0"
+dependencies = [
+ "morphe",
+]
+
+[[package]]
+name = "french"
+version = "0.1.0"
+dependencies = [
+ "morphe",
+]
+
+[[package]]
+name = "german"
+version = "0.1.0"
 dependencies = [
  "morphe",
 ]

@@ -28,14 +28,14 @@ built from them. Input matching ignores the tonos accent.
 
 | Part of speech | Entries | Cells | Edits | Classes | Tree nodes | Lexicon |
 |---|---|---|---|---|---|---|
-| noun | 14613 | 8 | 2179 | 2999 | 1963 | 4627 |
-| adj | 5989 | 48 | 2065 | 582 | 838 | 1891 |
-| verb | 2691 | 61 | 10407 | 2844 | 557 | 1409 |
+| noun | 14613 | 8 | 2179 | 2999 | 1963 | 5422 |
+| adj | 5989 | 48 | 2065 | 582 | 838 | 2604 |
+| verb | 2691 | 61 | 10407 | 2844 | 557 | 1440 |
 | pron | 51 | 24 | 354 | 66 | 11 | 37 |
 | num | 19 | 24 | 85 | 18 | 5 | 7 |
 | article | 13 | 24 | 149 | 26 | 2 | 3 |
 
-Model size: 2676652 bytes.
+Model size: 2684540 bytes.
 
 **noun** cells: `NominativeSingular`, `NominativePlural`, `GenitiveSingular`, `GenitivePlural`, `AccusativeSingular`, `AccusativePlural`, `VocativeSingular`, `VocativePlural`
 
