@@ -1,4 +1,4 @@
-use morphe_train::kaikki::Entry;
+use morphe_train::kaikki::{Entry, Form};
 use morphe_train::spec::*;
 
 pub struct Occitan;
@@ -71,6 +71,11 @@ impl Language for Occitan {
     }
 
     fn prepare(&self, e: &mut Entry) {
+        // Most headword lines carry no canonical form; the title keeps its
+        // accents (èsser), which the plain key drops.
+        if !e.forms.iter().any(|f| has(&f.tags, "canonical")) {
+            e.forms.push(Form { form: e.word.clone(), tags: vec!["canonical".into()], source: None });
+        }
         // The subjunctive's first and second person singular lose their
         // person: the first has none at all, the second is "unrecognized".
         for f in &mut e.forms {

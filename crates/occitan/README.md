@@ -22,11 +22,11 @@ are optional on input.
 
 | Part of speech | Entries | Cells | Edits | Classes | Tree nodes | Lexicon |
 |---|---|---|---|---|---|---|
-| noun | 2462 | 1 | 121 | 126 | 160 | 448 |
-| adj | 598 | 3 | 114 | 65 | 41 | 116 |
-| verb | 620 | 53 | 1602 | 86 | 25 | 59 |
+| noun | 2462 | 1 | 47 | 53 | 169 | 454 |
+| adj | 598 | 3 | 61 | 40 | 59 | 111 |
+| verb | 620 | 53 | 1542 | 82 | 28 | 61 |
 
-Model size: 116102 bytes.
+Model size: 114131 bytes.
 
 **noun** cells: `Plural`
 
