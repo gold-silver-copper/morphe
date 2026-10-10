@@ -35,7 +35,7 @@ matching ignores stress marks.
 | adj | 9253 | 18 | 797 | 101 | 533 | 2472 |
 | verb | 9793 | 32 | 982 | 251 | 341 | 3952 |
 
-Model size: 1512667 bytes.
+Model size: 1511323 bytes.
 
 **noun** cells: `IndefiniteSingular`, `IndefinitePlural`, `DefiniteSingular`, `DefinitePlural`, `ProximalSingular`, `ProximalPlural`, `DistalSingular`, `DistalPlural`, `VocativeSingular`, `VocativePlural`, `Count`
 
