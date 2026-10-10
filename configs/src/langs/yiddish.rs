@@ -1,4 +1,4 @@
-use morphe_train::kaikki::{Entry, Sense};
+use morphe_train::kaikki::{Entry, Form, Sense};
 use morphe_train::spec::*;
 
 pub struct Yiddish;
@@ -90,6 +90,11 @@ impl Language for Yiddish {
     }
 
     fn prepare(&self, e: &mut Entry) {
+        // Verb headword lines carry no canonical form; the title keeps its
+        // pointing (זײַן), which the plain key drops.
+        if !e.forms.iter().any(|f| has(&f.tags, "canonical")) {
+            e.forms.push(Form { form: e.word.clone(), tags: vec!["canonical".into()], source: None });
+        }
         // The auxiliary is a property of the verb: keep it as a sense tag.
         if let Some(aux) = e.forms.iter().find(|f| f.tags.iter().any(|t| t == "auxiliary")).map(|f| f.form.clone()) {
             let tag = if aux == "האָבן" { "auxiliary-have" } else if aux == "זײַן" { "auxiliary-be" } else { "" };
@@ -146,6 +151,11 @@ impl Language for Yiddish {
                 f.tags.clear();
             }
         }
+    }
+
+    /// "[[זענען / זײַנען]]": linked variants.
+    fn split_form(&self, raw: &str) -> Vec<String> {
+        raw.trim_start_matches("[[").trim_end_matches("]]").split(" / ").map(String::from).collect()
     }
 
     fn samples(&self) -> Vec<&'static str> {
