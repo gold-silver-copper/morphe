@@ -35,6 +35,16 @@ Build, eyeball a few words, push, move on to the next language.
       Greek accents;
     - `fold`: letters written interchangeably, for matching only;
     - `source`: Head, Table or Merge.
+- More generic options, added since this prompt was first written:
+  - PosSpec: `.initial(n)` (the tree also reads the first n letters, for
+    prefixing languages) and `.lemma_cell("Cell")` (fills that cell with the
+    lemma when a table omits it).
+  - Spec: `first_table_only` (ignore later tables), `fold_strs`
+    (multi-letter folds such as ß → ss) and `canonical_spelling`.
+  - Hooks: `prepare(&mut Entry)`, `reshape`, `retag(pos, form, tags)`,
+    `split_form` and `samples()` (playground words).
+  - A "-" in a table is now stored as "this form doesn't exist" rather than
+    being treated as unknown.
 - `crates/morphe-train/src/extract.rs`: how forms become cells. A form goes to
   the cell(s) whose tags it matches with the most matched tags.
 - `./target/release/morphe tags <Title> [pos…]` prints the tag sets of every

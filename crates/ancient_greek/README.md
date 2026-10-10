@@ -33,15 +33,15 @@ first.
 
 | Part of speech | Entries | Cells | Edits | Classes | Tree nodes | Lexicon |
 |---|---|---|---|---|---|---|
-| noun | 8312 | 15 | 3151 | 1357 | 1778 | 6293 |
-| adj | 3621 | 48 | 2197 | 722 | 822 | 3550 |
+| noun | 8312 | 15 | 3152 | 1357 | 1778 | 6293 |
+| adj | 3621 | 48 | 2198 | 722 | 822 | 3550 |
 | verb | 2716 | 414 | 129271 | 4881 | 740 | 2306 |
-| pron | 44 | 36 | 358 | 51 | 23 | 38 |
+| pron | 44 | 36 | 359 | 51 | 23 | 38 |
 | det | 25 | 36 | 182 | 20 | 13 | 24 |
 | article | 1 | 36 | 19 | 1 | 2 | 0 |
 | num | 19 | 36 | 53 | 14 | 3 | 12 |
 
-Model size: 23142538 bytes.
+Model size: 27554488 bytes.
 
 **noun** cells: `NominativeSingular`, `NominativeDual`, `NominativePlural`, `GenitiveSingular`, `GenitiveDual`, `GenitivePlural`, `DativeSingular`, `DativeDual`, `DativePlural`, `AccusativeSingular`, `AccusativeDual`, `AccusativePlural`, `VocativeSingular`, `VocativeDual`, `VocativePlural`
 

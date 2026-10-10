@@ -30,14 +30,14 @@ future II) are built from the `verb_past` participle plus an auxiliary.
 
 | Part of speech | Entries | Cells | Edits | Classes | Tree nodes | Lexicon |
 |---|---|---|---|---|---|---|
-| noun | 25406 | 14 | 9364 | 8611 | 3067 | 13028 |
-| adj | 8872 | 336 | 4835 | 500 | 293 | 2249 |
-| verb | 9347 | 43 | 9047 | 5694 | 1267 | 4270 |
-| pron | 197 | 84 | 2266 | 374 | 63 | 59 |
+| noun | 25406 | 14 | 9365 | 8619 | 3072 | 13028 |
+| adj | 8872 | 336 | 4836 | 500 | 293 | 2249 |
+| verb | 9347 | 43 | 9048 | 5694 | 1267 | 4270 |
+| pron | 197 | 84 | 2267 | 374 | 63 | 58 |
 | det | 4 | 84 | 34 | 4 | 2 | 0 |
-| num | 15 | 84 | 72 | 18 | 2 | 11 |
+| num | 19 | 84 | 73 | 19 | 2 | 15 |
 
-Model size: 6336062 bytes.
+Model size: 14553565 bytes.
 
 **noun** cells: `NominativeSingular`, `NominativePlural`, `GenitiveSingular`, `GenitivePlural`, `DativeSingular`, `DativePlural`, `AccusativeSingular`, `AccusativePlural`, `VocativeSingular`, `VocativePlural`, `LocativeSingular`, `LocativePlural`, `InstrumentalSingular`, `InstrumentalPlural`
 

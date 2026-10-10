@@ -44,6 +44,12 @@ pub struct Spec {
     /// spelling. Off when the tables are written without the marks the
     /// headword carries; the form's tags still give inherent features.
     pub canonical_spelling: bool,
+    /// Use only an entry's first inflection table (later ones are often
+    /// archaic, dialectal or alternative-orthography variants).
+    pub first_table_only: bool,
+    /// Forms with these tags name a value of an inherent feature by their
+    /// text (Kaikki's `auxiliary` forms: haben/sein, avere/essere).
+    pub inherent_form_tags: Vec<String>,
     pub features: Vec<Feature>,
     pub pos: Vec<PosSpec>,
 }
@@ -76,6 +82,8 @@ pub struct PosSpec {
     pub key: Vec<KeyFeature>,
     /// Which word of an unknown phrase inflects.
     pub head: morphe::model::Head,
+    /// A cell that holds the lemma itself when the data leaves it out.
+    pub lemma_cell: Option<String>,
 }
 
 /// A product of features, all sharing some fixed tags.
@@ -297,6 +305,7 @@ pub fn pos(name: &str, kaikki: &str, groups: Vec<Group>) -> PosSpec {
         citation: Vec::new(),
         key: Vec::new(),
         head: morphe::model::Head::Whole,
+        lemma_cell: None,
     }
 }
 
@@ -307,6 +316,11 @@ impl PosSpec {
     }
     pub fn citation(mut self, cells: &str) -> Self {
         self.citation = cells.split_whitespace().map(|p| p.split('|').map(String::from).collect()).collect();
+        self
+    }
+    /// Fill `cell` with the lemma when an entry's data leaves it out.
+    pub fn lemma_cell(mut self, cell: &str) -> Self {
+        self.lemma_cell = Some(cell.into());
         self
     }
     pub fn head_first(mut self) -> Self {
@@ -345,6 +359,8 @@ impl Spec {
             fold_strs: Vec::new(),
             canonical_tag: Some("canonical".into()),
             canonical_spelling: true,
+            first_table_only: false,
+            inherent_form_tags: Vec::new(),
             features: Vec::new(),
             pos: Vec::new(),
         }

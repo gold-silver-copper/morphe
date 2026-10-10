@@ -28,13 +28,13 @@ verbs are mostly periphrastic, built on these with an auxiliary.
 
 | Part of speech | Entries | Cells | Edits | Classes | Tree nodes | Lexicon |
 |---|---|---|---|---|---|---|
-| noun | 3042 | 68 | 264 | 47 | 133 | 590 |
-| adj | 509 | 68 | 187 | 11 | 18 | 13 |
+| noun | 3042 | 68 | 265 | 47 | 133 | 590 |
+| adj | 509 | 68 | 188 | 11 | 18 | 13 |
 | verb | 523 | 4 | 39 | 21 | 25 | 52 |
-| pron | 32 | 68 | 2537 | 61 | 2 | 23 |
-| num | 108 | 68 | 136 | 8 | 7 | 19 |
+| pron | 32 | 68 | 2538 | 61 | 2 | 23 |
+| num | 108 | 68 | 137 | 8 | 7 | 19 |
 
-Model size: 565604 bytes.
+Model size: 571761 bytes.
 
 **noun** cells: `AbsolutiveIndefinite`, `AbsolutiveSingular`, `AbsolutivePlural`, `AbsolutiveProximal`, `ErgativeIndefinite`, `ErgativeSingular`, `ErgativePlural`, `ErgativeProximal`, `DativeIndefinite`, `DativeSingular`, `DativePlural`, `DativeProximal`, `GenitiveIndefinite`, `GenitiveSingular`, `GenitivePlural`, `GenitiveProximal`, `ComitativeIndefinite`, `ComitativeSingular`, `ComitativePlural`, `ComitativeProximal`, `CausativeIndefinite`, `CausativeSingular`, `CausativePlural`, `CausativeProximal`, `BenefactiveIndefinite`, `BenefactiveSingular`, `BenefactivePlural`, `BenefactiveProximal`, `InstrumentalIndefinite`, `InstrumentalSingular`, `InstrumentalPlural`, `InstrumentalProximal`, `InessiveIndefinite`, `InessiveSingular`, `InessivePlural`, `InessiveProximal`, `LocativeIndefinite`, `LocativeSingular`, `LocativePlural`, `LocativeProximal`, `AllativeIndefinite`, `AllativeSingular`, `AllativePlural`, `AllativeProximal`, `TerminativeIndefinite`, `TerminativeSingular`, `TerminativePlural`, `TerminativeProximal`, `DirectiveIndefinite`, `DirectiveSingular`, `DirectivePlural`, `DirectiveProximal`, `DestinativeIndefinite`, `DestinativeSingular`, `DestinativePlural`, `DestinativeProximal`, `AblativeIndefinite`, `AblativeSingular`, `AblativePlural`, `AblativeProximal`, `PartitiveIndefinite`, `PartitiveSingular`, `PartitivePlural`, `PartitiveProximal`, `ProlativeIndefinite`, `ProlativeSingular`, `ProlativePlural`, `ProlativeProximal`
 

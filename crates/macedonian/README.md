@@ -31,11 +31,11 @@ matching ignores stress marks.
 
 | Part of speech | Entries | Cells | Edits | Classes | Tree nodes | Lexicon |
 |---|---|---|---|---|---|---|
-| noun | 25792 | 11 | 1976 | 609 | 972 | 6215 |
-| adj | 9253 | 18 | 796 | 101 | 533 | 2472 |
-| verb | 9793 | 32 | 981 | 251 | 341 | 3952 |
+| noun | 25792 | 11 | 1977 | 611 | 972 | 6215 |
+| adj | 9253 | 18 | 797 | 101 | 533 | 2472 |
+| verb | 9793 | 32 | 982 | 251 | 341 | 3952 |
 
-Model size: 1509441 bytes.
+Model size: 1512667 bytes.
 
 **noun** cells: `IndefiniteSingular`, `IndefinitePlural`, `DefiniteSingular`, `DefinitePlural`, `ProximalSingular`, `ProximalPlural`, `DistalSingular`, `DistalPlural`, `VocativeSingular`, `VocativePlural`, `Count`
 

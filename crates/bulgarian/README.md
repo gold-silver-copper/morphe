@@ -28,14 +28,14 @@ Wiktionary has them (`marks(false)` removes them).
 
 | Part of speech | Entries | Cells | Edits | Classes | Tree nodes | Lexicon |
 |---|---|---|---|---|---|---|
-| noun | 9401 | 9 | 1840 | 1017 | 1482 | 4831 |
-| adj | 2354 | 36 | 1088 | 100 | 307 | 1072 |
-| verb | 2875 | 67 | 5990 | 670 | 329 | 1432 |
-| pron | 14 | 37 | 64 | 19 | 5 | 9 |
+| noun | 9401 | 9 | 1841 | 1021 | 1482 | 4861 |
+| adj | 2354 | 36 | 1088 | 100 | 307 | 1084 |
+| verb | 2875 | 67 | 5991 | 670 | 329 | 1432 |
+| pron | 14 | 37 | 65 | 19 | 5 | 9 |
 | det | 16 | 36 | 55 | 15 | 2 | 13 |
 | num | 26 | 13 | 30 | 18 | 17 | 21 |
 
-Model size: 1550257 bytes.
+Model size: 1572373 bytes.
 
 **noun** cells: `IndefiniteSingular`, `IndefinitePlural`, `DefiniteSingular`, `DefinitePlural`, `DefiniteShortSingular`, `DefiniteShortPlural`, `Count`, `VocativeSingular`, `VocativePlural`
 

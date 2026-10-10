@@ -27,13 +27,13 @@ some dictionary spellings carry.
 
 | Part of speech | Entries | Cells | Edits | Classes | Tree nodes | Lexicon |
 |---|---|---|---|---|---|---|
-| noun | 5542 | 14 | 1165 | 265 | 294 | 966 |
+| noun | 5542 | 14 | 1166 | 265 | 294 | 966 |
 | adj | 2078 | 51 | 338 | 47 | 60 | 128 |
-| verb | 912 | 28 | 1348 | 417 | 114 | 468 |
-| pron | 30 | 30 | 106 | 21 | 6 | 11 |
-| num | 14 | 12 | 37 | 8 | 4 | 4 |
+| verb | 912 | 28 | 1349 | 417 | 114 | 468 |
+| pron | 30 | 30 | 107 | 21 | 6 | 11 |
+| num | 14 | 12 | 38 | 8 | 4 | 4 |
 
-Model size: 497950 bytes.
+Model size: 499642 bytes.
 
 **noun** cells: `NominativeSingular`, `NominativePlural`, `GenitiveSingular`, `GenitivePlural`, `DativeSingular`, `DativePlural`, `AccusativeSingular`, `AccusativePlural`, `InstrumentalSingular`, `InstrumentalPlural`, `LocativeSingular`, `LocativePlural`, `VocativeSingular`, `VocativePlural`
 

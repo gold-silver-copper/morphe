@@ -29,11 +29,11 @@ plural forms from the headword line.
 
 | Part of speech | Entries | Cells | Edits | Classes | Tree nodes | Lexicon |
 |---|---|---|---|---|---|---|
-| noun | 6140 | 16 | 1010 | 634 | 554 | 2738 |
+| noun | 6140 | 16 | 1011 | 634 | 554 | 2738 |
 | adj | 953 | 3 | 58 | 65 | 59 | 330 |
-| verb | 1732 | 119 | 6647 | 308 | 112 | 525 |
+| verb | 1732 | 119 | 6648 | 308 | 112 | 525 |
 
-Model size: 715489 bytes.
+Model size: 717055 bytes.
 
 **noun** cells: `NominativeIndefiniteSingular`, `NominativeIndefinitePlural`, `NominativeDefiniteSingular`, `NominativeDefinitePlural`, `AccusativeIndefiniteSingular`, `AccusativeIndefinitePlural`, `AccusativeDefiniteSingular`, `AccusativeDefinitePlural`, `DativeIndefiniteSingular`, `DativeIndefinitePlural`, `DativeDefiniteSingular`, `DativeDefinitePlural`, `AblativeIndefiniteSingular`, `AblativeIndefinitePlural`, `AblativeDefiniteSingular`, `AblativeDefinitePlural`
 

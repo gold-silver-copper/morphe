@@ -35,7 +35,7 @@ the non-joiner (میخورم for می‌خورم).
 | adj | 397 | 2 | 7 | 4 | 7 | 47 |
 | verb | 1135 | 73 | 6482 | 381 | 37 | 916 |
 
-Model size: 435044 bytes.
+Model size: 436633 bytes.
 
 **noun** cells: `Plural`
 

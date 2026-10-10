@@ -31,12 +31,12 @@ are left out. The periphrastic past (`vaig parlar`) and negative imperatives
 |---|---|---|---|---|---|---|
 | noun | 20162 | 5 | 622 | 555 | 314 | 3472 |
 | adj | 6491 | 4 | 197 | 112 | 171 | 311 |
-| verb | 4280 | 54 | 2633 | 274 | 152 | 401 |
+| verb | 4280 | 54 | 2633 | 273 | 155 | 400 |
 | pron | 38 | 4 | 26 | 24 | 5 | 26 |
 | det | 18 | 4 | 13 | 10 | 8 | 7 |
 | article | 9 | 4 | 19 | 10 | 2 | 7 |
 
-Model size: 838556 bytes.
+Model size: 843886 bytes.
 
 **noun** cells: `Plural`, `CounterpartMasculineSingular`, `CounterpartMasculinePlural`, `CounterpartFeminineSingular`, `CounterpartFemininePlural`
 

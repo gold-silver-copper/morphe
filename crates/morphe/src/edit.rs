@@ -34,6 +34,15 @@ impl Edit {
         apply(self, w, &mut out).then_some(out)
     }
 
+    /// "This cell has no form": never applies.
+    pub fn none() -> Edit {
+        Edit::Subst { from: "\u{0}".into(), to: "\u{0}".into() }
+    }
+
+    pub fn is_none(&self) -> bool {
+        matches!(self, Edit::Subst { from, .. } if from == "\u{0}")
+    }
+
     /// True if this edit leaves every string unchanged.
     pub fn is_identity(&self) -> bool {
         matches!(self, Edit::Match { left: None, right: None, .. })

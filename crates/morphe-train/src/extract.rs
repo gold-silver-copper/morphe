@@ -3,6 +3,9 @@
 use crate::kaikki::{Entry, Form};
 use crate::spec::{Cell, Language, PosSpec, Source, Spec};
 
+/// Stands for "this cell has no form" (a dash in the table).
+pub const NO_FORM: &str = "\u{0}";
+
 /// One dictionary entry's paradigm.
 #[derive(Clone, Debug)]
 pub struct Record {
@@ -85,8 +88,16 @@ impl<'a> Extractor<'a> {
         };
         // (cell, form, soft, from a table)
         let mut raw: Vec<(usize, String, bool, bool)> = Vec::new();
+        // Tables start with a "table-tags" header form.
+        let mut table_no = 0usize;
         for f in forms {
             let table = f.source.is_some();
+            if table && f.tags.iter().any(|t| t == "table-tags") {
+                table_no += 1;
+            }
+            if spec.first_table_only && table && table_no > 1 {
+                continue;
+            }
             if (spec.source == Source::Head && table) || (spec.source == Source::Table && !table) {
                 continue;
             }
@@ -100,6 +111,15 @@ impl<'a> Extractor<'a> {
             let Some(best) = matched.iter().map(|m| m.1).max() else { continue };
             for form in self.lang.split_form(f.form.trim()) {
                 let form = form.trim();
+                // A dash in a table says the form doesn't exist.
+                if table && matches!(form, "-" | "—" | "–") {
+                    for &(ci, n) in &matched {
+                        if n == best {
+                            raw.push((ci, NO_FORM.to_string(), soft, table));
+                        }
+                    }
+                    continue;
+                }
                 if spec.sentinels.iter().any(|s| s == form) || form.contains(['(', ')', '/', '[', ']']) {
                     continue;
                 }
@@ -116,6 +136,12 @@ impl<'a> Extractor<'a> {
             .filter(|(ci, _, _, table)| *table || !raw.iter().any(|r| r.0 == *ci && r.3))
             .map(|(ci, f, soft, _)| (*ci, f.clone(), *soft))
             .collect();
+        // The dictionary-form cell holds the lemma when nothing fills it.
+        if let Some(lc) = pos.lemma_cell.as_ref().and_then(|n| cells.iter().position(|c| &c.name == n)) {
+            if !found.iter().any(|f| f.0 == lc) {
+                found.push((lc, canon.clone(), false));
+            }
+        }
         self.lang.adjust(pos, &plain, &mut found);
 
         let mut out: Vec<Vec<(String, f32)>> = vec![Vec::new(); cells.len()];
@@ -127,6 +153,10 @@ impl<'a> Extractor<'a> {
                         list.push((f.clone(), *s));
                     }
                 }
+            }
+            // "No form" only stands when nothing real was found.
+            if list.iter().any(|x| x.0 != NO_FORM) {
+                list.retain(|x| x.0 != NO_FORM);
             }
             let (mut np, mut ns) = (0, 0);
             for (f, soft) in list {
@@ -143,11 +173,17 @@ impl<'a> Extractor<'a> {
             return None;
         }
 
-        let canon_tags: Vec<String> = spec
+        let mut canon_tags: Vec<String> = spec
             .canonical_tag
             .as_ref()
             .map(|t| forms.iter().filter(|f| f.tags.contains(t)).flat_map(|f| retagged(f.form.trim(), &f.tags)).collect())
             .unwrap_or_default();
+        // Forms that name an inherent value (an auxiliary verb) count as tags.
+        for f in forms.iter().filter(|f| f.tags.iter().any(|t| spec.inherent_form_tags.contains(t))) {
+            let lower = f.form.trim().to_lowercase();
+            canon_tags.push(fold_accents(&self.strip(&lower)));
+            canon_tags.push(lower);
+        }
         let sense_tags: Vec<String> = e.senses.iter().flat_map(|s| retagged("", &s.tags)).collect();
         let inherent = pos
             .inherent
@@ -173,4 +209,12 @@ impl<'a> Extractor<'a> {
             .collect();
         Some(Record { plain, canon, cells: out, inherent })
     }
+}
+
+/// Latin letters with accents to their base letters, for matching words
+/// used as tag values (avére → avere).
+fn fold_accents(s: &str) -> String {
+    const FROM: &str = "àáâäãåèéêëìíîïòóôöõùúûüýÿ";
+    const TO: &str = "aaaaaaeeeeiiiiooooouuuuyy";
+    s.chars().map(|c| FROM.chars().position(|f| f == c).and_then(|i| TO.chars().nth(i)).unwrap_or(c)).collect()
 }

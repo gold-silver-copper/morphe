@@ -20,7 +20,9 @@ impl Language for Italian {
                 "Tense",
                 &[("Present", "present"), ("Imperfect", "imperfect"), ("PastHistoric", "historic past"), ("Future", "future")],
             ),
+            feature("Auxiliary", &[("Avere", "avere"), ("Essere", "essere")]),
         ];
+        s.inherent_form_tags = tags("auxiliary");
         // Headword lines give principal parts without the mood tag.
         let indicative = "!subjunctive !conditional !imperative !participle !infinitive !gerund";
         let nominal = "!possessive";
@@ -53,6 +55,7 @@ impl Language for Italian {
                     group("ImperativeNegative", "imperative negative", "Person Number"),
                 ],
             )
+            .inherent("Auxiliary")
             .citation("Infinitive IndicativePresentFirstSingular IndicativePastHistoricFirstSingular PastParticiple")
             .head_first(),
             pos("pron", "pron", vec![group("", nominal, "Gender? Number")]),

@@ -27,9 +27,9 @@ optional on input, and ö may be typed for ǫ.
 |---|---|---|---|---|---|---|
 | noun | 2122 | 16 | 3441 | 823 | 366 | 1099 |
 | adj | 163 | 50 | 234 | 99 | 37 | 86 |
-| verb | 644 | 60 | 3596 | 474 | 101 | 428 |
+| verb | 644 | 60 | 3597 | 474 | 101 | 428 |
 
-Model size: 788241 bytes.
+Model size: 797540 bytes.
 
 **noun** cells: `IndefiniteNominativeSingular`, `IndefiniteNominativePlural`, `IndefiniteAccusativeSingular`, `IndefiniteAccusativePlural`, `IndefiniteDativeSingular`, `IndefiniteDativePlural`, `IndefiniteGenitiveSingular`, `IndefiniteGenitivePlural`, `DefiniteNominativeSingular`, `DefiniteNominativePlural`, `DefiniteAccusativeSingular`, `DefiniteAccusativePlural`, `DefiniteDativeSingular`, `DefiniteDativePlural`, `DefiniteGenitiveSingular`, `DefiniteGenitivePlural`
 

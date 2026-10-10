@@ -54,15 +54,17 @@ pub struct Pos {
     /// index `inverse`.
     pub analysis: Tree,
     pub inverse: Vec<(u32, Edit)>,
+    /// Attested forms the analysis tree misses: form key → (lemma, cell).
+    pub reverse: Vec<(String, Vec<(String, u32)>)>,
 }
 
-/// One analysis of a form: part of speech, lemma, and cell (`None` when the
-/// form is the lemma itself).
+/// One analysis of a form: part of speech, lemma, and every cell the form
+/// fills for that lemma (empty when it is only the dictionary form).
 #[derive(Clone, Debug, PartialEq)]
 pub struct Analysis {
     pub pos: usize,
     pub lemma: String,
-    pub cell: Option<u32>,
+    pub cells: Vec<u32>,
 }
 
 #[derive(Clone, Copy, Debug, Default, PartialEq, Eq)]
@@ -231,6 +233,8 @@ struct Query {
     casing: Casing,
     /// Lowercased, marks removed.
     plain: String,
+    /// Lowercased as typed, marks kept (when the user typed any).
+    typed: Option<String>,
     /// `plain` with letter folds: the lexicon key.
     key: String,
     /// Further citation parts, as typed.
@@ -288,8 +292,10 @@ impl Model {
         } else {
             Casing::Lower
         };
-        let plain = self.strip(&lemma.to_lowercase());
-        Query { casing, key: self.key(lemma), plain, parts: parts.map(String::from).collect() }
+        let lower = lemma.to_lowercase();
+        let plain = self.strip(&lower);
+        let typed = (lower != plain && self.marks_placed(&lower)).then_some(lower);
+        Query { casing, key: self.key(lemma), plain, typed, parts: parts.map(String::from).collect() }
     }
 
     fn finish(&self, s: &str, casing: Casing, opts: Options) -> String {
@@ -331,15 +337,29 @@ impl Model {
 
         if let Ok(i) = pos.lexicon.binary_search_by(|e| e.0.as_str().cmp(&q.key)) {
             if let Some((_, rs)) = pos.lexicon.get(i) {
-                let known: Vec<(String, u32, f32)> = rs
+                let known: Vec<(String, u32, f32, bool)> = rs
                     .iter()
                     .filter_map(|r| {
                         let plain = r.plain.as_deref().unwrap_or(&q.key);
                         let canon = pos.restores.get(r.restore as usize)?.apply(plain)?;
-                        Some((canon, r.class, r.weight))
+                        Some((canon, r.class, r.weight, plain == q.plain))
                     })
-                    .filter(|(canon, class, _)| cites(canon, *class))
+                    .filter(|(canon, class, _, _)| cites(canon, *class))
                     .collect();
+                // The spelling the user typed picks among readings: marks
+                // first, then letters that only matching folds together.
+                if let Some(t) = &q.typed {
+                    let m: Vec<(String, u32, f32)> =
+                        known.iter().filter(|r| &r.0 == t).map(|r| (r.0.clone(), r.1, r.2)).collect();
+                    if !m.is_empty() {
+                        return m;
+                    }
+                }
+                let exact: Vec<(String, u32, f32)> = known.iter().filter(|r| r.3).map(|r| (r.0.clone(), r.1, r.2)).collect();
+                if !exact.is_empty() {
+                    return exact;
+                }
+                let known: Vec<(String, u32, f32)> = known.into_iter().map(|r| (r.0, r.1, r.2)).collect();
                 if !known.is_empty() {
                     return known;
                 }
@@ -348,7 +368,8 @@ impl Model {
 
         if pos.known.binary_search(&q.key).is_ok() {
             if let Some((canon, class)) = self.top_reading(pos, &q.plain) {
-                if needs(class) && cites(&canon, class) {
+                // A known word lacking this cell has no form for it.
+                if cites(&canon, class) && q.typed.as_ref().is_none_or(|t| *t == canon) {
                     return vec![(canon, class, 1.0)];
                 }
             }
@@ -358,18 +379,25 @@ impl Model {
         let restored = pos.restore.predict(&q.plain, |l| {
             pos.restores.get(l as usize).and_then(|e| e.apply(&q.plain)).is_some_and(|c| self.marks_placed(&c))
         });
+        // Marks the user typed are kept as the spelling.
+        let restored: Vec<(Option<u32>, f32)> = match &q.typed {
+            Some(_) => vec![(None, 1.0)],
+            None => restored.into_iter().take(3).map(|(r, p)| (Some(r), p)).collect(),
+        };
         let mut out = Vec::new();
-        for (r, rp) in restored.into_iter().take(3) {
-            let Some(canon) = pos.restores.get(r as usize).and_then(|e| e.apply(&q.plain)) else {
-                continue;
+        for (r, rp) in restored {
+            let canon = match (r, &q.typed) {
+                (Some(r), _) => pos.restores.get(r as usize).and_then(|e| e.apply(&q.plain)),
+                (None, t) => t.clone(),
             };
+            let Some(canon) = canon else { continue };
             let applies = |class: u32| -> bool {
                 needs(class)
                     && pos.classes.get(class as usize).is_some_and(|c| {
                         c.get(cell as usize).is_none_or(|vs| {
                             vs.is_empty()
                                 || vs.iter().any(|&(e, _)| {
-                                    pos.edits.get(e as usize).and_then(|e| e.apply(&canon)).is_some()
+                                    pos.edits.get(e as usize).is_some_and(|e| e.is_none() || e.apply(&canon).is_some())
                                 })
                         })
                     })
@@ -421,7 +449,7 @@ impl Model {
             .paradigm
             .predict(plain, |c| {
                 pos.classes.get(c as usize).is_some_and(|cells| {
-                    cells.iter().flatten().all(|&(e, _)| pos.edits.get(e as usize).and_then(|e| e.apply(&canon)).is_some())
+                    cells.iter().flatten().all(|&(e, _)| pos.edits.get(e as usize).is_some_and(|e| e.is_none() || e.apply(&canon).is_some()))
                 })
             })
             .first()?;
@@ -464,6 +492,7 @@ impl Model {
             }
         }
         let mut forms: Vec<(String, f32)> = Vec::new();
+        let mut no_form = 0.0f32;
         for (canon, class, w) in readings {
             let Some(vs) = p.classes.get(class as usize).and_then(|c| c.get(cell as usize)) else { continue };
             // A cited part that matched a later-listed variant picks the
@@ -475,7 +504,11 @@ impl Model {
                 None => vs.clone(),
             };
             for &(e, vw) in &vs {
-                if let Some(f) = p.edits.get(e as usize).and_then(|e| e.apply(&canon)) {
+                if p.edits.get(e as usize).is_some_and(Edit::is_none) {
+                    no_form += w * vw;
+                    continue;
+                }
+                if let Some(f) = p.edits.get(e as usize).and_then(|e| e.apply(&canon)).filter(|f| self.marks_placed(f)) {
                     let f = self.finish(&f, q.casing, opts);
                     match forms.iter_mut().find(|x| x.0 == f) {
                         Some(x) => x.1 += w * vw,
@@ -484,10 +517,15 @@ impl Model {
                 }
             }
         }
+        // When the data says the form mostly doesn't exist, there is none;
+        // otherwise its share stays out of the confidences.
         let total: f32 = forms.iter().map(|f| f.1).sum();
+        if no_form > total {
+            return Vec::new();
+        }
         if total > 0.0 {
             for f in &mut forms {
-                f.1 /= total;
+                f.1 /= total + no_form;
             }
         }
         forms.sort_by(|a, b| b.1.total_cmp(&a.1).then_with(|| a.0.cmp(&b.0)));
@@ -505,37 +543,62 @@ impl Model {
     /// be. Candidates come from the analysis tree and are kept only if
     /// inflecting the lemma back gives the form.
     pub fn analyze(&self, input: &str) -> Vec<(Analysis, f32)> {
-        let q = self.query(input);
-        if q.plain.is_empty() {
-            return Vec::new();
-        }
         let mut out: Vec<(Analysis, f32)> = Vec::new();
-        let mut push = |a: Analysis, w: f32| match out.iter_mut().find(|x| x.0 == a) {
-            Some(x) => x.1 += w,
-            None => out.push((a, w)),
-        };
-        for (pi, p) in self.pos.iter().enumerate() {
-            if self.is_known(p, &q.key) {
-                if let Some(l) = self.lemma(pi, input) {
-                    push(Analysis { pos: pi, lemma: l, cell: None }, 0.5);
-                }
-            }
-            let cands = p.analysis.predict(&q.plain, |l| p.inverse.get(l as usize).is_some_and(|(_, e)| e.apply(&q.plain).is_some()));
-            for (l, pr) in cands {
-                let Some((cell, e)) = p.inverse.get(l as usize) else { continue };
-                let Some(lemma) = e.apply(&q.plain) else { continue };
-                let forms = self.inflect(pi, *cell, &lemma, Options::default());
-                let Some((_, fp)) = forms.iter().find(|(f, _)| self.key(f) == q.key) else { continue };
-                let known = if self.is_known(p, &self.key(&lemma)) { 1.0 } else { 0.1 };
-                let lemma = self.finish(&self.lemma(pi, &lemma).unwrap_or(lemma), q.casing, Options::default());
-                push(Analysis { pos: pi, lemma, cell: Some(*cell) }, pr * fp * known);
-            }
+        for pi in 0..self.pos.len() {
+            out.extend(self.analyze_pos(pi, input));
         }
         let total: f32 = out.iter().map(|x| x.1).sum();
         if total > 0.0 {
             out.iter_mut().for_each(|x| x.1 /= total);
         }
         out.sort_by(|a, b| b.1.total_cmp(&a.1));
+        out
+    }
+
+    /// Unnormalized analyses within one part of speech: (lemma, cell, weight)
+    /// merged by lemma.
+    pub fn analyze_pos(&self, pi: usize, input: &str) -> Vec<(Analysis, f32)> {
+        let Some(p) = self.pos.get(pi) else { return Vec::new() };
+        let q = self.query(input);
+        if q.plain.is_empty() {
+            return Vec::new();
+        }
+        let mut out: Vec<(Analysis, f32)> = Vec::new();
+        let mut push = |lemma: String, cell: Option<u32>, w: f32| {
+            let i = match out.iter().position(|x| x.0.lemma == lemma) {
+                Some(i) => i,
+                None => {
+                    out.push((Analysis { pos: pi, lemma, cells: Vec::new() }, 0.0));
+                    out.len() - 1
+                }
+            };
+            if let Some(x) = out.get_mut(i) {
+                x.1 += w;
+                if let Some(c) = cell {
+                    if !x.0.cells.contains(&c) {
+                        x.0.cells.push(c);
+                    }
+                }
+            }
+        };
+        let display = |plain: &str| self.finish(&self.lemma(pi, plain).unwrap_or_else(|| plain.to_string()), q.casing, Options::default());
+        if self.is_known(p, &q.key) {
+            push(display(input), None, 0.5);
+        }
+        if let Ok(i) = p.reverse.binary_search_by(|e| e.0.as_str().cmp(&q.key)) {
+            for (lemma, cell) in p.reverse.get(i).map(|e| e.1.as_slice()).unwrap_or_default() {
+                push(display(lemma), Some(*cell), 1.0);
+            }
+        }
+        let cands = p.analysis.predict(&q.plain, |l| p.inverse.get(l as usize).is_some_and(|(_, e)| e.apply(&q.plain).is_some()));
+        for (l, pr) in cands {
+            let Some((cell, e)) = p.inverse.get(l as usize) else { continue };
+            let Some(lemma) = e.apply(&q.plain) else { continue };
+            let forms = self.inflect(pi, *cell, &lemma, Options::default());
+            let Some((_, fp)) = forms.iter().find(|(f, _)| self.key(f) == q.key) else { continue };
+            let known = if self.is_known(p, &self.key(&lemma)) { 1.0 } else { 0.1 };
+            push(display(&lemma), Some(*cell), pr * fp * known);
+        }
         out
     }
 
@@ -663,6 +726,20 @@ impl Model {
                 w.edit(e);
             }
         }
+        w.s("reverse-1");
+        for p in &self.pos {
+            w.u(p.reverse.len() as u64);
+            let mut prev = "";
+            for (k, rs) in &p.reverse {
+                write_key(&mut w, prev, k);
+                prev = k;
+                w.u(rs.len() as u64);
+                for (l, c) in rs {
+                    w.s(l);
+                    w.u(u64::from(*c));
+                }
+            }
+        }
         w.s("fold-strs-1");
         w.u(self.fold_strs.len() as u64);
         for (a, b) in &self.fold_strs {
@@ -759,6 +836,7 @@ impl Model {
                 head,
                 analysis: Tree::default(),
                 inverse: Vec::new(),
+                reverse: Vec::new(),
             })
         })?;
         let mut model = Model { name, marks, unmark, fold, fold_strs: Vec::new(), mark_bases, pos };
@@ -769,7 +847,21 @@ impl Model {
                 p.inverse = inv;
             }
         }
-        if r.s().as_deref() == Some("fold-strs-1") {
+        let mut tag = r.s();
+        if tag.as_deref() == Some("reverse-1") {
+            for p in &mut model.pos {
+                let mut prev = String::new();
+                let rev = r.vec(|r| {
+                    let k = read_key(r, &prev)?;
+                    prev.clone_from(&k);
+                    Some((k, r.vec(|r| Some((r.s()?, r.u32()?)))?))
+                });
+                let Some(rev) = rev else { break };
+                p.reverse = rev;
+            }
+            tag = r.s();
+        }
+        if tag.as_deref() == Some("fold-strs-1") {
             model.fold_strs = r.vec(|r| Some((r.s()?, r.s()?))).unwrap_or_default();
         }
         Some(model)

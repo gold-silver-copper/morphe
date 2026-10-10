@@ -30,13 +30,13 @@ accent is kept (`darò`, `città`).
 |---|---|---|---|---|---|---|
 | noun | 67951 | 3 | 673 | 776 | 1386 | 10333 |
 | adj | 26757 | 6 | 106 | 106 | 290 | 1230 |
-| verb | 14520 | 58 | 2405 | 809 | 430 | 1752 |
+| verb | 14520 | 58 | 2405 | 808 | 435 | 1751 |
 | pron | 90 | 4 | 39 | 33 | 19 | 30 |
 | det | 54 | 4 | 14 | 15 | 8 | 15 |
 | article | 9 | 4 | 31 | 16 | 2 | 2 |
 | num | 9 | 1 | 3 | 3 | 2 | 1 |
 
-Model size: 2226002 bytes.
+Model size: 2226777 bytes.
 
 **noun** cells: `Plural`, `CounterpartMasculine`, `CounterpartFeminine`
 

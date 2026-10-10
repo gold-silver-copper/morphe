@@ -30,12 +30,12 @@ on input.
 |---|---|---|---|---|---|---|
 | noun | 15184 | 6 | 2542 | 3929 | 1813 | 7773 |
 | adj | 3613 | 9 | 499 | 475 | 336 | 1950 |
-| verb | 4055 | 61 | 5564 | 1820 | 534 | 1911 |
-| prep | 19 | 7 | 67 | 15 | 4 | 12 |
+| verb | 4055 | 61 | 5565 | 1820 | 534 | 1911 |
+| prep | 25 | 7 | 68 | 16 | 4 | 18 |
 | num | 222 | 4 | 35 | 22 | 14 | 26 |
 | pron | 13 | 4 | 23 | 13 | 2 | 5 |
 
-Model size: 1918442 bytes.
+Model size: 2040576 bytes.
 
 **noun** cells: `Plural`, `Singulative`, `MutatedSoft`, `MutatedNasal`, `MutatedAspirate`, `MutatedHProthesis`
 

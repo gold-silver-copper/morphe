@@ -29,11 +29,11 @@ Input matching ignores the stress and emphasis marks.
 
 | Part of speech | Entries | Cells | Edits | Classes | Tree nodes | Lexicon |
 |---|---|---|---|---|---|---|
-| noun | 10215 | 34 | 2042 | 624 | 757 | 3186 |
-| adj | 3221 | 35 | 390 | 84 | 153 | 1054 |
-| verb | 2011 | 79 | 875 | 150 | 82 | 551 |
+| noun | 10215 | 34 | 2043 | 624 | 757 | 3186 |
+| adj | 3221 | 35 | 391 | 84 | 153 | 1054 |
+| verb | 2011 | 79 | 876 | 150 | 82 | 551 |
 
-Model size: 1212387 bytes.
+Model size: 1216862 bytes.
 
 **noun** cells: `NominativeSingular`, `NominativePlural`, `DativeSingular`, `DativePlural`, `AblativeSingular`, `AblativePlural`, `InstrumentalSingular`, `InstrumentalPlural`, `LocativeSingular`, `LocativePlural`, `DefiniteNominativeSingular`, `DefiniteNominativePlural`, `DefiniteDativeSingular`, `DefiniteDativePlural`, `PossessiveFirstNominativeSingular`, `PossessiveFirstNominativePlural`, `PossessiveFirstDativeSingular`, `PossessiveFirstDativePlural`, `PossessiveFirstAblativeSingular`, `PossessiveFirstAblativePlural`, `PossessiveFirstInstrumentalSingular`, `PossessiveFirstInstrumentalPlural`, `PossessiveFirstLocativeSingular`, `PossessiveFirstLocativePlural`, `PossessiveSecondNominativeSingular`, `PossessiveSecondNominativePlural`, `PossessiveSecondDativeSingular`, `PossessiveSecondDativePlural`, `PossessiveSecondAblativeSingular`, `PossessiveSecondAblativePlural`, `PossessiveSecondInstrumentalSingular`, `PossessiveSecondInstrumentalPlural`, `PossessiveSecondLocativeSingular`, `PossessiveSecondLocativePlural`
 

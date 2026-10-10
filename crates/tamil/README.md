@@ -30,12 +30,12 @@ nouns and the verbal noun.
 
 | Part of speech | Entries | Cells | Edits | Classes | Tree nodes | Lexicon |
 |---|---|---|---|---|---|---|
-| noun | 6332 | 20 | 490 | 147 | 220 | 887 |
+| noun | 6332 | 20 | 491 | 147 | 220 | 887 |
 | verb | 1627 | 82 | 1489 | 151 | 76 | 360 |
-| pron | 51 | 20 | 245 | 52 | 11 | 25 |
-| num | 68 | 20 | 84 | 16 | 10 | 9 |
+| pron | 51 | 20 | 246 | 52 | 11 | 25 |
+| num | 68 | 20 | 85 | 16 | 10 | 9 |
 
-Model size: 697215 bytes.
+Model size: 707470 bytes.
 
 **noun** cells: `NominativeSingular`, `NominativePlural`, `AccusativeSingular`, `AccusativePlural`, `DativeSingular`, `DativePlural`, `BenefactiveSingular`, `BenefactivePlural`, `GenitiveSingular`, `GenitivePlural`, `LocativeSingular`, `LocativePlural`, `SociativeSingular`, `SociativePlural`, `InstrumentalSingular`, `InstrumentalPlural`, `AblativeSingular`, `AblativePlural`, `VocativeSingular`, `VocativePlural`
 

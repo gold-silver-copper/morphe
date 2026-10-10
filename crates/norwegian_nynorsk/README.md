@@ -30,9 +30,9 @@ forms are left out as dialectal or archaic.
 |---|---|---|---|---|---|---|
 | noun | 15279 | 4 | 472 | 531 | 1521 | 4384 |
 | adj | 3137 | 6 | 208 | 218 | 210 | 1113 |
-| verb | 3993 | 7 | 1048 | 1196 | 506 | 1435 |
+| verb | 3993 | 7 | 1049 | 1196 | 506 | 1435 |
 
-Model size: 663912 bytes.
+Model size: 665832 bytes.
 
 **noun** cells: `IndefiniteSingular`, `IndefinitePlural`, `DefiniteSingular`, `DefinitePlural`
 

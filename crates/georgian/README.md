@@ -33,9 +33,9 @@ aorist of unknown verbs are often wrong.
 |---|---|---|---|---|---|---|
 | noun | 11417 | 38 | 3122 | 496 | 279 | 3395 |
 | adj | 3249 | 21 | 104 | 24 | 43 | 167 |
-| verb | 445 | 78 | 6015 | 368 | 97 | 212 |
+| verb | 445 | 78 | 6016 | 368 | 97 | 212 |
 
-Model size: 2096231 bytes.
+Model size: 2178119 bytes.
 
 **noun** cells: `NominativeSingular`, `NominativePlural`, `ErgativeSingular`, `ErgativePlural`, `DativeSingular`, `DativePlural`, `GenitiveSingular`, `GenitivePlural`, `InstrumentalSingular`, `InstrumentalPlural`, `AdverbialSingular`, `AdverbialPlural`, `VocativeSingular`, `VocativePlural`, `PostpositionOnSingular`, `PostpositionOnPlural`, `PostpositionNearSingular`, `PostpositionNearPlural`, `PostpositionInSingular`, `PostpositionInPlural`, `PostpositionLikeSingular`, `PostpositionLikePlural`, `PostpositionForSingular`, `PostpositionForPlural`, `PostpositionFromSingular`, `PostpositionFromPlural`, `PostpositionTowardsSingular`, `PostpositionTowardsPlural`, `PostpositionRegardingSingular`, `PostpositionRegardingPlural`, `PostpositionSimilarSingular`, `PostpositionSimilarPlural`, `PostpositionSinceSingular`, `PostpositionSincePlural`, `PostpositionWithSingular`, `PostpositionWithPlural`, `PostpositionUpToSingular`, `PostpositionUpToPlural`
 

@@ -32,13 +32,13 @@ whatever parts fit and predicted for the rest.
 
 | Part of speech | Entries | Cells | Edits | Classes | Tree nodes | Lexicon |
 |---|---|---|---|---|---|---|
-| noun | 21627 | 46 | 2796 | 724 | 1111 | 2550 |
-| adj | 9630 | 36 | 863 | 394 | 416 | 2216 |
-| verb | 4723 | 63 | 1689 | 504 | 358 | 1174 |
-| pron | 235 | 34 | 327 | 47 | 38 | 53 |
-| num | 334 | 34 | 379 | 49 | 46 | 36 |
+| noun | 21627 | 46 | 2797 | 724 | 1111 | 2550 |
+| adj | 9630 | 36 | 864 | 394 | 416 | 2216 |
+| verb | 4723 | 63 | 1690 | 504 | 358 | 1174 |
+| pron | 235 | 34 | 328 | 47 | 38 | 53 |
+| num | 334 | 34 | 380 | 49 | 46 | 36 |
 
-Model size: 2722878 bytes.
+Model size: 2731244 bytes.
 
 **noun** cells: `NominativeSingular`, `NominativePlural`, `AccusativeSingular`, `AccusativePlural`, `DativeSingular`, `DativePlural`, `InstrumentalSingular`, `InstrumentalPlural`, `CausalFinalSingular`, `CausalFinalPlural`, `TranslativeSingular`, `TranslativePlural`, `TerminativeSingular`, `TerminativePlural`, `EssiveFormalSingular`, `EssiveFormalPlural`, `InessiveSingular`, `InessivePlural`, `SuperessiveSingular`, `SuperessivePlural`, `AdessiveSingular`, `AdessivePlural`, `IllativeSingular`, `IllativePlural`, `SublativeSingular`, `SublativePlural`, `AllativeSingular`, `AllativePlural`, `ElativeSingular`, `ElativePlural`, `DelativeSingular`, `DelativePlural`, `AblativeSingular`, `AblativePlural`, `PossessiveFirstSingularOne`, `PossessiveFirstSingularMany`, `PossessiveSecondSingularOne`, `PossessiveSecondSingularMany`, `PossessiveThirdSingularOne`, `PossessiveThirdSingularMany`, `PossessiveFirstPluralOne`, `PossessiveFirstPluralMany`, `PossessiveSecondPluralOne`, `PossessiveSecondPluralMany`, `PossessiveThirdPluralOne`, `PossessiveThirdPluralMany`
 

@@ -40,10 +40,13 @@ pub fn learn(ex: &Extractor, threads: usize) -> (Model, Vec<Stats>) {
     let mut mark_bases: Vec<char> = Vec::new();
     for recs in &ex.records {
         for r in recs {
-            let chars: Vec<char> = r.canon.chars().collect();
-            for w in chars.windows(2) {
-                if spec.marks.contains(&w[1]) && !spec.marks.contains(&w[0]) {
-                    mark_bases.push(w[0]);
+            let words = std::iter::once(&r.canon).chain(r.cells.iter().flatten().map(|(f, _)| f));
+            for word in words {
+                let chars: Vec<char> = word.chars().collect();
+                for w in chars.windows(2) {
+                    if spec.marks.contains(&w[1]) && !spec.marks.contains(&w[0]) {
+                        mark_bases.push(w[0]);
+                    }
                 }
             }
         }
@@ -67,7 +70,14 @@ pub fn learn(ex: &Extractor, threads: usize) -> (Model, Vec<Stats>) {
         eprintln!("[{}] {}: {} records, {} cells", spec.name, ps.name, recs.len(), cells.len());
 
         let rec_edits: Vec<Vec<Vec<(Edit, f32)>>> = par_map(recs, threads, |r: &Record| {
-            r.cells.iter().map(|vs| vs.iter().map(|(f, w)| (Edit::between(&r.canon, f), *w)).collect()).collect()
+            r.cells
+                .iter()
+                .map(|vs| {
+                    vs.iter()
+                        .map(|(f, w)| (if f == crate::extract::NO_FORM { Edit::none() } else { Edit::between(&r.canon, f) }, *w))
+                        .collect()
+                })
+                .collect()
         });
         let (edits, edit_id) = index(rec_edits.iter().flatten().flatten().map(|(e, _)| e.clone()));
         let full: Vec<ClassKey> = rec_edits
@@ -120,7 +130,7 @@ pub fn learn(ex: &Extractor, threads: usize) -> (Model, Vec<Stats>) {
             .filter(single)
             .flat_map(|r| {
                 r.cells.iter().enumerate().flat_map(move |(ci, vs)| {
-                    vs.iter().filter(|(f, _)| !f.contains(' ')).map(move |(f, _)| {
+                    vs.iter().filter(|(f, _)| !f.contains(' ') && f != crate::extract::NO_FORM).map(move |(f, _)| {
                         let fp = strip(f);
                         let e = Edit::between(&fp, &r.plain);
                         (fp, (ci as u32, e))
@@ -131,6 +141,8 @@ pub fn learn(ex: &Extractor, threads: usize) -> (Model, Vec<Stats>) {
         let (inverse, inverse_id) = index(inv_pairs.iter().map(|x| x.1.clone()));
         let ana_data: Vec<(String, u32, f64)> = inv_pairs.iter().map(|(f, l)| (f.clone(), inverse_id[l], 1.0)).collect();
 
+        let t0 = std::time::Instant::now();
+        eprintln!("[{}] {}:   edits and classes ready", spec.name, ps.name);
         let (paradigm, restore, inh_trees, analysis) = std::thread::scope(|s| {
             let d = s.spawn(|| tree::train(&[], &ana_data, Params { top_k: 24, ..Params::default() }));
             let a = s.spawn(|| tree::train(&ps.key, &para_data, Params::default()));
@@ -169,9 +181,12 @@ pub fn learn(ex: &Extractor, threads: usize) -> (Model, Vec<Stats>) {
             head: ps.head,
             analysis,
             inverse,
+            reverse: Vec::new(),
         };
         let probe = Model { pos: Vec::new(), ..model.clone() };
 
+        eprintln!("[{}] {}:   trees {:.1?}", spec.name, ps.name, t0.elapsed());
+        let t0 = std::time::Instant::now();
         // Group records by lookup key, in dump order.
         let mut groups: BTreeMap<String, Vec<usize>> = BTreeMap::new();
         for (i, r) in recs.iter().enumerate() {
@@ -223,7 +238,14 @@ pub fn learn(ex: &Extractor, threads: usize) -> (Model, Vec<Stats>) {
                 cp.classes
                     .get(class as usize)?
                     .iter()
-                    .map(|vs| vs.iter().map(|&(e, _)| cp.edits.get(e as usize)?.apply(canon)).collect())
+                    .map(|vs| {
+                        vs.iter()
+                            .map(|&(e, _)| {
+                                let e = cp.edits.get(e as usize)?;
+                                if e.is_none() { Some(String::new()) } else { e.apply(canon) }
+                            })
+                            .collect()
+                    })
                     .collect()
             };
             let Some(canon) = cp.restores.get(r.restore as usize).and_then(|e| e.apply(plain)) else { return false };
@@ -272,6 +294,40 @@ pub fn learn(ex: &Extractor, threads: usize) -> (Model, Vec<Stats>) {
             pos.inherent.push(Inherent { name: fname.clone(), values, tree, lexicon });
         }
 
+        eprintln!("[{}] {}:   lexicon {:.1?}", spec.name, ps.name, t0.elapsed());
+        let t0 = std::time::Instant::now();
+        // Reverse lexicon: attested forms whose (lemma, cell) the analysis
+        // tree doesn't find (went → go, mice → mouse).
+        let mut by_form: BTreeMap<String, Vec<(String, u32)>> = BTreeMap::new();
+        for r in recs.iter().filter(single) {
+            for (ci, vs) in r.cells.iter().enumerate() {
+                for (f, _) in vs {
+                    if f.contains(' ') || f == crate::extract::NO_FORM {
+                        continue;
+                    }
+                    let e = by_form.entry(probe.key(f)).or_default();
+                    if !e.iter().any(|x| x.0 == r.plain && x.1 == ci as u32) {
+                        e.push((r.plain.clone(), ci as u32));
+                    }
+                }
+            }
+        }
+        let forms: Vec<(String, Vec<(String, u32)>)> = by_form.into_iter().collect();
+        let check = Model { pos: vec![pos.clone()], ..probe.clone() };
+        let missing: Vec<Vec<(String, u32)>> = par_map(&forms, threads, |(form, truth)| {
+            let found = check.analyze_pos(0, form);
+            truth
+                .iter()
+                .filter(|(lemma, cell)| {
+                    let lk = check.key(lemma);
+                    !found.iter().any(|(a, w)| *w > 0.0 && check.key(&a.lemma) == lk && a.cells.contains(cell))
+                })
+                .cloned()
+                .collect()
+        });
+        pos.reverse = forms.into_iter().zip(missing).filter(|(_, m)| !m.is_empty()).map(|((f, _), m)| (f, m)).collect();
+
+        eprintln!("[{}] {}:   reverse {:.1?}", spec.name, ps.name, t0.elapsed());
         stats.push(Stats {
             pos: ps.name.clone(),
             records: recs.len(),
@@ -281,14 +337,15 @@ pub fn learn(ex: &Extractor, threads: usize) -> (Model, Vec<Stats>) {
             nodes,
         });
         eprintln!(
-            "[{}] {}: {} edits, {} classes, {} tree nodes, lexicon {}, known {}",
+            "[{}] {}: {} edits, {} classes, {} tree nodes, lexicon {}, known {}, reverse {}",
             spec.name,
             ps.name,
             pos.edits.len(),
             pos.classes.len(),
             nodes,
             pos.lexicon.len(),
-            pos.known.len()
+            pos.known.len(),
+            pos.reverse.len()
         );
         model.pos.push(pos);
     }

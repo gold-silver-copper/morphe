@@ -89,7 +89,7 @@ footer { color: var(--muted); font-size: .85rem; max-width: 80ch; }
 <div class="wrap">
   <header>
     <h1>morphe</h1>
-    <p>Inflection learned from Wiktionary. Type any word, real or made up: every cell gets a best guess and its confidence, and the margin shows what the word itself could be a form of.</p>
+    <p><span id="count">Dozens of languages</span>, inflection learned from Wiktionary. Type any word, real or made up: every cell gets a best guess and its confidence, and the margin shows what the word itself could be a form of.</p>
   </header>
 
   <form class="query" id="query">
@@ -167,7 +167,7 @@ function render(res) {
   for (const a of res.analyses) {
     const li = el("li");
     li.append(el("span", "lemma", a.lemma), el("span", "pct", pct(a.p)),
-      el("span", "what", `${a.pos} · ${a.cell === "lemma" ? "dictionary form" : words(a.cell)}`));
+      el("span", "what", `${a.pos} · ${a.cells.length ? a.cells.map(words).join(", ") : "dictionary form"}`));
     an.append(li);
   }
   const main = $("paradigms");
@@ -233,6 +233,7 @@ async function boot() {
   try {
     manifest = await (await fetch("models.json")).json();
     const sel = $("lang");
+    $("count").textContent = `${manifest.length} languages`;
     for (const m of manifest) { const o = el("option", null, m.title); o.value = m.name; sel.append(o); }
     let saved = null; try { saved = localStorage.getItem("morphe-lang"); } catch (_) {}
     sel.value = manifest.some((m) => m.name === saved) ? saved : "english";

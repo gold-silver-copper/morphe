@@ -102,8 +102,13 @@ pub fn query_json(m: &Model, word: &str, marks: bool) -> String {
         .take(8)
         .map(|(a, pr)| {
             let pos = m.pos.get(a.pos).map_or("?", |p| p.name.as_str());
-            let cell = a.cell.and_then(|c| m.pos.get(a.pos)?.cells.get(c as usize)).map_or("lemma", |c| c.as_str());
-            format!("{{\"pos\":{},\"lemma\":{},\"cell\":{},\"p\":{pr:.3}}}", esc(pos), esc(&a.lemma), esc(cell))
+            let cells: Vec<String> = a
+                .cells
+                .iter()
+                .filter_map(|&c| m.pos.get(a.pos)?.cells.get(c as usize))
+                .map(|c| esc(c))
+                .collect();
+            format!("{{\"pos\":{},\"lemma\":{},\"cells\":[{}],\"p\":{pr:.3}}}", esc(pos), esc(&a.lemma), cells.join(","))
         })
         .collect();
     s.push_str(&an.join(","));

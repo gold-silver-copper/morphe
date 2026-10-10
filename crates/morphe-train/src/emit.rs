@@ -197,10 +197,10 @@ pub fn emit(lang: &dyn Language, spec: &Spec, cells: &[Vec<Cell>], model: &Model
     }
     let _ = writeln!(s, "impl {ty} {{\n{methods}}}\n");
     s.push_str(&frees);
-    let _ = writeln!(s, "/// One reading of a form: its part of speech, lemma, and cell (`None` when");
-    let _ = writeln!(s, "/// the form is the lemma itself).");
+    let _ = writeln!(s, "/// One reading of a form: its part of speech, lemma, and every cell it fills");
+    let _ = writeln!(s, "/// for that lemma (empty when it is only the dictionary form).");
     let _ = writeln!(s, "#[derive(Clone, Debug, PartialEq)]");
-    let _ = writeln!(s, "pub struct Analysis {{\n    pub pos: &'static str,\n    pub lemma: String,\n    pub cell: Option<&'static str>,\n}}\n");
+    let _ = writeln!(s, "pub struct Analysis {{\n    pub pos: &'static str,\n    pub lemma: String,\n    pub cells: Vec<&'static str>,\n}}\n");
     let _ = writeln!(s, "/// Which lemma and cell a form could be, best first. Works for unknown words too.");
     let _ = writeln!(s, "pub fn analyze(word: &str) -> Scored<Analysis> {{");
     let _ = writeln!(s, "    let Some(m) = model() else {{ return Vec::new() }};");
@@ -208,8 +208,8 @@ pub fn emit(lang: &dyn Language, spec: &Spec, cells: &[Vec<Cell>], model: &Model
     let _ = writeln!(s, "        .into_iter()");
     let _ = writeln!(s, "        .filter_map(|(a, p)| {{");
     let _ = writeln!(s, "            let pos = m.pos.get(a.pos)?;");
-    let _ = writeln!(s, "            let cell = match a.cell {{\n                Some(c) => Some(pos.cells.get(c as usize)?.as_str()),\n                None => None,\n            }};");
-    let _ = writeln!(s, "            Some((Analysis {{ pos: pos.name.as_str(), lemma: a.lemma, cell }}, p))");
+    let _ = writeln!(s, "            let cells = a.cells.iter().filter_map(|&c| pos.cells.get(c as usize).map(String::as_str)).collect();");
+    let _ = writeln!(s, "            Some((Analysis {{ pos: pos.name.as_str(), lemma: a.lemma, cells }}, p))");
     let _ = writeln!(s, "        }})");
     let _ = writeln!(s, "        .collect()\n}}\n");
     let _ = writeln!(s, "/// Inflect by names, e.g. `inflect(\"noun\", \"GenitivePlural\", word)`.");

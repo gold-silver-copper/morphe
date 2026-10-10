@@ -26,11 +26,11 @@ singular past. Personal pronouns are not covered.
 
 | Part of speech | Entries | Cells | Edits | Classes | Tree nodes | Lexicon |
 |---|---|---|---|---|---|---|
-| noun | 11576 | 16 | 1623 | 825 | 1439 | 3309 |
-| adj | 1933 | 120 | 1082 | 203 | 150 | 482 |
-| verb | 2064 | 53 | 1152 | 278 | 227 | 951 |
+| noun | 11576 | 16 | 1624 | 825 | 1439 | 3309 |
+| adj | 1933 | 120 | 1083 | 203 | 150 | 482 |
+| verb | 2064 | 53 | 1153 | 278 | 227 | 951 |
 
-Model size: 1738173 bytes.
+Model size: 1793320 bytes.
 
 **noun** cells: `IndefiniteNominativeSingular`, `IndefiniteNominativePlural`, `IndefiniteAccusativeSingular`, `IndefiniteAccusativePlural`, `IndefiniteDativeSingular`, `IndefiniteDativePlural`, `IndefiniteGenitiveSingular`, `IndefiniteGenitivePlural`, `DefiniteNominativeSingular`, `DefiniteNominativePlural`, `DefiniteAccusativeSingular`, `DefiniteAccusativePlural`, `DefiniteDativeSingular`, `DefiniteDativePlural`, `DefiniteGenitiveSingular`, `DefiniteGenitivePlural`
 

@@ -42,7 +42,9 @@ impl Language for German {
         // Compound tenses are auxiliary + participle; old spellings come tagged.
         s.drop_tags.extend(tags("multiword-construction dated"));
         s.soft_tags.extend(tags("poetic regional"));
+        s.inherent_form_tags = tags("auxiliary");
         s.features = vec![
+            feature("Auxiliary", &[("Haben", "haben"), ("Sein", "sein")]),
             feature(
                 "Case",
                 &[("Nominative", "nominative"), ("Genitive", "genitive"), ("Dative", "dative"), ("Accusative", "accusative")],
@@ -96,6 +98,7 @@ impl Language for German {
             .head_last(),
             pos("adj", "adj", adj).citation("Lemma PredicativeComparative PredicativeSuperlative"),
             pos("verb", "verb", verb)
+                .inherent("Auxiliary")
                 .citation("Infinitive PresentThirdSingular PreteriteThirdSingular ParticiplePast")
                 .head_last(),
             pos("pron", "pron", vec![group("", "!personal", "Case GenderNumber?")]),

@@ -25,11 +25,11 @@ Forms are given without "at", "har" or articles ("give", "givet", "ansatte").
 
 | Part of speech | Entries | Cells | Edits | Classes | Tree nodes | Lexicon |
 |---|---|---|---|---|---|---|
-| noun | 14042 | 8 | 656 | 697 | 1354 | 4143 |
-| adj | 3510 | 6 | 160 | 153 | 286 | 1605 |
-| verb | 3009 | 11 | 527 | 618 | 287 | 1295 |
+| noun | 14042 | 8 | 657 | 700 | 1357 | 4146 |
+| adj | 3510 | 6 | 161 | 167 | 334 | 1785 |
+| verb | 3009 | 11 | 528 | 640 | 293 | 1294 |
 
-Model size: 756126 bytes.
+Model size: 759926 bytes.
 
 **noun** cells: `IndefiniteNominativeSingular`, `IndefiniteNominativePlural`, `IndefiniteGenitiveSingular`, `IndefiniteGenitivePlural`, `DefiniteNominativeSingular`, `DefiniteNominativePlural`, `DefiniteGenitiveSingular`, `DefiniteGenitivePlural`
 

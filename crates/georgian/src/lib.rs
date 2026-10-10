@@ -503,13 +503,13 @@ pub fn verb_lemma(word: &str) -> String {
     Georgian::default().verb_lemma(word)
 }
 
-/// One reading of a form: its part of speech, lemma, and cell (`None` when
-/// the form is the lemma itself).
+/// One reading of a form: its part of speech, lemma, and every cell it fills
+/// for that lemma (empty when it is only the dictionary form).
 #[derive(Clone, Debug, PartialEq)]
 pub struct Analysis {
     pub pos: &'static str,
     pub lemma: String,
-    pub cell: Option<&'static str>,
+    pub cells: Vec<&'static str>,
 }
 
 /// Which lemma and cell a form could be, best first. Works for unknown words too.
@@ -519,11 +519,8 @@ pub fn analyze(word: &str) -> Scored<Analysis> {
         .into_iter()
         .filter_map(|(a, p)| {
             let pos = m.pos.get(a.pos)?;
-            let cell = match a.cell {
-                Some(c) => Some(pos.cells.get(c as usize)?.as_str()),
-                None => None,
-            };
-            Some((Analysis { pos: pos.name.as_str(), lemma: a.lemma, cell }, p))
+            let cells = a.cells.iter().filter_map(|&c| pos.cells.get(c as usize).map(String::as_str)).collect();
+            Some((Analysis { pos: pos.name.as_str(), lemma: a.lemma, cells }, p))
         })
         .collect()
 }

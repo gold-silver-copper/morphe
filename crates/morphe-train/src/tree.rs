@@ -28,20 +28,18 @@ impl Default for Params {
 #[derive(Default)]
 struct TNode {
     children: Vec<(u32, u32)>,
-    counts: Vec<(u32, f64)>,
+    /// Ordered, so sums and ties come out the same on every run.
+    counts: std::collections::BTreeMap<u32, f64>,
     n: f64,
 }
 
 impl TNode {
     fn add(&mut self, label: u32, w: f64) {
         self.n += w;
-        match self.counts.iter_mut().find(|c| c.0 == label) {
-            Some(c) => c.1 += w,
-            None => self.counts.push((label, w)),
-        }
+        *self.counts.entry(label).or_default() += w;
     }
     fn count(&self, label: u32) -> f64 {
-        self.counts.iter().find(|c| c.0 == label).map_or(0.0, |c| c.1)
+        self.counts.get(&label).copied().unwrap_or(0.0)
     }
 }
 
@@ -94,7 +92,7 @@ pub fn train(key: &[KeyFeature], data: &[(String, u32, f64)], p: Params) -> Tree
     };
 
     let emit = |i: usize, parent: Option<usize>, anc: &[Option<u32>], dist: &[Vec<(u32, f32)>]| -> Vec<(u32, f32)> {
-        let mut cands: Vec<u32> = nodes[i].counts.iter().map(|c| c.0).collect();
+        let mut cands: Vec<u32> = nodes[i].counts.keys().copied().collect();
         if let Some(a) = parent {
             cands.extend(dist[a].iter().map(|d| d.0));
         }
@@ -116,7 +114,7 @@ pub fn train(key: &[KeyFeature], data: &[(String, u32, f64)], p: Params) -> Tree
             let gain: f64 = nodes[i]
                 .counts
                 .iter()
-                .map(|&(l, c)| c * (prob(i, l, &anc) / prob(a, l, &anc)).ln())
+                .map(|(&l, &c)| c * (prob(i, l, &anc) / prob(a, l, &anc)).ln())
                 .sum();
             if gain > p.lambda * nodes[i].counts.len() as f64 {
                 kept[i] = true;

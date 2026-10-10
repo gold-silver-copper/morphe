@@ -88,8 +88,10 @@ fn main() {
             };
             for (a, p) in m.analyze(word).into_iter().take(10) {
                 let pos = m.pos.get(a.pos).map_or("?", |p| p.name.as_str());
-                let cell = a.cell.and_then(|c| m.pos.get(a.pos)?.cells.get(c as usize)).map_or("(lemma)", |c| c.as_str());
-                out!("  {p:.3}  {pos:<6} {:<20} {cell}", a.lemma);
+                let cells: Vec<&str> =
+                    a.cells.iter().filter_map(|&c| m.pos.get(a.pos)?.cells.get(c as usize)).map(String::as_str).collect();
+                let cells = if cells.is_empty() { "(dictionary form)".to_string() } else { cells.join(", ") };
+                out!("  {p:.3}  {pos:<6} {:<20} {cells}", a.lemma);
             }
         }
         Some("playground") => {

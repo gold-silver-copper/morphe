@@ -31,13 +31,13 @@ chandrabindu as anusvara.
 
 | Part of speech | Entries | Cells | Edits | Classes | Tree nodes | Lexicon |
 |---|---|---|---|---|---|---|
-| noun | 13198 | 6 | 297 | 164 | 402 | 2612 |
+| noun | 13207 | 6 | 298 | 165 | 402 | 2621 |
 | adj | 532 | 12 | 43 | 25 | 14 | 164 |
 | verb | 1656 | 46 | 627 | 93 | 29 | 473 |
 | pron | 36 | 28 | 202 | 41 | 3 | 19 |
 | num | 8 | 6 | 7 | 5 | 2 | 3 |
 
-Model size: 580407 bytes.
+Model size: 810216 bytes.
 
 **noun** cells: `DirectSingular`, `DirectPlural`, `ObliqueSingular`, `ObliquePlural`, `VocativeSingular`, `VocativePlural`
 

@@ -30,14 +30,14 @@ one plural form for all persons, hence `PersonNumber`.
 
 | Part of speech | Entries | Cells | Edits | Classes | Tree nodes | Lexicon |
 |---|---|---|---|---|---|---|
-| noun | 7375 | 8 | 998 | 689 | 1578 | 4357 |
+| noun | 7375 | 8 | 999 | 686 | 1578 | 4357 |
 | adj | 2329 | 62 | 724 | 431 | 553 | 1269 |
-| verb | 4081 | 18 | 2624 | 1121 | 894 | 2712 |
-| pron | 36 | 30 | 89 | 33 | 10 | 28 |
+| verb | 4081 | 18 | 2625 | 1121 | 894 | 2712 |
+| pron | 36 | 30 | 90 | 33 | 10 | 28 |
 | det | 11 | 30 | 43 | 12 | 7 | 7 |
-| num | 21 | 30 | 34 | 16 | 3 | 17 |
+| num | 21 | 30 | 35 | 16 | 3 | 17 |
 
-Model size: 1247030 bytes.
+Model size: 1302243 bytes.
 
 **noun** cells: `NominativeSingular`, `NominativePlural`, `AccusativeSingular`, `AccusativePlural`, `GenitiveSingular`, `GenitivePlural`, `DativeSingular`, `DativePlural`
 

@@ -40,11 +40,11 @@ verb_participle("walk", Tense::Present);                 // "walking"
 | Part of speech | Entries | Cells | Edits | Classes | Tree nodes | Lexicon |
 |---|---|---|---|---|---|---|
 | noun | 353007 | 1 | 1308 | 2091 | 3870 | 19020 |
-| verb | 58767 | 14 | 1425 | 1839 | 979 | 17292 |
+| verb | 58767 | 14 | 1426 | 1839 | 979 | 17292 |
 | adj | 69087 | 2 | 196 | 211 | 683 | 2925 |
 | adv | 13228 | 2 | 72 | 51 | 89 | 202 |
 
-Model size: 3989241 bytes.
+Model size: 3993188 bytes.
 
 **noun** cells: `Plural`
 

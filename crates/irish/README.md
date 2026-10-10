@@ -32,11 +32,11 @@ pronouns are separate words. Definite forms include the article.
 
 | Part of speech | Entries | Cells | Edits | Classes | Tree nodes | Lexicon |
 |---|---|---|---|---|---|---|
-| noun | 19333 | 10 | 4116 | 7283 | 2943 | 10440 |
-| adj | 4253 | 15 | 649 | 1448 | 877 | 1721 |
-| verb | 1558 | 63 | 5333 | 1005 | 391 | 810 |
+| noun | 19340 | 10 | 4117 | 7329 | 2935 | 10459 |
+| adj | 4255 | 15 | 650 | 1454 | 872 | 1728 |
+| verb | 1558 | 63 | 5334 | 1005 | 391 | 810 |
 
-Model size: 1820411 bytes.
+Model size: 1845154 bytes.
 
 **noun** cells: `GenitiveSingular`, `Plural`, `DefiniteNominativeSingular`, `DefiniteNominativePlural`, `DefiniteGenitiveSingular`, `DefiniteGenitivePlural`, `DefiniteDativeSingular`, `DefiniteDativePlural`, `Lenition`, `Eclipsis`
 

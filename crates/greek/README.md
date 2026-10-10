@@ -35,7 +35,7 @@ built from them. Input matching ignores the tonos accent.
 | num | 19 | 24 | 85 | 18 | 5 | 7 |
 | article | 13 | 24 | 149 | 26 | 2 | 3 |
 
-Model size: 2684540 bytes.
+Model size: 2703582 bytes.
 
 **noun** cells: `NominativeSingular`, `NominativePlural`, `GenitiveSingular`, `GenitivePlural`, `AccusativeSingular`, `AccusativePlural`, `VocativeSingular`, `VocativePlural`
 

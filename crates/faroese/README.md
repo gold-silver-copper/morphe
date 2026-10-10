@@ -23,11 +23,11 @@ println!("{}", noun("hestur, hests, hestar", Definiteness::Indefinite, Case::Dat
 
 | Part of speech | Entries | Cells | Edits | Classes | Tree nodes | Lexicon |
 |---|---|---|---|---|---|---|
-| noun | 3463 | 16 | 988 | 415 | 427 | 983 |
-| adj | 644 | 39 | 413 | 231 | 80 | 288 |
-| verb | 798 | 13 | 512 | 215 | 103 | 282 |
+| noun | 3463 | 16 | 989 | 415 | 427 | 983 |
+| adj | 644 | 39 | 414 | 231 | 80 | 288 |
+| verb | 798 | 13 | 513 | 215 | 103 | 282 |
 
-Model size: 569940 bytes.
+Model size: 573915 bytes.
 
 **noun** cells: `IndefiniteNominativeSingular`, `IndefiniteNominativePlural`, `IndefiniteAccusativeSingular`, `IndefiniteAccusativePlural`, `IndefiniteDativeSingular`, `IndefiniteDativePlural`, `IndefiniteGenitiveSingular`, `IndefiniteGenitivePlural`, `DefiniteNominativeSingular`, `DefiniteNominativePlural`, `DefiniteAccusativeSingular`, `DefiniteAccusativePlural`, `DefiniteDativeSingular`, `DefiniteDativePlural`, `DefiniteGenitiveSingular`, `DefiniteGenitivePlural`
 

@@ -30,13 +30,13 @@ drop "nas"/"as". Accents are optional on input.
 
 | Part of speech | Entries | Cells | Edits | Classes | Tree nodes | Lexicon |
 |---|---|---|---|---|---|---|
-| noun | 6003 | 18 | 2459 | 2785 | 1376 | 4231 |
-| adj | 837 | 14 | 435 | 401 | 149 | 528 |
-| verb | 863 | 32 | 1149 | 548 | 174 | 605 |
-| prep | 40 | 14 | 446 | 43 | 5 | 36 |
-| pron | 169 | 14 | 1377 | 154 | 58 | 92 |
+| noun | 6003 | 18 | 2460 | 2785 | 1376 | 4231 |
+| adj | 837 | 14 | 436 | 401 | 149 | 528 |
+| verb | 863 | 32 | 1150 | 548 | 174 | 605 |
+| prep | 40 | 14 | 447 | 43 | 5 | 36 |
+| pron | 169 | 14 | 1378 | 154 | 58 | 92 |
 
-Model size: 635396 bytes.
+Model size: 660170 bytes.
 
 **noun** cells: `IndefiniteNominativeSingular`, `IndefiniteNominativePlural`, `IndefiniteGenitiveSingular`, `IndefiniteGenitivePlural`, `IndefiniteDativeSingular`, `IndefiniteDativePlural`, `DefiniteNominativeSingular`, `DefiniteNominativePlural`, `DefiniteGenitiveSingular`, `DefiniteGenitivePlural`, `DefiniteDativeSingular`, `DefiniteDativePlural`, `VocativeSingular`, `VocativePlural`, `MutatedLenition`, `MutatedEclipsis`, `MutatedHProthesis`, `MutatedTProthesis`
 

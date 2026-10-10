@@ -30,14 +30,14 @@ verbs are predicted.
 
 | Part of speech | Entries | Cells | Edits | Classes | Tree nodes | Lexicon |
 |---|---|---|---|---|---|---|
-| noun | 5637 | 24 | 811 | 291 | 251 | 1550 |
-| adj | 2120 | 72 | 1200 | 188 | 114 | 500 |
-| verb | 947 | 172 | 6336 | 651 | 147 | 440 |
-| pron | 26 | 72 | 208 | 29 | 6 | 18 |
-| det | 8 | 72 | 94 | 7 | 2 | 4 |
+| noun | 5637 | 24 | 812 | 291 | 251 | 1550 |
+| adj | 2120 | 72 | 1201 | 188 | 114 | 500 |
+| verb | 948 | 172 | 6337 | 652 | 147 | 442 |
+| pron | 26 | 72 | 209 | 29 | 6 | 18 |
+| det | 8 | 72 | 95 | 7 | 2 | 4 |
 | num | 68 | 72 | 96 | 14 | 6 | 7 |
 
-Model size: 1786933 bytes.
+Model size: 1836900 bytes.
 
 **noun** cells: `NominativeSingular`, `NominativeDual`, `NominativePlural`, `AccusativeSingular`, `AccusativeDual`, `AccusativePlural`, `InstrumentalSingular`, `InstrumentalDual`, `InstrumentalPlural`, `DativeSingular`, `DativeDual`, `DativePlural`, `AblativeSingular`, `AblativeDual`, `AblativePlural`, `GenitiveSingular`, `GenitiveDual`, `GenitivePlural`, `LocativeSingular`, `LocativeDual`, `LocativePlural`, `VocativeSingular`, `VocativeDual`, `VocativePlural`
 
