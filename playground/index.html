@@ -137,8 +137,10 @@ async function ensureModel(name) {
   $("status").textContent = `Loading ${entry.title} (${(entry.bytes / 1e6).toFixed(1)} MB)…`;
   const b64 = (await (await fetch(entry.file)).text()).trim();
   const bin = atob(b64);
-  const buf = new Uint8Array(bin.length);
-  for (let i = 0; i < bin.length; i++) buf[i] = bin.charCodeAt(i);
+  const gz = new Uint8Array(bin.length);
+  for (let i = 0; i < bin.length; i++) gz[i] = bin.charCodeAt(i);
+  const stream = new Blob([gz]).stream().pipeThrough(new DecompressionStream("gzip"));
+  const buf = new Uint8Array(await new Response(stream).arrayBuffer());
   const ptr = wasm.alloc(buf.length);
   mem().set(buf, ptr);
   const h = wasm.load(ptr, buf.length);

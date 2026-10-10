@@ -116,7 +116,13 @@ fn main() {
                 let Ok(meta) = std::fs::metadata(&bin) else { continue };
                 // Served as base64 text: artifact hosts don't serve raw binary.
                 let Ok(bytes) = std::fs::read(&bin) else { continue };
-                if let Err(e) = std::fs::write(models.join(format!("{}.txt", spec.name)), base64(&bytes)) {
+                let gz = {
+                    use std::io::Write as _;
+                    let mut enc = flate2::write::GzEncoder::new(Vec::new(), flate2::Compression::best());
+                    let _ = enc.write_all(&bytes);
+                    enc.finish().unwrap_or_default()
+                };
+                if let Err(e) = std::fs::write(models.join(format!("{}.txt", spec.name)), base64(&gz)) {
                     eprintln!("{e}");
                     std::process::exit(1);
                 }
