@@ -18,7 +18,7 @@ assert_eq!(verb_subordinate_present("ansehen", Person::Third, Number::Singular),
 assert_eq!(adj_weak("alt", Degree::Comparative, Case::Dative, GenderNumber::Plural), "älteren");
 assert_eq!(adj_predicative("gut", Degree::Superlative), "am besten");
 // Citations pin principal parts: infinitive, present, preterite, participle.
-println!("{}", verb_preterite("backen, bäckt, buk, gebacken", Person::First, Number::Plural));
+assert_eq!(verb_preterite("backen, bäckt, buk, gebacken", Person::Third, Number::Singular), "buk");
 ```
 
 Weak and mixed adjective forms are given without their article ("freien",
@@ -37,7 +37,7 @@ auxiliary plus `verb_participle_past`. Personal pronouns are not covered.
 | article | 12 | 16 | 50 | 13 | 2 | 11 |
 | num | 19 | 8 | 3 | 3 | 4 | 1 |
 
-Model size: 2630267 bytes.
+Model size: 4030293 bytes.
 
 **noun** cells: `NominativeSingular`, `NominativePlural`, `GenitiveSingular`, `GenitivePlural`, `DativeSingular`, `DativePlural`, `AccusativeSingular`, `AccusativePlural`, `Diminutive`
 

@@ -149,6 +149,10 @@ impl Language for German {
         forms.extend(extra);
     }
 
+    fn samples(&self) -> Vec<&'static str> {
+        vec!["Haus", "sehen", "ansehen", "gut", "Delegierter", "schnurpeln", "Klabuster", "schnelzig"]
+    }
+
     fn readme(&self) -> String {
         r#"## Example
 
