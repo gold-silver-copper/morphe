@@ -137,6 +137,29 @@ crates/<language>     generated crates, committed
 The trainer contains no language names; everything specific is in
 `configs/src/langs/<language>.rs`.
 
+## Using a crate
+
+The crates aren't on crates.io yet; use them from git:
+
+```toml
+[dependencies]
+russian = { git = "https://github.com/gold-silver-copper/morphe" }
+```
+
+Every crate has the same shape: typed functions per part of speech and
+cell group (`noun`, `verb_past`, …), `_scored` versions with confidences,
+`<pos>_<feature>` for inherent features (`noun_gender`, `verb_aspect`,
+`verb_auxiliary`), `<pos>_lemma` for the dictionary spelling, `analyze`
+for form → lemma and cells, and `inflect(pos, cell, word)` by name.
+
+## Adding a language
+
+Write `configs/src/langs/<name>.rs` (features, cells per part of speech,
+spelling rules, a few hooks for the dump's quirks), drop the Kaikki dump
+in `~/.cache/kaikki/`, run `morphe train <name>`. `morphe tags <Title>`
+shows the tag sets to write the config from; `prompts/add-languages.md`
+is the full guide the language agents followed.
+
 ## Commands
 
 ```sh
