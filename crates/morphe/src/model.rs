@@ -572,8 +572,13 @@ impl Model {
     /// inflecting the lemma back gives the form.
     pub fn analyze(&self, input: &str) -> Vec<(Analysis, f32)> {
         let mut out: Vec<(Analysis, f32)> = Vec::new();
+        // Parts of speech weigh in by how many words they have (square root,
+        // so small closed classes still show up).
+        let sizes: Vec<f32> = self.pos.iter().map(|p| ((p.known.len() + p.lexicon.len()) as f32).sqrt()).collect();
+        let total_size: f32 = sizes.iter().sum::<f32>().max(1.0);
         for pi in 0..self.pos.len() {
-            out.extend(self.analyze_pos(pi, input));
+            let prior = sizes.get(pi).copied().unwrap_or(0.0) / total_size;
+            out.extend(self.analyze_pos(pi, input).into_iter().map(|(a, w)| (a, w * prior)));
         }
         let total: f32 = out.iter().map(|x| x.1).sum();
         if total > 0.0 {
