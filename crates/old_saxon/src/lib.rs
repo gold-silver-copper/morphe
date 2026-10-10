@@ -228,6 +228,34 @@ impl OldSaxon {
         best(self.adj_weak_scored(word, case, number, gender), word)
     }
 
+    /// The comparative adj.
+    pub fn adj_comparative_scored(&self, word: &str) -> Scored<String> {
+        let cell: Option<u32> = Some(60);
+        match (model(), cell) {
+            (Some(m), Some(c)) => m.inflect(1, c, word, self.options),
+            _ => Vec::new(),
+        }
+    }
+
+    /// The comparative adj. The best candidate; the word itself if nothing is known.
+    pub fn adj_comparative(&self, word: &str) -> String {
+        best(self.adj_comparative_scored(word), word)
+    }
+
+    /// The superlative adj.
+    pub fn adj_superlative_scored(&self, word: &str) -> Scored<String> {
+        let cell: Option<u32> = Some(61);
+        match (model(), cell) {
+            (Some(m), Some(c)) => m.inflect(1, c, word, self.options),
+            _ => Vec::new(),
+        }
+    }
+
+    /// The superlative adj. The best candidate; the word itself if nothing is known.
+    pub fn adj_superlative(&self, word: &str) -> String {
+        best(self.adj_superlative_scored(word), word)
+    }
+
     /// Dictionary spelling of a adj (with stress marks where the data has them).
     pub fn adj_lemma(&self, word: &str) -> String {
         model().and_then(|m| m.lemma(1, word)).unwrap_or_else(|| word.to_string())
@@ -351,6 +379,26 @@ pub fn adj_weak(word: &str, case: Case, number: Number, gender: Gender) -> Strin
 /// A adj form (weak). Every candidate with its confidence, best first.
 pub fn adj_weak_scored(word: &str, case: Case, number: Number, gender: Gender) -> Scored<String> {
     OldSaxon::default().adj_weak_scored(word, case, number, gender)
+}
+
+/// The comparative adj.
+pub fn adj_comparative(word: &str) -> String {
+    OldSaxon::default().adj_comparative(word)
+}
+
+/// The comparative adj. Every candidate with its confidence, best first.
+pub fn adj_comparative_scored(word: &str) -> Scored<String> {
+    OldSaxon::default().adj_comparative_scored(word)
+}
+
+/// The superlative adj.
+pub fn adj_superlative(word: &str) -> String {
+    OldSaxon::default().adj_superlative(word)
+}
+
+/// The superlative adj. Every candidate with its confidence, best first.
+pub fn adj_superlative_scored(word: &str) -> Scored<String> {
+    OldSaxon::default().adj_superlative_scored(word)
 }
 
 /// Dictionary spelling of a adj.

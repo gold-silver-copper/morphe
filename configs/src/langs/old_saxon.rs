@@ -48,7 +48,13 @@ impl Language for OldSaxon {
             pos(
                 "adj",
                 "adj",
-                vec![group("", "strong", "Case Number Gender"), group("Weak", "weak", "Case Number Gender")],
+                vec![
+                    group("", "strong !comparative !superlative", "Case Number Gender"),
+                    group("Weak", "weak !comparative !superlative", "Case Number Gender"),
+                    // The headword's comparative and superlative (betiro, betst).
+                    group("Comparative", "comparative !nominative !genitive !dative !accusative", ""),
+                    group("Superlative", "superlative !nominative !genitive !dative !accusative", ""),
+                ],
             ),
             pos(
                 "verb",
