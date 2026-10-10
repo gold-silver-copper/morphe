@@ -30,11 +30,11 @@ imperative forms are given unpointed in Wiktionary and come out unpointed.
 
 | Part of speech | Entries | Cells | Edits | Classes | Tree nodes | Lexicon |
 |---|---|---|---|---|---|---|
-| noun | 4885 | 29 | 16399 | 2726 | 1707 | 4265 |
-| adj | 1675 | 4 | 1049 | 530 | 339 | 1531 |
-| verb | 2133 | 31 | 12036 | 1662 | 717 | 1682 |
+| noun | 4885 | 29 | 16399 | 2726 | 1644 | 4273 |
+| adj | 1675 | 4 | 1049 | 530 | 390 | 1523 |
+| verb | 2133 | 31 | 12036 | 1662 | 780 | 1676 |
 
-Model size: 3318005 bytes.
+Model size: 2300844 bytes.
 
 **noun** cells: `IndefiniteSingular`, `IndefinitePlural`, `IndefiniteDual`, `DefiniteSingular`, `DefinitePlural`, `DefiniteDual`, `ConstructSingular`, `ConstructPlural`, `ConstructDual`, `PossessedFirstSingular`, `PossessedFirstPlural`, `PossessedSecondMasculineSingular`, `PossessedSecondFeminineSingular`, `PossessedSecondMasculinePlural`, `PossessedSecondFemininePlural`, `PossessedThirdMasculineSingular`, `PossessedThirdFeminineSingular`, `PossessedThirdMasculinePlural`, `PossessedThirdFemininePlural`, `PossessedPluralFirstSingular`, `PossessedPluralFirstPlural`, `PossessedPluralSecondMasculineSingular`, `PossessedPluralSecondFeminineSingular`, `PossessedPluralSecondMasculinePlural`, `PossessedPluralSecondFemininePlural`, `PossessedPluralThirdMasculineSingular`, `PossessedPluralThirdFeminineSingular`, `PossessedPluralThirdMasculinePlural`, `PossessedPluralThirdFemininePlural`
 

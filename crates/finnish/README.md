@@ -35,7 +35,7 @@ are built from `olla`/`ei` plus a participle or the connegative.
 | pron | 80 | 28 | 1072 | 116 | 9 | 70 |
 | num | 81 | 26 | 1013 | 104 | 39 | 45 |
 
-Model size: 11346761 bytes.
+Model size: 11346274 bytes.
 
 **noun** cells: `NominativeSingular`, `NominativePlural`, `GenitiveSingular`, `GenitivePlural`, `PartitiveSingular`, `PartitivePlural`, `InessiveSingular`, `InessivePlural`, `ElativeSingular`, `ElativePlural`, `IllativeSingular`, `IllativePlural`, `AdessiveSingular`, `AdessivePlural`, `AblativeSingular`, `AblativePlural`, `AllativeSingular`, `AllativePlural`, `EssiveSingular`, `EssivePlural`, `TranslativeSingular`, `TranslativePlural`, `AbessiveSingular`, `AbessivePlural`, `InstructiveSingular`, `InstructivePlural`, `Comitative`
 
