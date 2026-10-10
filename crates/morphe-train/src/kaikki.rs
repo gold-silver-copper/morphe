@@ -9,6 +9,10 @@ pub struct Entry {
     pub pos: String,
     #[serde(default)]
     pub lang_code: String,
+    /// Language name in the dump's own edition ("Russian", "Русский"), which
+    /// tells entries from extra dumps apart.
+    #[serde(default)]
+    pub lang: String,
     #[serde(default)]
     pub forms: Vec<Form>,
     #[serde(default)]

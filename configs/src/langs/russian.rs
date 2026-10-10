@@ -1,3 +1,4 @@
+use morphe_train::kaikki::Entry;
 use morphe_train::spec::*;
 
 pub struct Russian;
@@ -14,6 +15,8 @@ impl Language for Russian {
         // Russian Wiktionary adds words English Wiktionary lacks.
         s.extra_dumps = vec!["ru/Русский".into()];
         s.soft_tags.extend(tags("poetic"));
+        // Prepositional pronoun forms come with their preposition (о вас).
+        s.strip_words = tags("о об обо");
         s.features = vec![
             feature(
                 "Case",
@@ -81,9 +84,38 @@ impl Language for Russian {
         s
     }
 
+    /// Russian Wiktionary's proper nouns, possessive adjectives filed as
+    /// pronouns and ordinals filed as numerals don't fit; English Wiktionary
+    /// already covers the real pronouns and numerals.
+    fn keep_entry(&self, e: &Entry) -> bool {
+        e.lang != RU_WIKT || !(matches!(e.pos.as_str(), "pron" | "num") || e.word.starts_with(char::is_uppercase))
+    }
+
+    /// Russian Wiktionary calls perfective verbs "perfect", and tags the
+    /// stressed headword "stressed".
+    fn prepare(&self, e: &mut Entry) {
+        if e.pos == "pron" {
+            keep_own_person(e);
+        }
+        if e.lang != RU_WIKT {
+            return;
+        }
+        for t in &mut e.tags {
+            if t == "perfect" {
+                *t = "perfective".into();
+            }
+        }
+        for f in &mut e.forms {
+            if f.tags.iter().any(|t| t == "stressed") {
+                f.tags.push("canonical".into());
+            }
+        }
+    }
+
     /// Russian Wiktionary tags the past plural as all three genders, and the
-    /// imperative without a number.
-    fn retag(&self, _pos: &PosSpec, _form: &str, tags: &mut Vec<String>) {
+    /// imperative without a number (the plural ends in -те); its first-person
+    /// imperatives (запаку́ем) are the future forms.
+    fn retag(&self, _pos: &PosSpec, form: &str, tags: &mut Vec<String>) {
         let has = |tags: &[String], t: &str| tags.iter().any(|x| x == t);
         let numbered = has(tags, "singular") || has(tags, "plural");
         if has(tags, "masculine") && has(tags, "feminine") && has(tags, "neuter") && !numbered {
@@ -91,8 +123,25 @@ impl Language for Russian {
             tags.push("plural".into());
         }
         if has(tags, "imperative") && !numbered {
-            tags.push("singular".into());
+            if has(tags, "first-person") {
+                tags.push("obsolete".into());
+            } else if form.trim_end_matches(['\u{301}', '\u{300}']).ends_with("те") {
+                tags.push("plural".into());
+            } else {
+                tags.push("singular".into());
+            }
         }
+    }
+
+    /// Some tables put the romanization next to the form (идя́, idjá), or a
+    /// footnote mark after it (него́ ²). Pre-reform spellings (мнѣ, васъ)
+    /// that slipped past the dated tables are dropped.
+    fn split_form(&self, raw: &str) -> Vec<String> {
+        let latin = raw.chars().any(|c| c.is_alphabetic() && !matches!(c, '\u{400}'..='\u{52f}'));
+        if latin || raw.contains(['ѣ', 'і', 'ѳ', 'ѵ']) || raw.trim_end_matches(['¹', '²', '³', ' ']).ends_with('ъ') {
+            return Vec::new();
+        }
+        vec![raw.trim_end_matches(['¹', '²', '³', '⁴', ' ']).to_string()]
     }
 
     fn extra_code(&self) -> String {
@@ -124,6 +173,43 @@ get their stress predicted from similar words, which is often wrong.
         .into()
     }
 }
+
+/// Every personal pronoun's entry carries the whole personal-pronoun table;
+/// keep only the entry's own row. Its tags don't tell я from мы or ты from
+/// вы, so the plural rows are told apart by their н-/в- forms.
+fn keep_own_person(e: &mut Entry) {
+    let row = |f: &morphe_train::kaikki::Form| -> Option<&'static str> {
+        let has = |t: &str| f.tags.iter().any(|x| x == t);
+        if !has("personal") {
+            return None;
+        }
+        let text = f.form.trim();
+        Some(if has("reflexive") {
+            "refl"
+        } else if has("first-person") {
+            if text == "мы" || text.starts_with('н') { "1p" } else { "1s" }
+        } else if has("second-person") {
+            if text.starts_with('в') { "2p" } else { "2s" }
+        } else if has("feminine") {
+            "3f"
+        } else if has("masculine") && has("neuter") {
+            "3mn"
+        } else if has("masculine") {
+            "3m"
+        } else if has("neuter") {
+            "3n"
+        } else {
+            "3p"
+        })
+    };
+    let plain = |s: &str| s.chars().filter(|c| !matches!(c, '\u{301}' | '\u{300}')).collect::<String>();
+    let Some(own) = e.forms.iter().filter(|f| plain(f.form.trim()) == e.word).find_map(row) else { return };
+    let fits = |r: &str| r == own || (r == "3mn" && matches!(own, "3m" | "3n"));
+    e.forms.retain(|f| row(f).is_none_or(fits));
+}
+
+/// The language name in Russian Wiktionary's dump.
+const RU_WIKT: &str = "Русский";
 
 pub fn language() -> Box<dyn Language> {
     Box::new(Russian)
