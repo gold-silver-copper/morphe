@@ -48,6 +48,8 @@ impl Language for Bulgarian {
             )
             .inherent("Gender")
             .citation("IndefiniteSingular IndefinitePlural")
+            // Only some nouns have a count form or vocative.
+            .missing_is_absent()
             .head_last(),
             pos(
                 "adj",
@@ -103,6 +105,10 @@ impl Language for Bulgarian {
         if t.iter().any(|x| x == "noun-from-verb") && !t.iter().any(|x| x == "plural") {
             t.push("singular".into());
         }
+    }
+
+    fn samples(&self) -> Vec<&'static str> {
+        vec!["град", "жена", "море", "чета", "прочета", "хубав", "кракозябра", "бузам"]
     }
 
     fn readme(&self) -> String {
