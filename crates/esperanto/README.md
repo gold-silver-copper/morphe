@@ -29,7 +29,7 @@ Esperanto is regular, so unknown words inflect as reliably as known ones.
 | pron | 34 | 3 | 8 | 8 | 6 | 14 |
 | verb | 2842 | 23 | 23 | 3 | 81 | 1167 |
 
-Model size: 301130 bytes.
+Model size: 100710 bytes.
 
 **noun** cells: `NominativeSingular`, `NominativePlural`, `AccusativeSingular`, `AccusativePlural`
 

@@ -65,6 +65,10 @@ impl Language for Esperanto {
         }
     }
 
+    fn samples(&self) -> Vec<&'static str> {
+        vec!["hundo", "fari", "esti", "bona", "mi", "blorko", "ŝpluki"]
+    }
+
     fn readme(&self) -> String {
         r#"## Example
 
