@@ -72,6 +72,10 @@ impl Language for Sanskrit {
                     group("Gerund", "gerund", ""),
                 ],
             )
+            // Tense stems are lexical (aorist type, perfect reduplication):
+            // a tense Wiktionary doesn't give can't be guessed from the
+            // present, and many verbs lack the active or middle.
+            .missing_is_absent()
             .head_first(),
             pos("pron", "pron", vec![group("", "", "Case Gender? Number")]),
             pos("det", "det", vec![group("", "", "Case Gender? Number")]),
@@ -212,6 +216,10 @@ impl Language for Sanskrit {
         }
     }
 
+    fn samples(&self) -> Vec<&'static str> {
+        vec!["देव", "सेना", "नामन्", "भवति", "लभते", "प्रिय", "कपोत", "झिम्पति"]
+    }
+
     fn readme(&self) -> String {
         r#"## Example
 
@@ -232,7 +240,8 @@ pronouns by stem (म, त्व). Output is unaccented; accented input (udātta
 anudātta ॒) is accepted. Vedic-only forms, the subjunctive and the injunctive
 are left out. The precative (benedictive) is its own function. Wiktionary
 gives many verbs only their present-system tables; other tenses of those
-verbs are predicted.
+verbs are left empty rather than guessed. Unknown verbs get a whole
+predicted paradigm.
 "#
         .into()
     }

@@ -24,7 +24,8 @@ pronouns by stem (म, त्व). Output is unaccented; accented input (udātta
 anudātta ॒) is accepted. Vedic-only forms, the subjunctive and the injunctive
 are left out. The precative (benedictive) is its own function. Wiktionary
 gives many verbs only their present-system tables; other tenses of those
-verbs are predicted.
+verbs are left empty rather than guessed. Unknown verbs get a whole
+predicted paradigm.
 
 ## Coverage
 
@@ -37,7 +38,7 @@ verbs are predicted.
 | det | 8 | 72 | 95 | 7 | 2 | 4 |
 | num | 68 | 72 | 96 | 14 | 6 | 7 |
 
-Model size: 1835899 bytes.
+Model size: 613213 bytes.
 
 **noun** cells: `NominativeSingular`, `NominativeDual`, `NominativePlural`, `AccusativeSingular`, `AccusativeDual`, `AccusativePlural`, `InstrumentalSingular`, `InstrumentalDual`, `InstrumentalPlural`, `DativeSingular`, `DativeDual`, `DativePlural`, `AblativeSingular`, `AblativeDual`, `AblativePlural`, `GenitiveSingular`, `GenitiveDual`, `GenitivePlural`, `LocativeSingular`, `LocativeDual`, `LocativePlural`, `VocativeSingular`, `VocativeDual`, `VocativePlural`
 
