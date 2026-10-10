@@ -196,6 +196,13 @@ dependencies = [
 ]
 
 [[package]]
+name = "friulian"
+version = "0.1.0"
+dependencies = [
+ "morphe",
+]
+
+[[package]]
 name = "galician"
 version = "0.1.0"
 dependencies = [
@@ -314,6 +321,13 @@ dependencies = [
 ]
 
 [[package]]
+name = "ladin"
+version = "0.1.0"
+dependencies = [
+ "morphe",
+]
+
+[[package]]
 name = "latin"
 version = "0.1.0"
 dependencies = [
@@ -364,6 +378,13 @@ dependencies = [
 
 [[package]]
 name = "macedonian"
+version = "0.1.0"
+dependencies = [
+ "morphe",
+]
+
+[[package]]
+name = "marathi"
 version = "0.1.0"
 dependencies = [
  "morphe",
@@ -428,7 +449,6 @@ version = "0.1.0"
 name = "morphe-configs"
 version = "0.1.0"
 dependencies = [
- "flate2",
  "morphe",
  "morphe-train",
  "serde_json",
@@ -631,6 +651,13 @@ dependencies = [
 ]
 
 [[package]]
+name = "sardinian"
+version = "0.1.0"
+dependencies = [
+ "morphe",
+]
+
+[[package]]
 name = "saterland_frisian"
 version = "0.1.0"
 dependencies = [
@@ -776,6 +803,13 @@ dependencies = [
 
 [[package]]
 name = "turkmen"
+version = "0.1.0"
+dependencies = [
+ "morphe",
+]
+
+[[package]]
+name = "udmurt"
 version = "0.1.0"
 dependencies = [
  "morphe",

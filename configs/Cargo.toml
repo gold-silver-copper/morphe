@@ -16,4 +16,3 @@ path = "src/main.rs"
 morphe = { path = "../crates/morphe" }
 morphe-train = { path = "../crates/morphe-train" }
 serde_json = "1"
-flate2 = "1"
