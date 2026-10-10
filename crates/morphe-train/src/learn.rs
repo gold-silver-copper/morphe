@@ -44,7 +44,8 @@ pub fn learn(ex: &Extractor, threads: usize) -> (Model, Vec<Stats>) {
             for word in words {
                 let chars: Vec<char> = word.chars().collect();
                 for w in chars.windows(2) {
-                    if spec.marks.contains(&w[1]) && !spec.marks.contains(&w[0]) {
+                    // A mark may also carry a mark (Arabic shadda + vowel).
+                    if spec.marks.contains(&w[1]) {
                         mark_bases.push(w[0]);
                     }
                 }
