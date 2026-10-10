@@ -205,6 +205,10 @@ pub trait Language: Sync {
         vec![raw.to_string()]
     }
 
+    /// Rewrite a tag set (a form's, or a sense's for inherent features) before
+    /// it is matched, e.g. to fill in what a table's merged header left implicit.
+    fn retag(&self, _pos: &PosSpec, _tags: &mut Vec<String>) {}
+
     /// Adjust a lemma's extracted forms: (cell index, form, soft).
     fn adjust(&self, _pos: &PosSpec, _lemma: &str, _forms: &mut Vec<(usize, String, bool)>) {}
 

@@ -75,6 +75,11 @@ impl<'a> Extractor<'a> {
             .filter(|c| self.strip(c) == plain)
             .unwrap_or_else(|| plain.clone());
 
+        let retagged = |t: &[String]| {
+            let mut t = t.to_vec();
+            self.lang.retag(pos, &mut t);
+            t
+        };
         // (cell, form, soft, from a table)
         let mut raw: Vec<(usize, String, bool, bool)> = Vec::new();
         for f in &e.forms {
@@ -82,12 +87,13 @@ impl<'a> Extractor<'a> {
             if (spec.source == Source::Head && table) || (spec.source == Source::Table && !table) {
                 continue;
             }
-            if f.tags.iter().any(|t| spec.drop_tags.contains(t)) {
+            let tags = retagged(&f.tags);
+            if tags.iter().any(|t| spec.drop_tags.contains(t)) {
                 continue;
             }
-            let soft = f.tags.iter().any(|t| spec.soft_tags.contains(t));
+            let soft = tags.iter().any(|t| spec.soft_tags.contains(t));
             let matched: Vec<(usize, usize)> =
-                cells.iter().enumerate().filter_map(|(ci, c)| c.matches(&f.tags).map(|n| (ci, n))).collect();
+                cells.iter().enumerate().filter_map(|(ci, c)| c.matches(&tags).map(|n| (ci, n))).collect();
             let Some(best) = matched.iter().map(|m| m.1).max() else { continue };
             for form in self.lang.split_form(f.form.trim()) {
                 let form = form.trim();
@@ -134,25 +140,25 @@ impl<'a> Extractor<'a> {
             return None;
         }
 
-        let canon_tags: Vec<&String> = spec
+        let canon_tags: Vec<String> = spec
             .canonical_tag
             .as_ref()
-            .map(|t| e.forms.iter().filter(|f| f.tags.contains(t)).flat_map(|f| f.tags.iter()).collect())
+            .map(|t| e.forms.iter().filter(|f| f.tags.contains(t)).flat_map(|f| retagged(&f.tags)).collect())
             .unwrap_or_default();
-        let sense_tags: Vec<&String> = e.senses.iter().flat_map(|s| s.tags.iter()).collect();
+        let sense_tags: Vec<String> = e.senses.iter().flat_map(|s| retagged(&s.tags)).collect();
         let inherent = pos
             .inherent
             .iter()
             .map(|fname| {
                 let Some((_, f)) = spec.feature(fname) else { return Vec::new() };
-                let pick = |tags: &[&String]| -> Vec<usize> {
+                let pick = |tags: &[String]| -> Vec<usize> {
                     f.values
                         .iter()
                         .enumerate()
                         .filter(|(_, v)| {
                             v.tags.iter().all(|t| match t.strip_prefix('!') {
                                 Some(n) => !tags.iter().any(|x| *x == n),
-                                None => tags.iter().any(|x| *x == t),
+                                None => tags.iter().any(|x| x == t),
                             })
                         })
                         .map(|(i, _)| i)
