@@ -26,7 +26,7 @@ input.
 | adj | 78 | 3 | 12 | 15 | 8 | 13 |
 | verb | 31 | 51 | 620 | 31 | 6 | 12 |
 
-Model size: 60236 bytes.
+Model size: 29483 bytes.
 
 **noun** cells: `Plural`
 

@@ -29,7 +29,7 @@ Output is lowercase. Umlauts are optional on input, and ß matches ss.
 | adj | 93 | 98 | 311 | 96 | 25 | 62 |
 | verb | 319 | 21 | 801 | 291 | 81 | 200 |
 
-Model size: 210937 bytes.
+Model size: 87114 bytes.
 
 **noun** cells: `Plural`, `Diminutive`
 

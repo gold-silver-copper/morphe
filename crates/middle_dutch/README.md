@@ -27,7 +27,7 @@ them.
 | adj | 85 | 32 | 83 | 62 | 23 | 48 |
 | verb | 259 | 31 | 456 | 243 | 70 | 164 |
 
-Model size: 147430 bytes.
+Model size: 63194 bytes.
 
 **noun** cells: `NominativeSingular`, `NominativePlural`, `AccusativeSingular`, `AccusativePlural`, `GenitiveSingular`, `GenitivePlural`, `DativeSingular`, `DativePlural`
 
