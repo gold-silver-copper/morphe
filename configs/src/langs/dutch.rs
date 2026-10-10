@@ -1,3 +1,4 @@
+use morphe_train::kaikki::{Entry, Form};
 use morphe_train::spec::*;
 use std::collections::HashMap;
 use std::sync::OnceLock;
@@ -29,6 +30,8 @@ impl Language for Dutch {
         // Subjunctives, the plural imperative and "gij" forms are archaic,
         // Flemish or both; old spellings come tagged.
         s.drop_tags.extend(tags("dated Flanders majestic"));
+        // Dutch Wiktionary adds words English Wiktionary lacks.
+        s.extra_dumps = vec!["nl/Nederlands".into()];
         s.features = vec![
             feature("Number", &[("Singular", "singular"), ("Plural", "plural")]),
             feature("Gender", &[("Masculine", "masculine"), ("Feminine", "feminine"), ("Neuter", "neuter")]),
@@ -82,6 +85,154 @@ impl Language for Dutch {
             pos("num", "num", vec![group("", "", "Degree[Positive] Form")]),
         ];
         s
+    }
+
+    /// Dutch Wiktionary's tables: finite forms name their person only by
+    /// the pronoun header (ik, jij, u, gij, hij; ".. dat ik" for subordinate
+    /// clauses); adjectives are "inflected"/"uninflected"/"partitive" per
+    /// degree; noun plurals are listed together ("bemoeials, bemoeiallen")
+    /// and some are tagged singular. Compound tenses, gij forms,
+    /// subjunctives and diminutive plurals are dropped.
+    fn prepare_extra(&self, _dump: &str, e: &mut Entry) {
+        let tagged = |f: &Form, t: &str| f.tags.iter().any(|x| x == t);
+        let word = e.word.clone();
+        let tags = |t: &str| t.split(' ').map(String::from).collect::<Vec<_>>();
+        if e.tags.iter().any(|t| t == "form-of") || word.chars().filter(|c| c.is_uppercase()).count() > 1 {
+            e.forms.clear();
+            return;
+        }
+        let forms: Vec<Form> = std::mem::take(&mut e.forms)
+            .into_iter()
+            .filter(|f| !f.form.contains(['(', ')', '/', '\n', '.', '[']) && !f.form.trim().is_empty())
+            .collect();
+        let push = |e: &mut Entry, form: &str, t: &str| e.forms.push(Form { form: form.trim().to_string(), tags: tags(t), source: None });
+        match e.pos.as_str() {
+            "noun" => {
+                for f in forms {
+                    let only = |t: &[&str]| f.tags.iter().map(String::as_str).eq(t.iter().copied());
+                    if tagged(&f, "diminutive") {
+                        if f.form.ends_with("je") {
+                            push(e, &f.form, "diminutive");
+                        }
+                    } else if only(&["plural"]) || only(&["singular"]) {
+                        for x in f.form.split(", ") {
+                            push(e, x, "plural");
+                        }
+                    }
+                }
+            }
+            "adj" => {
+                if forms.is_empty() {
+                    return;
+                }
+                push(e, &word, "positive");
+                push(e, &word, "positive indefinite neuter singular");
+                for f in forms {
+                    if f.form.contains(' ') {
+                        continue;
+                    }
+                    let Some(degree) = ["positive", "comparative", "superlative"].into_iter().find(|d| tagged(&f, d)) else { continue };
+                    let cells: &[&str] = if tagged(&f, "partitive") {
+                        &["partitive"]
+                    } else if tagged(&f, "uninflected") {
+                        if degree == "superlative" { &[""] } else { &["", "indefinite neuter singular"] }
+                    } else if tagged(&f, "inflected") {
+                        if degree == "superlative" {
+                            &["indefinite masculine singular", "indefinite plural", "definite", "indefinite neuter singular"]
+                        } else {
+                            &["indefinite masculine singular", "indefinite plural", "definite"]
+                        }
+                    } else {
+                        continue;
+                    };
+                    for c in cells {
+                        push(e, &f.form, format!("{degree} {c}").trim());
+                    }
+                }
+            }
+            "verb" => {
+                if word.contains(' ') {
+                    return;
+                }
+                push(e, &word, "infinitive");
+                // A separable verb's particle follows the verb in main clauses.
+                let separable = |x: &str| x.rsplit_once(' ').is_some_and(|(stem, part)| !stem.contains(' ') && word.starts_with(part));
+                let only = |f: &Form, t: &[&str]| f.tags.iter().map(String::as_str).eq(t.iter().copied());
+                let count = |t: &[&str]| forms.iter().filter(|f| only(f, t)).count();
+                let rows = |t: &str| count(&["subordinate-clause", t]);
+                let ordered = rows("present") == 5 && rows("past") == 8;
+                // Pronoun rows, in order: ik, jij, u, gij, hij, wij, jullie, zij.
+                const ROWS: [&str; 8] = [
+                    "first-person singular",
+                    "second-person singular",
+                    "second-person formal",
+                    "",
+                    "third-person singular",
+                    "plural",
+                    "plural",
+                    "plural",
+                ];
+                let mut seen: Vec<(String, usize)> = Vec::new();
+                let mut next = |key: String| -> usize {
+                    match seen.iter_mut().find(|x| x.0 == key) {
+                        Some(x) => {
+                            x.1 += 1;
+                            x.1
+                        }
+                        None => {
+                            seen.push((key, 0));
+                            0
+                        }
+                    }
+                };
+                if ordered {
+                    push(e, &word, "present plural subordinate-clause");
+                }
+                // The present plural is the infinitive; some tables leave it out.
+                let separable_verb = forms.iter().any(|f| tagged(f, "main-clause"));
+                if !separable_verb && !forms.iter().any(|f| tagged(f, "indicative") && tagged(f, "present") && tagged(f, "plural")) {
+                    push(e, &word, "present plural");
+                }
+                for f in forms {
+                    let form = f.form.trim();
+                    if form.contains(' ') && !separable(form) {
+                        continue;
+                    }
+                    if ["perfect", "future", "conditional", "subjunctive", "infinitive"].iter().any(|t| tagged(&f, t)) {
+                        continue;
+                    }
+                    if tagged(&f, "participle") {
+                        let t = if tagged(&f, "past") { "participle past" } else { "participle present" };
+                        push(e, form, t);
+                        continue;
+                    }
+                    if tagged(&f, "imperative") {
+                        push(e, form, "imperative singular");
+                        continue;
+                    }
+                    let Some(tense) = ["present", "past"].into_iter().find(|t| tagged(&f, t)) else { continue };
+                    if tagged(&f, "subordinate-clause") {
+                        let i = next(format!("sub {tense}"));
+                        let Some(person) = ROWS.get(i).filter(|p| ordered && !p.is_empty()) else { continue };
+                        push(e, form, &format!("{tense} {person} subordinate-clause"));
+                    } else if tagged(&f, "indicative") {
+                        let mut person = ["first-person", "second-person", "third-person"].into_iter().find(|p| tagged(&f, p)).unwrap_or("");
+                        let plural = tagged(&f, "plural");
+                        if person == "second-person" && !plural {
+                            // jij, u, gij
+                            match next(format!("2 {tense}")) {
+                                0 => {}
+                                1 => person = "second-person formal",
+                                _ => continue,
+                            }
+                        }
+                        let t = if plural { "plural".to_string() } else if person.ends_with("formal") { person.to_string() } else { format!("{person} singular") };
+                        push(e, form, &format!("{tense} {t}"));
+                    }
+                }
+            }
+            _ => {}
+        }
     }
 
     fn adjust(&self, pos: &PosSpec, _lemma: &str, forms: &mut Vec<(usize, String, bool)>) {

@@ -29,13 +29,13 @@ plural imperative and "gij" forms are left out as archaic or regional.
 
 | Part of speech | Entries | Cells | Edits | Classes | Tree nodes | Lexicon |
 |---|---|---|---|---|---|---|
-| noun | 40669 | 2 | 608 | 1227 | 1884 | 11333 |
-| adj | 7643 | 18 | 296 | 312 | 417 | 2523 |
-| verb | 7012 | 24 | 3108 | 3146 | 692 | 3544 |
+| noun | 143919 | 2 | 1807 | 3335 | 5552 | 47770 |
+| adj | 18219 | 18 | 327 | 441 | 1172 | 8097 |
+| verb | 13622 | 24 | 4141 | 4265 | 1525 | 8658 |
 | det | 23 | 6 | 6 | 7 | 4 | 13 |
 | num | 14 | 6 | 3 | 1 | 2 | 0 |
 
-Model size: 1560500 bytes.
+Model size: 1641168 bytes.
 
 **noun** cells: `Plural`, `Diminutive`
 
