@@ -1,3 +1,4 @@
+use morphe_train::kaikki::{Entry, Form};
 use morphe_train::spec::*;
 use std::sync::OnceLock;
 
@@ -10,6 +11,8 @@ impl Language for Spanish {
         // alternative spellings, diminutives and the like are other words.
         s.drop_tags.extend(tags("combined-form alternative abbreviation diminutive augmentative standard dated"));
         s.soft_tags.extend(tags("poetic"));
+        // Spanish Wiktionary adds words English Wiktionary lacks.
+        s.extra_dumps = vec!["es/Español".into()];
         s.features = vec![
             feature("Number", &[("Singular", "!plural"), ("Plural", "plural")]),
             feature("Gender", &[("Masculine", "masculine"), ("Feminine", "feminine"), ("Neuter", "neuter")]),
@@ -66,6 +69,81 @@ impl Language for Spanish {
             pos("num", "num", vec![group("", "", "Gender[Masculine,Feminine]")]),
         ];
         s
+    }
+
+    /// Spanish Wiktionary's tables: the preterite is "perfect present", both
+    /// imperfect subjunctives share one tag set, vos forms are marked in
+    /// every tense, the infinitive and the participle's gender forms are
+    /// missing; plurals of nouns and adjectives name no gender.
+    fn prepare_extra(&self, _dump: &str, e: &mut Entry) {
+        let tagged = |f: &Form, t: &str| f.tags.iter().any(|x| x == t);
+        if e.tags.iter().any(|t| t == "form-of") {
+            e.forms.clear();
+            return;
+        }
+        let word = e.word.clone();
+        let forms = std::mem::take(&mut e.forms);
+        match e.pos.as_str() {
+            "noun" => e.forms = forms.into_iter().filter(|f| !f.tags.is_empty() && !f.form.contains(' ')).collect(),
+            "adj" => {
+                let gendered = forms.iter().any(|f| tagged(f, "feminine"));
+                for mut f in forms {
+                    if f.tags.iter().map(String::as_str).eq(["plural"]) {
+                        f.tags.push("masculine".into());
+                        if !gendered {
+                            f.tags.push("feminine".into());
+                        }
+                    }
+                    if !f.tags.is_empty() && !f.form.contains(' ') {
+                        e.forms.push(f);
+                    }
+                }
+            }
+            "verb" => {
+                if word.contains(' ') {
+                    return;
+                }
+                e.forms.push(Form { form: word.clone(), tags: vec!["infinitive".into()], source: None });
+                for mut f in forms {
+                    let form = f.form.trim().to_string();
+                    let compound = ["compound", "pluperfect", "anterior"].iter().any(|t| tagged(&f, t))
+                        || (tagged(&f, "perfect") && !tagged(&f, "indicative"));
+                    if compound || form.contains(' ') || form.is_empty() {
+                        continue;
+                    }
+                    let present = tagged(&f, "present") && !tagged(&f, "perfect");
+                    if tagged(&f, "vos-form") && !(present || tagged(&f, "imperative")) {
+                        continue;
+                    }
+                    if tagged(&f, "indicative") && tagged(&f, "perfect") {
+                        f.tags.retain(|t| t != "perfect" && t != "present");
+                        f.tags.push("preterite".into());
+                    }
+                    if tagged(&f, "subjunctive") && tagged(&f, "imperfect") {
+                        if ["se", "ses", "semos", "seis", "sen"].iter().any(|x| form.ends_with(x)) {
+                            f.tags.retain(|t| t != "imperfect");
+                            f.tags.push("imperfect-se".into());
+                        } else if !["ra", "ras", "ramos", "rais", "ran"].iter().any(|x| form.ends_with(x)) {
+                            continue;
+                        }
+                    }
+                    if tagged(&f, "participle") {
+                        // Participles inflect regularly: -o, -a, -os, -as.
+                        let Some(stem) = form.strip_suffix('o') else { continue };
+                        for (end, tags) in [("o", "masculine"), ("a", "feminine"), ("os", "masculine plural"), ("as", "feminine plural")] {
+                            let mut t = vec!["participle".to_string(), "past".to_string()];
+                            t.extend(tags.split(' ').map(String::from));
+                            e.forms.push(Form { form: format!("{stem}{end}"), tags: t, source: None });
+                        }
+                        continue;
+                    }
+                    f.tags.retain(|t| t != "impersonal");
+                    f.form = form;
+                    e.forms.push(f);
+                }
+            }
+            _ => {}
+        }
     }
 
     fn adjust(&self, pos: &PosSpec, lemma: &str, forms: &mut Vec<(usize, String, bool)>) {

@@ -27,15 +27,15 @@ different words). Clitic-attached forms (`dámelo`) are not modelled.
 
 | Part of speech | Entries | Cells | Edits | Classes | Tree nodes | Lexicon |
 |---|---|---|---|---|---|---|
-| noun | 69795 | 5 | 768 | 748 | 878 | 12732 |
-| adj | 24493 | 5 | 200 | 165 | 136 | 558 |
-| verb | 8930 | 75 | 3725 | 442 | 368 | 614 |
+| noun | 83215 | 5 | 795 | 775 | 1014 | 13840 |
+| adj | 31056 | 5 | 217 | 180 | 190 | 673 |
+| verb | 18578 | 75 | 4494 | 997 | 1020 | 5572 |
 | pron | 45 | 6 | 34 | 22 | 8 | 23 |
 | det | 36 | 6 | 13 | 8 | 5 | 15 |
 | article | 6 | 6 | 11 | 6 | 2 | 4 |
 | num | 28 | 2 | 4 | 3 | 4 | 7 |
 
-Model size: 2125096 bytes.
+Model size: 1160516 bytes.
 
 **noun** cells: `Plural`, `CounterpartMasculineSingular`, `CounterpartMasculinePlural`, `CounterpartFeminineSingular`, `CounterpartFemininePlural`
 
