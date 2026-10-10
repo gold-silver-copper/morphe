@@ -133,6 +133,13 @@ dependencies = [
 ]
 
 [[package]]
+name = "irish"
+version = "0.1.0"
+dependencies = [
+ "morphe",
+]
+
+[[package]]
 name = "italian"
 version = "0.1.0"
 dependencies = [
