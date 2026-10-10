@@ -51,6 +51,9 @@ pub struct Spec {
     /// `.jsonl`), e.g. another Wiktionary edition; they only add words the
     /// main dump lacks.
     pub extra_dumps: Vec<String>,
+    /// Words removed from the start or end of forms (pronouns or labels
+    /// written into table cells: "ich gibe", "plural X").
+    pub strip_words: Vec<String>,
     /// Forms with these tags name a value of an inherent feature by their
     /// text (Kaikki's `auxiliary` forms: haben/sein, avere/essere).
     pub inherent_form_tags: Vec<String>,
@@ -365,6 +368,7 @@ impl Spec {
             canonical_spelling: true,
             first_table_only: false,
             extra_dumps: Vec::new(),
+            strip_words: Vec::new(),
             inherent_form_tags: Vec::new(),
             features: Vec::new(),
             pos: Vec::new(),

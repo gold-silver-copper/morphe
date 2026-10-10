@@ -39,7 +39,10 @@ Build, eyeball a few words, push, move on to the next language.
   - PosSpec: `.initial(n)` (the tree also reads the first n letters, for
     prefixing languages) and `.lemma_cell("Cell")` (fills that cell with the
     lemma when a table omits it).
-  - Spec: `first_table_only` (ignore later tables), `fold_strs`
+  - Spec: `strip_words` (pronouns or labels written into table cells,
+    removed from both ends of forms), `extra_dumps` (other Wiktionary
+    editions), `inherent_form_tags` (forms such as `auxiliary` that name
+    an inherent value), `first_table_only` (ignore later tables), `fold_strs`
     (multi-letter folds such as ß → ss) and `canonical_spelling`.
   - Hooks: `prepare(&mut Entry)`, `reshape`, `retag(pos, form, tags)`,
     `split_form` and `samples()` (playground words).

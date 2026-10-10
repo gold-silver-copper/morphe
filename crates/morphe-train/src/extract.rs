@@ -119,7 +119,8 @@ impl<'a> Extractor<'a> {
                 cells.iter().enumerate().filter_map(|(ci, c)| c.matches(&tags).map(|n| (ci, n))).collect();
             let Some(best) = matched.iter().map(|m| m.1).max() else { continue };
             for form in self.lang.split_form(f.form.trim()) {
-                let form = form.trim();
+                let form = strip_words(form.trim(), &spec.strip_words);
+                let form = form.as_str();
                 // A dash in a table says the form doesn't exist.
                 if table && matches!(form, "-" | "—" | "–") {
                     for &(ci, n) in &matched {
@@ -227,4 +228,16 @@ fn fold_accents(s: &str) -> String {
     const FROM: &str = "àáâäãåèéêëìíîïòóôöõùúûüýÿ";
     const TO: &str = "aaaaaaeeeeiiiiooooouuuuyy";
     s.chars().map(|c| FROM.chars().position(|f| f == c).and_then(|i| TO.chars().nth(i)).unwrap_or(c)).collect()
+}
+
+/// Remove listed words from the start and end of a form.
+fn strip_words(form: &str, words: &[String]) -> String {
+    let mut parts: Vec<&str> = form.split(' ').filter(|w| !w.is_empty()).collect();
+    while parts.len() > 1 && parts.first().is_some_and(|w| words.iter().any(|x| x == w)) {
+        parts.remove(0);
+    }
+    while parts.len() > 1 && parts.last().is_some_and(|w| words.iter().any(|x| x == w)) {
+        parts.pop();
+    }
+    parts.join(" ")
 }
