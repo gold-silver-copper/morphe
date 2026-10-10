@@ -305,6 +305,11 @@ impl PosSpec {
         self.head = morphe::model::Head::Last;
         self
     }
+    /// Let the tree read the first `n` letters too (prefixing languages).
+    pub fn initial(mut self, n: u32) -> Self {
+        self.key.push(KeyFeature::Initial { n });
+        self
+    }
     pub fn syllables(mut self, vowels: &str, cap: u32) -> Self {
         self.key.push(KeyFeature::Syllables { vowels: vowels.into(), cap });
         self

@@ -95,10 +95,14 @@ pub struct Inherent {
 pub enum KeyFeature {
     /// Number of vowel groups, capped.
     Syllables { vowels: String, cap: u32 },
+    /// The word's first `n` letters (for prefixing languages).
+    Initial { n: u32 },
 }
 
 pub const TOKEN_BASE: u32 = 0xF0000;
 pub const WORD_START: u32 = '^' as u32;
+/// Initial letters are read as `INITIAL_BASE + char`, past the end of Unicode.
+pub const INITIAL_BASE: u32 = 0x110000;
 
 /// A suffix tree over the word read from its end, with a distribution over
 /// labels at every node that differed enough from its ancestors to keep.
@@ -115,8 +119,21 @@ pub struct Node {
 }
 
 impl KeyFeature {
+    /// The symbols this feature contributes for `word`.
+    pub fn tokens(&self, word: &str) -> Vec<u32> {
+        match self {
+            KeyFeature::Initial { n } => {
+                let mut v: Vec<u32> = word.chars().take(*n as usize).map(|c| INITIAL_BASE + u32::from(c)).collect();
+                v.resize(*n as usize, INITIAL_BASE);
+                v
+            }
+            k => vec![k.token(word)],
+        }
+    }
+
     pub fn token(&self, word: &str) -> u32 {
         match self {
+            KeyFeature::Initial { .. } => INITIAL_BASE,
             KeyFeature::Syllables { vowels, cap } => {
                 let mut n = 0u32;
                 let mut prev = false;
@@ -136,7 +153,7 @@ impl KeyFeature {
 impl Tree {
     /// The symbols the tree reads for `word`, root first.
     pub fn symbols(key: &[KeyFeature], word: &str) -> Vec<u32> {
-        let mut s: Vec<u32> = key.iter().map(|k| k.token(word)).collect();
+        let mut s: Vec<u32> = key.iter().flat_map(|k| k.tokens(word)).collect();
         s.extend(word.chars().rev().map(u32::from));
         s.push(WORD_START);
         s
@@ -751,6 +768,10 @@ fn write_tree(w: &mut Writer, t: &Tree) {
                 w.s(vowels);
                 w.u(u64::from(*cap));
             }
+            KeyFeature::Initial { n } => {
+                w.u(1);
+                w.u(u64::from(*n));
+            }
         }
     }
     w.u(t.nodes.len() as u64);
@@ -767,6 +788,7 @@ fn write_tree(w: &mut Writer, t: &Tree) {
 fn read_tree(r: &mut Reader) -> Option<Tree> {
     let key = r.vec(|r| match r.u()? {
         0 => Some(KeyFeature::Syllables { vowels: r.s()?, cap: r.u32()? }),
+        1 => Some(KeyFeature::Initial { n: r.u32()? }),
         _ => None,
     })?;
     let n = r.n()?;

@@ -10,6 +10,13 @@ dependencies = [
 ]
 
 [[package]]
+name = "danish"
+version = "0.1.0"
+dependencies = [
+ "morphe",
+]
+
+[[package]]
 name = "dutch"
 version = "0.1.0"
 dependencies = [
@@ -101,6 +108,13 @@ dependencies = [
 
 [[package]]
 name = "morphe-wasm"
+version = "0.1.0"
+dependencies = [
+ "morphe",
+]
+
+[[package]]
+name = "polish"
 version = "0.1.0"
 dependencies = [
  "morphe",
