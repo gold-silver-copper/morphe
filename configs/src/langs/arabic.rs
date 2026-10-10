@@ -1,3 +1,4 @@
+use morphe_train::kaikki::{Entry, Form};
 use morphe_train::spec::*;
 
 pub struct Arabic;
@@ -97,6 +98,34 @@ impl Language for Arabic {
             pos("num", "num", vec![group("", "", "State Case Gender? Number")]),
         ];
         s
+    }
+
+    /// Personal pronouns have no table: the headword is the nominative and
+    /// the case forms (ـهُ, إِيَّاهُ) carry neither gender nor number. Both
+    /// come from the headword.
+    fn prepare(&self, e: &mut Entry) {
+        if e.pos != "pron" || e.forms.iter().any(|f| f.source.is_some()) {
+            return;
+        }
+        let Some(canon) = e.forms.iter().find(|f| f.tags.iter().any(|t| t == "canonical")) else { return };
+        let is = |t: &str| canon.tags.iter().any(|x| x == t);
+        let gender: Vec<&str> = ["masculine", "feminine"].into_iter().filter(|g| is(g)).collect();
+        if gender.len() != 1 {
+            return;
+        }
+        let number = ["dual", "plural"].into_iter().find(|n| is(n)).unwrap_or("singular");
+        let extra = [gender.concat(), number.to_string()];
+        let mut forms = vec![Form { form: canon.form.clone(), tags: vec!["nominative".into(), extra[0].clone(), extra[1].clone()], source: None }];
+        for f in &e.forms {
+            if f.tags.iter().any(|t| t == "genitive" || t == "accusative") && f.tags.len() == 1 {
+                forms.push(Form { form: f.form.clone(), tags: f.tags.iter().cloned().chain(extra.iter().cloned()).collect(), source: None });
+            }
+        }
+        e.forms.extend(forms);
+    }
+
+    fn samples(&self) -> Vec<&'static str> {
+        vec!["كتاب", "مدينة", "كتب", "قال", "كبير", "هذا", "زربوط", "زرقط"]
     }
 
     fn readme(&self) -> String {
