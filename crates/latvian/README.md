@@ -33,7 +33,7 @@ some dictionary spellings carry.
 | pron | 30 | 30 | 106 | 21 | 6 | 11 |
 | num | 14 | 12 | 37 | 8 | 4 | 4 |
 
-Model size: 497937 bytes.
+Model size: 497950 bytes.
 
 **noun** cells: `NominativeSingular`, `NominativePlural`, `GenitiveSingular`, `GenitivePlural`, `DativeSingular`, `DativePlural`, `AccusativeSingular`, `AccusativePlural`, `InstrumentalSingular`, `InstrumentalPlural`, `LocativeSingular`, `LocativePlural`, `VocativeSingular`, `VocativePlural`
 

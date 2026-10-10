@@ -29,13 +29,13 @@ are built from `olla`/`ei` plus a participle or the connegative.
 
 | Part of speech | Entries | Cells | Edits | Classes | Tree nodes | Lexicon |
 |---|---|---|---|---|---|---|
-| noun | 128897 | 27 | 20561 | 2889 | 4117 | 7289 |
-| adj | 17707 | 29 | 2488 | 691 | 940 | 6546 |
+| noun | 128897 | 27 | 20561 | 2889 | 4117 | 7291 |
+| adj | 17707 | 29 | 2488 | 691 | 940 | 6553 |
 | verb | 12392 | 52 | 6752 | 454 | 362 | 667 |
 | pron | 80 | 28 | 1071 | 116 | 9 | 70 |
 | num | 77 | 26 | 1012 | 103 | 36 | 40 |
 
-Model size: 11318927 bytes.
+Model size: 11318990 bytes.
 
 **noun** cells: `NominativeSingular`, `NominativePlural`, `GenitiveSingular`, `GenitivePlural`, `PartitiveSingular`, `PartitivePlural`, `InessiveSingular`, `InessivePlural`, `ElativeSingular`, `ElativePlural`, `IllativeSingular`, `IllativePlural`, `AdessiveSingular`, `AdessivePlural`, `AblativeSingular`, `AblativePlural`, `AllativeSingular`, `AllativePlural`, `EssiveSingular`, `EssivePlural`, `TranslativeSingular`, `TranslativePlural`, `AbessiveSingular`, `AbessivePlural`, `InstructiveSingular`, `InstructivePlural`, `Comitative`
 
