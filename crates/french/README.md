@@ -36,7 +36,7 @@ modelled: build them from the simple forms.
 | article | 8 | 4 | 10 | 6 | 2 | 1 |
 | num | 42 | 4 | 4 | 3 | 6 | 2 |
 
-Model size: 1643497 bytes.
+Model size: 1643510 bytes.
 
 **noun** cells: `Plural`, `CounterpartMasculine`, `CounterpartFeminine`
 

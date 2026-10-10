@@ -36,7 +36,7 @@ are left out. The periphrastic past (`vaig parlar`) and negative imperatives
 | det | 18 | 4 | 13 | 10 | 8 | 7 |
 | article | 9 | 4 | 19 | 10 | 2 | 7 |
 
-Model size: 838543 bytes.
+Model size: 838556 bytes.
 
 **noun** cells: `Plural`, `CounterpartMasculineSingular`, `CounterpartMasculinePlural`, `CounterpartFeminineSingular`, `CounterpartFemininePlural`
 

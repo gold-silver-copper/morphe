@@ -35,7 +35,7 @@ different words). Clitic-attached forms (`dámelo`) are not modelled.
 | article | 6 | 6 | 11 | 6 | 2 | 4 |
 | num | 28 | 2 | 4 | 3 | 4 | 7 |
 
-Model size: 2116909 bytes.
+Model size: 2116922 bytes.
 
 **noun** cells: `Plural`, `CounterpartMasculineSingular`, `CounterpartMasculinePlural`, `CounterpartFeminineSingular`, `CounterpartFemininePlural`
 
