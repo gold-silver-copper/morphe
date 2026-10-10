@@ -30,13 +30,13 @@ drop "nas"/"as". Accents are optional on input.
 
 | Part of speech | Entries | Cells | Edits | Classes | Tree nodes | Lexicon |
 |---|---|---|---|---|---|---|
-| noun | 6003 | 18 | 2460 | 2785 | 1376 | 4231 |
-| adj | 837 | 14 | 436 | 401 | 149 | 528 |
-| verb | 863 | 32 | 1150 | 548 | 174 | 605 |
-| prep | 40 | 14 | 447 | 43 | 5 | 36 |
-| pron | 169 | 14 | 1378 | 154 | 58 | 92 |
+| noun | 12653 | 18 | 1279 | 1934 | 2930 | 6933 |
+| adj | 837 | 14 | 172 | 265 | 246 | 538 |
+| verb | 863 | 33 | 460 | 454 | 255 | 640 |
+| prep | 40 | 14 | 419 | 42 | 5 | 36 |
+| pron | 169 | 14 | 1385 | 154 | 55 | 93 |
 
-Model size: 258149 bytes.
+Model size: 296026 bytes.
 
 **noun** cells: `IndefiniteNominativeSingular`, `IndefiniteNominativePlural`, `IndefiniteGenitiveSingular`, `IndefiniteGenitivePlural`, `IndefiniteDativeSingular`, `IndefiniteDativePlural`, `DefiniteNominativeSingular`, `DefiniteNominativePlural`, `DefiniteGenitiveSingular`, `DefiniteGenitivePlural`, `DefiniteDativeSingular`, `DefiniteDativePlural`, `VocativeSingular`, `VocativePlural`, `MutatedLenition`, `MutatedEclipsis`, `MutatedHProthesis`, `MutatedTProthesis`
 
@@ -44,7 +44,7 @@ Citation form: `Lemma, IndefiniteGenitiveSingular, IndefiniteNominativePlural` (
 
 **adj** cells: `NominativeMasculine`, `NominativeFeminine`, `GenitiveMasculine`, `GenitiveFeminine`, `DativeMasculine`, `DativeFeminine`, `VocativeMasculine`, `VocativeFeminine`, `Plural`, `Comparative`, `MutatedLenition`, `MutatedEclipsis`, `MutatedHProthesis`, `MutatedTProthesis`
 
-**verb** cells: `PastIndependentPersonal`, `PastIndependentImpersonal`, `PastDependentPersonal`, `PastDependentImpersonal`, `FutureIndependentPersonal`, `FutureIndependentImpersonal`, `FutureDependentPersonal`, `FutureDependentImpersonal`, `RelativePersonal`, `RelativeImpersonal`, `ConditionalIndependentFirstSingular`, `ConditionalIndependentFirstPlural`, `ConditionalIndependentOther`, `ConditionalIndependentImpersonal`, `ConditionalDependentFirstSingular`, `ConditionalDependentFirstPlural`, `ConditionalDependentOther`, `ConditionalDependentImpersonal`, `ImperativeFirstSingular`, `ImperativeSecondSingular`, `ImperativeThirdSingular`, `ImperativeThirdSingularFeminine`, `ImperativeFirstPlural`, `ImperativeSecondPlural`, `ImperativeThirdPlural`, `ImperativeImpersonal`, `VerbalNoun`, `Participle`, `MutatedLenition`, `MutatedEclipsis`, `MutatedHProthesis`, `MutatedTProthesis`
+**verb** cells: `PresentIndependentPersonal`, `PastIndependentPersonal`, `PastIndependentImpersonal`, `PastDependentPersonal`, `PastDependentImpersonal`, `FutureIndependentPersonal`, `FutureIndependentImpersonal`, `FutureDependentPersonal`, `FutureDependentImpersonal`, `RelativePersonal`, `RelativeImpersonal`, `ConditionalIndependentFirstSingular`, `ConditionalIndependentFirstPlural`, `ConditionalIndependentOther`, `ConditionalIndependentImpersonal`, `ConditionalDependentFirstSingular`, `ConditionalDependentFirstPlural`, `ConditionalDependentOther`, `ConditionalDependentImpersonal`, `ImperativeFirstSingular`, `ImperativeSecondSingular`, `ImperativeThirdSingular`, `ImperativeThirdSingularFeminine`, `ImperativeFirstPlural`, `ImperativeSecondPlural`, `ImperativeThirdPlural`, `ImperativeImpersonal`, `VerbalNoun`, `Participle`, `MutatedLenition`, `MutatedEclipsis`, `MutatedHProthesis`, `MutatedTProthesis`
 
 Citation form: `Lemma, VerbalNoun` (comma-separated; parts you give are output exactly and narrow the prediction).
 

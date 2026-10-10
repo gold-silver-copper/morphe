@@ -298,13 +298,30 @@ impl ScottishGaelic {
         model().and_then(|m| m.lemma(1, word)).unwrap_or_else(|| word.to_string())
     }
 
+    /// A verb form (present).
+    pub fn verb_present_scored(&self, word: &str, clause: Clause, voice: Voice) -> Scored<String> {
+        let cell: Option<u32> = match (clause, voice,) {
+            (Clause::Independent, Voice::Personal,) => Some(0),
+            _ => None,
+        };
+        match (model(), cell) {
+            (Some(m), Some(c)) => m.inflect(2, c, word, self.options),
+            _ => Vec::new(),
+        }
+    }
+
+    /// A verb form (present). The best candidate; the word itself if nothing is known.
+    pub fn verb_present(&self, word: &str, clause: Clause, voice: Voice) -> String {
+        best(self.verb_present_scored(word, clause, voice), word)
+    }
+
     /// A verb form (past).
     pub fn verb_past_scored(&self, word: &str, clause: Clause, voice: Voice) -> Scored<String> {
         let cell: Option<u32> = match (clause, voice,) {
-            (Clause::Independent, Voice::Personal,) => Some(0),
-            (Clause::Independent, Voice::Impersonal,) => Some(1),
-            (Clause::Dependent, Voice::Personal,) => Some(2),
-            (Clause::Dependent, Voice::Impersonal,) => Some(3),
+            (Clause::Independent, Voice::Personal,) => Some(1),
+            (Clause::Independent, Voice::Impersonal,) => Some(2),
+            (Clause::Dependent, Voice::Personal,) => Some(3),
+            (Clause::Dependent, Voice::Impersonal,) => Some(4),
         };
         match (model(), cell) {
             (Some(m), Some(c)) => m.inflect(2, c, word, self.options),
@@ -320,10 +337,10 @@ impl ScottishGaelic {
     /// A verb form (future).
     pub fn verb_future_scored(&self, word: &str, clause: Clause, voice: Voice) -> Scored<String> {
         let cell: Option<u32> = match (clause, voice,) {
-            (Clause::Independent, Voice::Personal,) => Some(4),
-            (Clause::Independent, Voice::Impersonal,) => Some(5),
-            (Clause::Dependent, Voice::Personal,) => Some(6),
-            (Clause::Dependent, Voice::Impersonal,) => Some(7),
+            (Clause::Independent, Voice::Personal,) => Some(5),
+            (Clause::Independent, Voice::Impersonal,) => Some(6),
+            (Clause::Dependent, Voice::Personal,) => Some(7),
+            (Clause::Dependent, Voice::Impersonal,) => Some(8),
         };
         match (model(), cell) {
             (Some(m), Some(c)) => m.inflect(2, c, word, self.options),
@@ -339,8 +356,8 @@ impl ScottishGaelic {
     /// A verb form (relative).
     pub fn verb_relative_scored(&self, word: &str, voice: Voice) -> Scored<String> {
         let cell: Option<u32> = match (voice,) {
-            (Voice::Personal,) => Some(8),
-            (Voice::Impersonal,) => Some(9),
+            (Voice::Personal,) => Some(9),
+            (Voice::Impersonal,) => Some(10),
         };
         match (model(), cell) {
             (Some(m), Some(c)) => m.inflect(2, c, word, self.options),
@@ -356,14 +373,14 @@ impl ScottishGaelic {
     /// A verb form (conditional).
     pub fn verb_conditional_scored(&self, word: &str, clause: Clause, subject: Subject) -> Scored<String> {
         let cell: Option<u32> = match (clause, subject,) {
-            (Clause::Independent, Subject::FirstSingular,) => Some(10),
-            (Clause::Independent, Subject::FirstPlural,) => Some(11),
-            (Clause::Independent, Subject::Other,) => Some(12),
-            (Clause::Independent, Subject::Impersonal,) => Some(13),
-            (Clause::Dependent, Subject::FirstSingular,) => Some(14),
-            (Clause::Dependent, Subject::FirstPlural,) => Some(15),
-            (Clause::Dependent, Subject::Other,) => Some(16),
-            (Clause::Dependent, Subject::Impersonal,) => Some(17),
+            (Clause::Independent, Subject::FirstSingular,) => Some(11),
+            (Clause::Independent, Subject::FirstPlural,) => Some(12),
+            (Clause::Independent, Subject::Other,) => Some(13),
+            (Clause::Independent, Subject::Impersonal,) => Some(14),
+            (Clause::Dependent, Subject::FirstSingular,) => Some(15),
+            (Clause::Dependent, Subject::FirstPlural,) => Some(16),
+            (Clause::Dependent, Subject::Other,) => Some(17),
+            (Clause::Dependent, Subject::Impersonal,) => Some(18),
         };
         match (model(), cell) {
             (Some(m), Some(c)) => m.inflect(2, c, word, self.options),
@@ -379,14 +396,14 @@ impl ScottishGaelic {
     /// A verb form (imperative).
     pub fn verb_imperative_scored(&self, word: &str, person: Person) -> Scored<String> {
         let cell: Option<u32> = match (person,) {
-            (Person::FirstSingular,) => Some(18),
-            (Person::SecondSingular,) => Some(19),
-            (Person::ThirdSingular,) => Some(20),
-            (Person::ThirdSingularFeminine,) => Some(21),
-            (Person::FirstPlural,) => Some(22),
-            (Person::SecondPlural,) => Some(23),
-            (Person::ThirdPlural,) => Some(24),
-            (Person::Impersonal,) => Some(25),
+            (Person::FirstSingular,) => Some(19),
+            (Person::SecondSingular,) => Some(20),
+            (Person::ThirdSingular,) => Some(21),
+            (Person::ThirdSingularFeminine,) => Some(22),
+            (Person::FirstPlural,) => Some(23),
+            (Person::SecondPlural,) => Some(24),
+            (Person::ThirdPlural,) => Some(25),
+            (Person::Impersonal,) => Some(26),
         };
         match (model(), cell) {
             (Some(m), Some(c)) => m.inflect(2, c, word, self.options),
@@ -401,7 +418,7 @@ impl ScottishGaelic {
 
     /// The verbal noun verb.
     pub fn verb_verbal_noun_scored(&self, word: &str) -> Scored<String> {
-        let cell: Option<u32> = Some(26);
+        let cell: Option<u32> = Some(27);
         match (model(), cell) {
             (Some(m), Some(c)) => m.inflect(2, c, word, self.options),
             _ => Vec::new(),
@@ -415,7 +432,7 @@ impl ScottishGaelic {
 
     /// The participle verb.
     pub fn verb_participle_scored(&self, word: &str) -> Scored<String> {
-        let cell: Option<u32> = Some(27);
+        let cell: Option<u32> = Some(28);
         match (model(), cell) {
             (Some(m), Some(c)) => m.inflect(2, c, word, self.options),
             _ => Vec::new(),
@@ -430,10 +447,10 @@ impl ScottishGaelic {
     /// A verb form (mutated).
     pub fn verb_mutated_scored(&self, word: &str, mutation: Mutation) -> Scored<String> {
         let cell: Option<u32> = match (mutation,) {
-            (Mutation::Lenition,) => Some(28),
-            (Mutation::Eclipsis,) => Some(29),
-            (Mutation::HProthesis,) => Some(30),
-            (Mutation::TProthesis,) => Some(31),
+            (Mutation::Lenition,) => Some(29),
+            (Mutation::Eclipsis,) => Some(30),
+            (Mutation::HProthesis,) => Some(31),
+            (Mutation::TProthesis,) => Some(32),
         };
         match (model(), cell) {
             (Some(m), Some(c)) => m.inflect(2, c, word, self.options),
@@ -606,6 +623,16 @@ pub fn adj_mutated_scored(word: &str, mutation: Mutation) -> Scored<String> {
 /// Dictionary spelling of a adj.
 pub fn adj_lemma(word: &str) -> String {
     ScottishGaelic::default().adj_lemma(word)
+}
+
+/// A verb form (present).
+pub fn verb_present(word: &str, clause: Clause, voice: Voice) -> String {
+    ScottishGaelic::default().verb_present(word, clause, voice)
+}
+
+/// A verb form (present). Every candidate with its confidence, best first.
+pub fn verb_present_scored(word: &str, clause: Clause, voice: Voice) -> Scored<String> {
+    ScottishGaelic::default().verb_present_scored(word, clause, voice)
 }
 
 /// A verb form (past).

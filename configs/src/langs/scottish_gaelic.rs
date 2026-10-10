@@ -73,6 +73,7 @@ impl Language for ScottishGaelic {
             )
             .inherent("Gender")
             .citation("Lemma IndefiniteGenitiveSingular IndefiniteNominativePlural")
+            .lemma_cell("IndefiniteNominativeSingular")
             .initial(2)
             .head_first(),
             pos(
@@ -90,6 +91,8 @@ impl Language for ScottishGaelic {
                 "verb",
                 "verb",
                 vec![
+                    // Only bi has a present: tha.
+                    group("Present", "present", "Clause[Independent] Voice[Personal]"),
                     group("Past", "past", "Clause Voice"),
                     group("Future", "future", "Clause Voice"),
                     // chanas, chanar: the relative future.
@@ -113,6 +116,11 @@ impl Language for ScottishGaelic {
     }
 
     fn prepare(&self, e: &mut Entry) {
+        // Headword lines carry no canonical form, and the title keeps its
+        // grave accents (cù, mòr) where the plain key drops them.
+        if !e.forms.iter().any(|f| has(&f.tags, "canonical")) {
+            e.forms.push(Form { form: e.word.clone(), tags: vec!["canonical".into()], source: None });
+        }
         // A word with a mutation table but no form for some mutation keeps
         // its radical there (l, n, r and sg do not lenite).
         if e.forms.iter().any(|f| f.source.as_deref() == Some("mutation")) {
@@ -196,6 +204,12 @@ impl Language for ScottishGaelic {
     }
 
     fn retag(&self, pos: &PosSpec, _form: &str, tags: &mut Vec<String>) {
+        // The headword line's "present tha, past bha, future bidh" are the
+        // independent personal forms.
+        if pos.name == "verb" && tags.len() == 1 && ["present", "past", "future"].iter().any(|t| has(tags, t)) {
+            tags.extend(["independent".to_string(), "personal".to_string()]);
+            return;
+        }
         if pos.name != "noun" || has(tags, "mutation") || has(tags, "vocative") {
             return;
         }
