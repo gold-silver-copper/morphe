@@ -15,7 +15,7 @@ pub struct Entry {
     pub senses: Vec<Sense>,
 }
 
-#[derive(Debug, Deserialize)]
+#[derive(Clone, Debug, Deserialize)]
 pub struct Form {
     pub form: String,
     #[serde(default)]

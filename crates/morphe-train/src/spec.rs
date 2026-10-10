@@ -1,6 +1,6 @@
 //! The language description a config provides.
 
-use crate::kaikki::Entry;
+use crate::kaikki::{Entry, Form};
 use morphe::model::KeyFeature;
 
 /// Which of an entry's `forms` carry inflections.
@@ -207,6 +207,12 @@ pub trait Language: Sync {
     /// Whether an entry is used at all.
     fn keep_entry(&self, _entry: &Entry) -> bool {
         true
+    }
+
+    /// Rebuild an entry's forms before they are read, for tables Kaikki could
+    /// not tag (a flat list of headers and forms, say). `None` keeps them.
+    fn reshape(&self, _pos: &PosSpec, _entry: &Entry) -> Option<Vec<Form>> {
+        None
     }
 
     /// Rewrite a raw form string before it is read: strip editorial notes,

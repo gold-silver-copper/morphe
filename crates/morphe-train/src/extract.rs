@@ -1,6 +1,6 @@
 //! From Kaikki entries to (lemma, cell, form) records, following the config.
 
-use crate::kaikki::Entry;
+use crate::kaikki::{Entry, Form};
 use crate::spec::{Cell, Language, PosSpec, Source, Spec};
 
 /// One dictionary entry's paradigm.
@@ -67,11 +67,13 @@ impl<'a> Extractor<'a> {
             return None;
         }
         let plain = self.strip(&word.to_lowercase());
+        let reshaped = self.lang.reshape(pos, e);
+        let forms: &[Form] = reshaped.as_deref().unwrap_or(&e.forms);
         let canon = spec
             .canonical_tag
             .as_ref()
             .filter(|_| spec.canonical_spelling)
-            .and_then(|t| e.forms.iter().find(|f| f.tags.contains(t)))
+            .and_then(|t| forms.iter().find(|f| f.tags.contains(t)))
             .map(|f| f.form.trim().to_lowercase())
             .filter(|c| self.strip(c) == plain)
             .unwrap_or_else(|| plain.clone());
@@ -83,7 +85,7 @@ impl<'a> Extractor<'a> {
         };
         // (cell, form, soft, from a table)
         let mut raw: Vec<(usize, String, bool, bool)> = Vec::new();
-        for f in &e.forms {
+        for f in forms {
             let table = f.source.is_some();
             if (spec.source == Source::Head && table) || (spec.source == Source::Table && !table) {
                 continue;
@@ -144,7 +146,7 @@ impl<'a> Extractor<'a> {
         let canon_tags: Vec<String> = spec
             .canonical_tag
             .as_ref()
-            .map(|t| e.forms.iter().filter(|f| f.tags.contains(t)).flat_map(|f| retagged(f.form.trim(), &f.tags)).collect())
+            .map(|t| forms.iter().filter(|f| f.tags.contains(t)).flat_map(|f| retagged(f.form.trim(), &f.tags)).collect())
             .unwrap_or_default();
         let sense_tags: Vec<String> = e.senses.iter().flat_map(|s| retagged("", &s.tags)).collect();
         let inherent = pos
