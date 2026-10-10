@@ -37,7 +37,7 @@ often wrong.
 | det | 21 | 56 | 137 | 28 | 9 | 16 |
 | num | 63 | 84 | 160 | 52 | 36 | 29 |
 
-Model size: 1398453 bytes.
+Model size: 2473180 bytes.
 
 **noun** cells: `NominativeSingular`, `NominativePlural`, `GenitiveSingular`, `GenitivePlural`, `DativeSingular`, `DativePlural`, `AccusativeSingular`, `AccusativePlural`, `InstrumentalSingular`, `InstrumentalPlural`, `LocativeSingular`, `LocativePlural`, `VocativeSingular`, `VocativePlural`
 

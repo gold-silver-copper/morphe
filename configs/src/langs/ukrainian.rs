@@ -80,7 +80,7 @@ impl Language for Ukrainian {
                     group("Past", "past !adverbial !passive !active", "GenderNumber"),
                     group("Imperative", "imperative second-person", "Number"),
                     group("ImperativeFirstPlural", "imperative first-person plural", ""),
-                    group("Participle", "!adverbial", "Voice Tense[Present,Past]"),
+                    group("Participle", "!adverbial", "Voice Tense[Present,Past]").declines("adj", ""),
                     group("Gerund", "adverbial", "Tense[Present,Past]"),
                 ],
             )

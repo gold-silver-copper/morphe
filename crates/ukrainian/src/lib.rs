@@ -392,6 +392,17 @@ impl Ukrainian {
         best(self.verb_imperative_first_plural_scored(word), word)
     }
 
+    /// A verb form (participle). Then declined like a adj: every candidate, best first.
+    pub fn verb_participle_declined_scored(&self, word: &str, voice: Voice, tense: Tense, case: Case, gender_number: GenderNumber, animacy: Animacy) -> Scored<String> {
+        let base = self.verb_participle(word, voice, tense);
+        self.adj_scored(&base, case, gender_number, animacy)
+    }
+
+    /// A verb form (participle). Then declined like a adj.
+    pub fn verb_participle_declined(&self, word: &str, voice: Voice, tense: Tense, case: Case, gender_number: GenderNumber, animacy: Animacy) -> String {
+        best(self.verb_participle_declined_scored(word, voice, tense, case, gender_number, animacy), word)
+    }
+
     /// A verb form (participle).
     pub fn verb_participle_scored(&self, word: &str, voice: Voice, tense: Tense) -> Scored<String> {
         let cell: Option<u32> = match (voice, tense,) {
@@ -1022,6 +1033,11 @@ pub fn verb_imperative_first_plural_scored(word: &str) -> Scored<String> {
     Ukrainian::default().verb_imperative_first_plural_scored(word)
 }
 
+/// A verb form (participle). Then declined like a adj.
+pub fn verb_participle_declined(word: &str, voice: Voice, tense: Tense, case: Case, gender_number: GenderNumber, animacy: Animacy) -> String {
+    Ukrainian::default().verb_participle_declined(word, voice, tense, case, gender_number, animacy)
+}
+
 /// A verb form (participle).
 pub fn verb_participle(word: &str, voice: Voice, tense: Tense) -> String {
     Ukrainian::default().verb_participle(word, voice, tense)
@@ -1105,6 +1121,31 @@ pub fn num_scored(word: &str, case: Case, number: Number, gender: Gender, animac
 /// Dictionary spelling of a num.
 pub fn num_lemma(word: &str) -> String {
     Ukrainian::default().num_lemma(word)
+}
+
+/// One reading of a form: its part of speech, lemma, and cell (`None` when
+/// the form is the lemma itself).
+#[derive(Clone, Debug, PartialEq)]
+pub struct Analysis {
+    pub pos: &'static str,
+    pub lemma: String,
+    pub cell: Option<&'static str>,
+}
+
+/// Which lemma and cell a form could be, best first. Works for unknown words too.
+pub fn analyze(word: &str) -> Scored<Analysis> {
+    let Some(m) = model() else { return Vec::new() };
+    m.analyze(word)
+        .into_iter()
+        .filter_map(|(a, p)| {
+            let pos = m.pos.get(a.pos)?;
+            let cell = match a.cell {
+                Some(c) => Some(pos.cells.get(c as usize)?.as_str()),
+                None => None,
+            };
+            Some((Analysis { pos: pos.name.as_str(), lemma: a.lemma, cell }, p))
+        })
+        .collect()
 }
 
 /// Inflect by names, e.g. `inflect("noun", "GenitivePlural", word)`.
