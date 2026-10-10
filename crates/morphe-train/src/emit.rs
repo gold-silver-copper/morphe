@@ -77,7 +77,13 @@ fn functions(spec: &Spec, pi: usize, cells: &[Cell]) -> Vec<Func> {
 pub fn emit(lang: &dyn Language, spec: &Spec, cells: &[Vec<Cell>], model: &Model, stats: &[Stats], dir: &Path, dump_date: &str) -> std::io::Result<()> {
     let src = dir.join("src");
     std::fs::create_dir_all(&src)?;
-    let bytes = model.encode();
+    let raw = model.encode();
+    let bytes = {
+        use std::io::Write as _;
+        let mut enc = flate2::write::DeflateEncoder::new(morphe::model::COMPRESSED.to_vec(), flate2::Compression::best());
+        enc.write_all(&raw)?;
+        enc.finish()?
+    };
     std::fs::write(src.join("model.bin"), &bytes)?;
 
     let ty = type_name(&spec.title);

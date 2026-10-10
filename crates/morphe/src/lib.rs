@@ -6,6 +6,7 @@
 
 pub mod codec;
 pub mod edit;
+pub mod inflate;
 pub mod model;
 
 pub use edit::Edit;

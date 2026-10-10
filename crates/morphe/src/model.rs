@@ -4,6 +4,8 @@ use crate::codec::{Reader, Writer};
 use crate::edit::Edit;
 
 const MAGIC: &str = "morphe-1";
+/// Prefix of a DEFLATE-compressed model.
+pub const COMPRESSED: &[u8] = b"MZDF";
 
 /// A whole language.
 #[derive(Clone, Debug, Default)]
@@ -798,7 +800,15 @@ impl Model {
         w.buf
     }
 
+    /// Decode a model, compressed (`MZDF` + raw DEFLATE) or not.
     pub fn decode(buf: &[u8]) -> Option<Model> {
+        match buf.strip_prefix(COMPRESSED) {
+            Some(rest) => Model::decode_raw(&crate::inflate::inflate(rest)?),
+            None => Model::decode_raw(buf),
+        }
+    }
+
+    fn decode_raw(buf: &[u8]) -> Option<Model> {
         let mut r = Reader::new(buf);
         if r.s()? != MAGIC {
             return None;
