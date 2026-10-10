@@ -1,5 +1,6 @@
 use morphe_train::kaikki::{Entry, Form};
 use morphe_train::spec::*;
+use std::sync::OnceLock;
 
 pub struct Romanian;
 
@@ -53,6 +54,8 @@ impl Language for Romanian {
             )
             .inherent("Gender")
             .citation("NominativeIndefiniteSingular NominativeIndefinitePlural")
+            // Only nouns with a gendered counterpart (prieten, prietenă) have one.
+            .missing_is_absent()
             .head_first(),
             pos("adj", "adj", vec![group("", "", &format!("{CASES} Definiteness Gender Number"))])
                 .citation("NominativeIndefiniteMasculineSingular NominativeIndefiniteFeminineSingular"),
@@ -107,6 +110,14 @@ impl Language for Romanian {
             f.1 = written(&f.1);
         }
         forms.retain(|f| f.1.chars().any(char::is_alphabetic) && (lemma.contains(' ') || !f.1.contains(' ')));
+        if pos.name == "noun" {
+            static CELLS: OnceLock<Vec<String>> = OnceLock::new();
+            let names = CELLS.get_or_init(|| {
+                let s = self.spec();
+                s.pos.iter().find(|p| p.name == "noun").map(|p| s.cells(p).into_iter().map(|c| c.name).collect()).unwrap_or_default()
+            });
+            own_counterpart(names, lemma, forms);
+        }
     }
 
     fn samples(&self) -> Vec<&'static str> {
@@ -135,6 +146,19 @@ cedilla letters (ş ţ) is read as the comma letters (ș ț); output uses the
 comma letters. Stress marks Wiktionary puts on a few forms are removed.
 "#
         .into()
+    }
+}
+
+/// A noun with a counterpart of the other gender (prieten, prietenă) is
+/// itself its own gender's counterpart.
+fn own_counterpart(names: &[String], lemma: &str, forms: &mut Vec<(usize, String, bool)>) {
+    let idx = |n: &str| names.iter().position(|c| c == n);
+    let (Some(m), Some(f)) = (idx("CounterpartMasculine"), idx("CounterpartFeminine")) else { return };
+    let has = |ci: usize| forms.iter().any(|x| x.0 == ci);
+    match (has(m), has(f)) {
+        (true, false) => forms.push((f, lemma.to_string(), false)),
+        (false, true) => forms.push((m, lemma.to_string(), false)),
+        _ => {}
     }
 }
 

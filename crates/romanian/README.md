@@ -37,7 +37,7 @@ comma letters. Stress marks Wiktionary puts on a few forms are removed.
 | article | 1 | 48 | 6 | 1 | 2 | 0 |
 | num | 8 | 6 | 12 | 8 | 2 | 2 |
 
-Model size: 2609433 bytes.
+Model size: 1167091 bytes.
 
 **noun** cells: `NominativeIndefiniteSingular`, `NominativeIndefinitePlural`, `NominativeDefiniteSingular`, `NominativeDefinitePlural`, `AccusativeIndefiniteSingular`, `AccusativeIndefinitePlural`, `AccusativeDefiniteSingular`, `AccusativeDefinitePlural`, `GenitiveIndefiniteSingular`, `GenitiveIndefinitePlural`, `GenitiveDefiniteSingular`, `GenitiveDefinitePlural`, `DativeIndefiniteSingular`, `DativeIndefinitePlural`, `DativeDefiniteSingular`, `DativeDefinitePlural`, `VocativeSingular`, `VocativePlural`, `CounterpartMasculine`, `CounterpartFeminine`
 
