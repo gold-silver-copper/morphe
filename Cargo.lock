@@ -3,6 +3,13 @@
 version = 4
 
 [[package]]
+name = "arabic"
+version = "0.1.0"
+dependencies = [
+ "morphe",
+]
+
+[[package]]
 name = "czech"
 version = "0.1.0"
 dependencies = [
@@ -211,6 +218,13 @@ dependencies = [
  "proc-macro2",
  "quote",
  "unicode-ident",
+]
+
+[[package]]
+name = "turkish"
+version = "0.1.0"
+dependencies = [
+ "morphe",
 ]
 
 [[package]]

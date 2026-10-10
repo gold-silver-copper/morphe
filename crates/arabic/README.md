@@ -1,0 +1,66 @@
+# arabic
+
+Arabic inflection for Rust, learned from Wiktionary by [morphe](https://github.com/gold-silver-copper/morphe).
+Inflects any word, known or made up. The `_scored` functions give every candidate with a confidence.
+
+Generated from the Kaikki Arabic dump of 2026-10-03. Do not edit by hand: change the config in morphe and regenerate.
+
+## Example
+
+```rust
+use arabic::*;
+// Unvocalized input works; output is fully vocalized.
+println!("{}", noun("كتاب", State::Definite, Case::Nominative, Number::Plural)); // الْكُتُبُ
+println!("{:?}", noun_gender("مدينة"));
+println!("{}", adj("كبير", State::Indefinite, Case::Accusative, Gender::Feminine, Number::Singular));
+println!("{}", verb("كتب", Voice::Active, Mood::Indicative, Person::ThirdMasculinePlural));
+println!("{}", verb_imperative("كتب", Person::SecondFeminineSingular));
+println!("{:?}", verb_verb_form("استقبل"));
+// Without harakat:
+let plain = Arabic::default().marks(false);
+println!("{}", plain.verb("كتب", Voice::Active, Mood::Perfect, Person::FirstSingular)); // كتبت
+// Citations pin principal parts: past and non-past.
+println!("{}", verb("كتب, يكتب", Voice::Active, Mood::Jussive, Person::SecondMasculinePlural));
+```
+
+`Case::Pausal` is the form without case endings, as words are said at the
+end of a phrase and in everyday speech. Input matching ignores harakat and
+tatweel and treats the alif forms (أ إ آ ٱ) as ا and ى as ي. An unvocalized
+word is often several dictionary words (كتب is kataba "write" and kattaba
+"make write"): the `_scored` functions give them all; a citation picks one.
+
+## Coverage
+
+| Part of speech | Entries | Cells | Edits | Classes | Tree nodes | Lexicon |
+|---|---|---|---|---|---|---|
+| noun | 15219 | 36 | 35242 | 5128 | 4077 | 11647 |
+| adj | 3886 | 48 | 12380 | 1338 | 891 | 3121 |
+| verb | 7269 | 112 | 31489 | 5640 | 2364 | 5142 |
+| pron | 11 | 24 | 91 | 17 | 2 | 11 |
+| num | 42 | 72 | 328 | 38 | 2 | 41 |
+
+Model size: 10413425 bytes.
+
+**noun** cells: `IndefiniteNominativeSingular`, `IndefiniteNominativeDual`, `IndefiniteNominativePlural`, `IndefiniteAccusativeSingular`, `IndefiniteAccusativeDual`, `IndefiniteAccusativePlural`, `IndefiniteGenitiveSingular`, `IndefiniteGenitiveDual`, `IndefiniteGenitivePlural`, `IndefinitePausalSingular`, `IndefinitePausalDual`, `IndefinitePausalPlural`, `DefiniteNominativeSingular`, `DefiniteNominativeDual`, `DefiniteNominativePlural`, `DefiniteAccusativeSingular`, `DefiniteAccusativeDual`, `DefiniteAccusativePlural`, `DefiniteGenitiveSingular`, `DefiniteGenitiveDual`, `DefiniteGenitivePlural`, `DefinitePausalSingular`, `DefinitePausalDual`, `DefinitePausalPlural`, `ConstructNominativeSingular`, `ConstructNominativeDual`, `ConstructNominativePlural`, `ConstructAccusativeSingular`, `ConstructAccusativeDual`, `ConstructAccusativePlural`, `ConstructGenitiveSingular`, `ConstructGenitiveDual`, `ConstructGenitivePlural`, `ConstructPausalSingular`, `ConstructPausalDual`, `ConstructPausalPlural`
+
+Citation form: `IndefinitePausalSingular, IndefinitePausalPlural` (comma-separated; parts you give are output exactly and narrow the prediction).
+
+**adj** cells: `IndefiniteNominativeMasculineSingular`, `IndefiniteNominativeMasculineDual`, `IndefiniteNominativeMasculinePlural`, `IndefiniteNominativeFeminineSingular`, `IndefiniteNominativeFeminineDual`, `IndefiniteNominativeFemininePlural`, `IndefiniteAccusativeMasculineSingular`, `IndefiniteAccusativeMasculineDual`, `IndefiniteAccusativeMasculinePlural`, `IndefiniteAccusativeFeminineSingular`, `IndefiniteAccusativeFeminineDual`, `IndefiniteAccusativeFemininePlural`, `IndefiniteGenitiveMasculineSingular`, `IndefiniteGenitiveMasculineDual`, `IndefiniteGenitiveMasculinePlural`, `IndefiniteGenitiveFeminineSingular`, `IndefiniteGenitiveFeminineDual`, `IndefiniteGenitiveFemininePlural`, `IndefinitePausalMasculineSingular`, `IndefinitePausalMasculineDual`, `IndefinitePausalMasculinePlural`, `IndefinitePausalFeminineSingular`, `IndefinitePausalFeminineDual`, `IndefinitePausalFemininePlural`, `DefiniteNominativeMasculineSingular`, `DefiniteNominativeMasculineDual`, `DefiniteNominativeMasculinePlural`, `DefiniteNominativeFeminineSingular`, `DefiniteNominativeFeminineDual`, `DefiniteNominativeFemininePlural`, `DefiniteAccusativeMasculineSingular`, `DefiniteAccusativeMasculineDual`, `DefiniteAccusativeMasculinePlural`, `DefiniteAccusativeFeminineSingular`, `DefiniteAccusativeFeminineDual`, `DefiniteAccusativeFemininePlural`, `DefiniteGenitiveMasculineSingular`, `DefiniteGenitiveMasculineDual`, `DefiniteGenitiveMasculinePlural`, `DefiniteGenitiveFeminineSingular`, `DefiniteGenitiveFeminineDual`, `DefiniteGenitiveFemininePlural`, `DefinitePausalMasculineSingular`, `DefinitePausalMasculineDual`, `DefinitePausalMasculinePlural`, `DefinitePausalFeminineSingular`, `DefinitePausalFeminineDual`, `DefinitePausalFemininePlural`
+
+Citation form: `IndefinitePausalMasculineSingular, IndefinitePausalFeminineSingular, IndefinitePausalMasculinePlural` (comma-separated; parts you give are output exactly and narrow the prediction).
+
+**verb** cells: `ActivePerfectFirstSingular`, `ActivePerfectFirstPlural`, `ActivePerfectSecondMasculineSingular`, `ActivePerfectSecondFeminineSingular`, `ActivePerfectSecondDual`, `ActivePerfectSecondMasculinePlural`, `ActivePerfectSecondFemininePlural`, `ActivePerfectThirdMasculineSingular`, `ActivePerfectThirdFeminineSingular`, `ActivePerfectThirdMasculineDual`, `ActivePerfectThirdFeminineDual`, `ActivePerfectThirdMasculinePlural`, `ActivePerfectThirdFemininePlural`, `ActiveIndicativeFirstSingular`, `ActiveIndicativeFirstPlural`, `ActiveIndicativeSecondMasculineSingular`, `ActiveIndicativeSecondFeminineSingular`, `ActiveIndicativeSecondDual`, `ActiveIndicativeSecondMasculinePlural`, `ActiveIndicativeSecondFemininePlural`, `ActiveIndicativeThirdMasculineSingular`, `ActiveIndicativeThirdFeminineSingular`, `ActiveIndicativeThirdMasculineDual`, `ActiveIndicativeThirdFeminineDual`, `ActiveIndicativeThirdMasculinePlural`, `ActiveIndicativeThirdFemininePlural`, `ActiveSubjunctiveFirstSingular`, `ActiveSubjunctiveFirstPlural`, `ActiveSubjunctiveSecondMasculineSingular`, `ActiveSubjunctiveSecondFeminineSingular`, `ActiveSubjunctiveSecondDual`, `ActiveSubjunctiveSecondMasculinePlural`, `ActiveSubjunctiveSecondFemininePlural`, `ActiveSubjunctiveThirdMasculineSingular`, `ActiveSubjunctiveThirdFeminineSingular`, `ActiveSubjunctiveThirdMasculineDual`, `ActiveSubjunctiveThirdFeminineDual`, `ActiveSubjunctiveThirdMasculinePlural`, `ActiveSubjunctiveThirdFemininePlural`, `ActiveJussiveFirstSingular`, `ActiveJussiveFirstPlural`, `ActiveJussiveSecondMasculineSingular`, `ActiveJussiveSecondFeminineSingular`, `ActiveJussiveSecondDual`, `ActiveJussiveSecondMasculinePlural`, `ActiveJussiveSecondFemininePlural`, `ActiveJussiveThirdMasculineSingular`, `ActiveJussiveThirdFeminineSingular`, `ActiveJussiveThirdMasculineDual`, `ActiveJussiveThirdFeminineDual`, `ActiveJussiveThirdMasculinePlural`, `ActiveJussiveThirdFemininePlural`, `PassivePerfectFirstSingular`, `PassivePerfectFirstPlural`, `PassivePerfectSecondMasculineSingular`, `PassivePerfectSecondFeminineSingular`, `PassivePerfectSecondDual`, `PassivePerfectSecondMasculinePlural`, `PassivePerfectSecondFemininePlural`, `PassivePerfectThirdMasculineSingular`, `PassivePerfectThirdFeminineSingular`, `PassivePerfectThirdMasculineDual`, `PassivePerfectThirdFeminineDual`, `PassivePerfectThirdMasculinePlural`, `PassivePerfectThirdFemininePlural`, `PassiveIndicativeFirstSingular`, `PassiveIndicativeFirstPlural`, `PassiveIndicativeSecondMasculineSingular`, `PassiveIndicativeSecondFeminineSingular`, `PassiveIndicativeSecondDual`, `PassiveIndicativeSecondMasculinePlural`, `PassiveIndicativeSecondFemininePlural`, `PassiveIndicativeThirdMasculineSingular`, `PassiveIndicativeThirdFeminineSingular`, `PassiveIndicativeThirdMasculineDual`, `PassiveIndicativeThirdFeminineDual`, `PassiveIndicativeThirdMasculinePlural`, `PassiveIndicativeThirdFemininePlural`, `PassiveSubjunctiveFirstSingular`, `PassiveSubjunctiveFirstPlural`, `PassiveSubjunctiveSecondMasculineSingular`, `PassiveSubjunctiveSecondFeminineSingular`, `PassiveSubjunctiveSecondDual`, `PassiveSubjunctiveSecondMasculinePlural`, `PassiveSubjunctiveSecondFemininePlural`, `PassiveSubjunctiveThirdMasculineSingular`, `PassiveSubjunctiveThirdFeminineSingular`, `PassiveSubjunctiveThirdMasculineDual`, `PassiveSubjunctiveThirdFeminineDual`, `PassiveSubjunctiveThirdMasculinePlural`, `PassiveSubjunctiveThirdFemininePlural`, `PassiveJussiveFirstSingular`, `PassiveJussiveFirstPlural`, `PassiveJussiveSecondMasculineSingular`, `PassiveJussiveSecondFeminineSingular`, `PassiveJussiveSecondDual`, `PassiveJussiveSecondMasculinePlural`, `PassiveJussiveSecondFemininePlural`, `PassiveJussiveThirdMasculineSingular`, `PassiveJussiveThirdFeminineSingular`, `PassiveJussiveThirdMasculineDual`, `PassiveJussiveThirdFeminineDual`, `PassiveJussiveThirdMasculinePlural`, `PassiveJussiveThirdFemininePlural`, `ImperativeSecondMasculineSingular`, `ImperativeSecondFeminineSingular`, `ImperativeSecondDual`, `ImperativeSecondMasculinePlural`, `ImperativeSecondFemininePlural`, `VerbalNoun`, `ParticipleActive`, `ParticiplePassive`
+
+Citation form: `ActivePerfectThirdMasculineSingular, ActiveIndicativeThirdMasculineSingular` (comma-separated; parts you give are output exactly and narrow the prediction).
+
+**pron** cells: `NominativeMasculineSingular`, `NominativeMasculineDual`, `NominativeMasculinePlural`, `NominativeFeminineSingular`, `NominativeFeminineDual`, `NominativeFemininePlural`, `AccusativeMasculineSingular`, `AccusativeMasculineDual`, `AccusativeMasculinePlural`, `AccusativeFeminineSingular`, `AccusativeFeminineDual`, `AccusativeFemininePlural`, `GenitiveMasculineSingular`, `GenitiveMasculineDual`, `GenitiveMasculinePlural`, `GenitiveFeminineSingular`, `GenitiveFeminineDual`, `GenitiveFemininePlural`, `PausalMasculineSingular`, `PausalMasculineDual`, `PausalMasculinePlural`, `PausalFeminineSingular`, `PausalFeminineDual`, `PausalFemininePlural`
+
+**num** cells: `IndefiniteNominativeMasculineSingular`, `IndefiniteNominativeMasculineDual`, `IndefiniteNominativeMasculinePlural`, `IndefiniteNominativeFeminineSingular`, `IndefiniteNominativeFeminineDual`, `IndefiniteNominativeFemininePlural`, `IndefiniteAccusativeMasculineSingular`, `IndefiniteAccusativeMasculineDual`, `IndefiniteAccusativeMasculinePlural`, `IndefiniteAccusativeFeminineSingular`, `IndefiniteAccusativeFeminineDual`, `IndefiniteAccusativeFemininePlural`, `IndefiniteGenitiveMasculineSingular`, `IndefiniteGenitiveMasculineDual`, `IndefiniteGenitiveMasculinePlural`, `IndefiniteGenitiveFeminineSingular`, `IndefiniteGenitiveFeminineDual`, `IndefiniteGenitiveFemininePlural`, `IndefinitePausalMasculineSingular`, `IndefinitePausalMasculineDual`, `IndefinitePausalMasculinePlural`, `IndefinitePausalFeminineSingular`, `IndefinitePausalFeminineDual`, `IndefinitePausalFemininePlural`, `DefiniteNominativeMasculineSingular`, `DefiniteNominativeMasculineDual`, `DefiniteNominativeMasculinePlural`, `DefiniteNominativeFeminineSingular`, `DefiniteNominativeFeminineDual`, `DefiniteNominativeFemininePlural`, `DefiniteAccusativeMasculineSingular`, `DefiniteAccusativeMasculineDual`, `DefiniteAccusativeMasculinePlural`, `DefiniteAccusativeFeminineSingular`, `DefiniteAccusativeFeminineDual`, `DefiniteAccusativeFemininePlural`, `DefiniteGenitiveMasculineSingular`, `DefiniteGenitiveMasculineDual`, `DefiniteGenitiveMasculinePlural`, `DefiniteGenitiveFeminineSingular`, `DefiniteGenitiveFeminineDual`, `DefiniteGenitiveFemininePlural`, `DefinitePausalMasculineSingular`, `DefinitePausalMasculineDual`, `DefinitePausalMasculinePlural`, `DefinitePausalFeminineSingular`, `DefinitePausalFeminineDual`, `DefinitePausalFemininePlural`, `ConstructNominativeMasculineSingular`, `ConstructNominativeMasculineDual`, `ConstructNominativeMasculinePlural`, `ConstructNominativeFeminineSingular`, `ConstructNominativeFeminineDual`, `ConstructNominativeFemininePlural`, `ConstructAccusativeMasculineSingular`, `ConstructAccusativeMasculineDual`, `ConstructAccusativeMasculinePlural`, `ConstructAccusativeFeminineSingular`, `ConstructAccusativeFeminineDual`, `ConstructAccusativeFemininePlural`, `ConstructGenitiveMasculineSingular`, `ConstructGenitiveMasculineDual`, `ConstructGenitiveMasculinePlural`, `ConstructGenitiveFeminineSingular`, `ConstructGenitiveFeminineDual`, `ConstructGenitiveFemininePlural`, `ConstructPausalMasculineSingular`, `ConstructPausalMasculineDual`, `ConstructPausalMasculinePlural`, `ConstructPausalFeminineSingular`, `ConstructPausalFeminineDual`, `ConstructPausalFemininePlural`
+
+## How it works
+
+Each attested form is stored as an edit tree from the lemma. A lemma's edits across all cells make its inflection class. A suffix tree over the word, read from its end and pruned by a description-length test, predicts the class of any word. Known words the tree gets wrong are kept in a small lexicon. Confidences are smoothed counts; variant weights follow Wiktionary's listing order (1, 1/2, 1/3…, nonstandard forms a tenth of that).
+
+## License
+
+Code: MIT OR Apache-2.0. Data: derived from [Wiktionary](https://www.wiktionary.org/) (via [kaikki.org](https://kaikki.org/)), CC BY-SA 4.0; the model bytes in `src/model.bin` are shared under the same license.
