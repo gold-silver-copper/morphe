@@ -90,13 +90,6 @@ impl Language for Lithuanian {
     }
 
     fn prepare(&self, e: &mut Entry) {
-        // "i̇̃" stacks the dot of i under the accent: drop the dot, as the
-        // runtime only places a mark right after a letter.
-        for f in &mut e.forms {
-            if f.form.contains('\u{307}') {
-                f.form = f.form.replace("\u{307}\u{303}", "\u{303}").replace("\u{307}\u{300}", "\u{300}").replace("\u{307}\u{301}", "\u{301}");
-            }
-        }
         match e.pos.as_str() {
             "verb" => retag_conjugation(e),
             "adj" => retag_adjective(e),
