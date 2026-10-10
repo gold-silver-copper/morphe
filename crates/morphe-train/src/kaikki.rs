@@ -13,6 +13,9 @@ pub struct Entry {
     pub forms: Vec<Form>,
     #[serde(default)]
     pub senses: Vec<Sense>,
+    /// Entry-level tags (other Wiktionary editions put gender here).
+    #[serde(default)]
+    pub tags: Vec<String>,
 }
 
 #[derive(Clone, Debug, Deserialize)]

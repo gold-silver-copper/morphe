@@ -47,6 +47,10 @@ pub struct Spec {
     /// Use only an entry's first inflection table (later ones are often
     /// archaic, dialectal or alternative-orthography variants).
     pub first_table_only: bool,
+    /// More dumps (paths relative to the main dump's directory, without
+    /// `.jsonl`), e.g. another Wiktionary edition; they only add words the
+    /// main dump lacks.
+    pub extra_dumps: Vec<String>,
     /// Forms with these tags name a value of an inherent feature by their
     /// text (Kaikki's `auxiliary` forms: haben/sein, avere/essere).
     pub inherent_form_tags: Vec<String>,
@@ -360,6 +364,7 @@ impl Spec {
             canonical_tag: Some("canonical".into()),
             canonical_spelling: true,
             first_table_only: false,
+            extra_dumps: Vec::new(),
             inherent_form_tags: Vec::new(),
             features: Vec::new(),
             pos: Vec::new(),

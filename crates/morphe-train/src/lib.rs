@@ -24,6 +24,19 @@ pub fn run(lang: &dyn spec::Language, dump: &Path, out: &Path, dump_date: &str, 
         ex.add(&e)
     })?;
     eprintln!("[{}] read {used} entries ({bad} unreadable) in {:.1?}", ex.spec.name, t.elapsed());
+    // Other Wiktionary editions fill in words the main dump lacks.
+    let dir = dump.parent().unwrap_or(Path::new("."));
+    ex.extra = true;
+    for stem in ex.spec.extra_dumps.clone() {
+        let path = dir.join(format!("{stem}.jsonl"));
+        match kaikki::read(&path, &code, &all_pos, |mut e| {
+            lang.prepare(&mut e);
+            ex.add(&e)
+        }) {
+            Ok((used, _)) => eprintln!("[{}] read {used} entries from {stem} in {:.1?}", ex.spec.name, t.elapsed()),
+            Err(e) => eprintln!("[{}] skipping {stem}: {e}", ex.spec.name),
+        }
+    }
     let (model, stats) = learn::learn(&ex, threads);
     emit::emit(lang, &ex.spec, &ex.cells, &model, &stats, out, dump_date)?;
     eprintln!("[{}] wrote {} in {:.1?}", ex.spec.name, out.display(), t.elapsed());

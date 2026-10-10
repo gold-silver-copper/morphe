@@ -11,6 +11,8 @@ impl Language for Russian {
         s.fold = vec![('ё', 'е')];
         // Pre-reform spellings come as whole "dated" tables.
         s.drop_tags.extend(tags("dated"));
+        // Russian Wiktionary adds words English Wiktionary lacks.
+        s.extra_dumps = vec!["ru/Русский".into()];
         s.soft_tags.extend(tags("poetic"));
         s.features = vec![
             feature(
@@ -77,6 +79,20 @@ impl Language for Russian {
             pos("num", "num", vec![group("", "", &format!("{CASES} Gender? Animacy?"))]),
         ];
         s
+    }
+
+    /// Russian Wiktionary tags the past plural as all three genders, and the
+    /// imperative without a number.
+    fn retag(&self, _pos: &PosSpec, _form: &str, tags: &mut Vec<String>) {
+        let has = |tags: &[String], t: &str| tags.iter().any(|x| x == t);
+        let numbered = has(tags, "singular") || has(tags, "plural");
+        if has(tags, "masculine") && has(tags, "feminine") && has(tags, "neuter") && !numbered {
+            tags.retain(|t| !matches!(t.as_str(), "masculine" | "feminine" | "neuter"));
+            tags.push("plural".into());
+        }
+        if has(tags, "imperative") && !numbered {
+            tags.push("singular".into());
+        }
     }
 
     fn extra_code(&self) -> String {

@@ -24,6 +24,9 @@ pub struct Extractor<'a> {
     pub spec: Spec,
     pub cells: Vec<Vec<Cell>>,
     pub records: Vec<Vec<Record>>,
+    /// Reading an extra dump: only words not seen yet are added.
+    pub extra: bool,
+    seen: Vec<std::collections::HashSet<String>>,
 }
 
 /// Weight of the i-th listed form: plain forms in listing order get 1, 1/2,
@@ -38,7 +41,8 @@ impl<'a> Extractor<'a> {
         let spec = lang.spec();
         let cells = spec.pos.iter().map(|p| spec.cells(p)).collect();
         let records = spec.pos.iter().map(|_| Vec::new()).collect();
-        Extractor { lang, spec, cells, records }
+        let seen = spec.pos.iter().map(|_| Default::default()).collect();
+        Extractor { lang, spec, cells, records, extra: false, seen }
     }
 
     pub fn strip(&self, s: &str) -> String {
@@ -55,7 +59,12 @@ impl<'a> Extractor<'a> {
         for pi in 0..self.spec.pos.len() {
             if self.spec.pos[pi].kaikki.contains(&e.pos) {
                 if let Some(r) = self.record(pi, e) {
-                    self.records[pi].push(r);
+                    if !self.extra {
+                        self.seen[pi].insert(r.plain.clone());
+                        self.records[pi].push(r);
+                    } else if !self.seen[pi].contains(&r.plain) {
+                        self.records[pi].push(r);
+                    }
                 }
             }
         }
@@ -184,6 +193,7 @@ impl<'a> Extractor<'a> {
             canon_tags.push(fold_accents(&self.strip(&lower)));
             canon_tags.push(lower);
         }
+        canon_tags.extend(e.tags.iter().cloned());
         let sense_tags: Vec<String> = e.senses.iter().flat_map(|s| retagged("", &s.tags)).collect();
         let inherent = pos
             .inherent

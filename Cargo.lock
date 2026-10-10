@@ -108,6 +108,13 @@ dependencies = [
 ]
 
 [[package]]
+name = "crimean_tatar"
+version = "0.1.0"
+dependencies = [
+ "morphe",
+]
+
+[[package]]
 name = "czech"
 version = "0.1.0"
 dependencies = [
@@ -279,6 +286,13 @@ dependencies = [
 ]
 
 [[package]]
+name = "kyrgyz"
+version = "0.1.0"
+dependencies = [
+ "morphe",
+]
+
+[[package]]
 name = "latin"
 version = "0.1.0"
 dependencies = [
@@ -388,6 +402,13 @@ dependencies = [
 ]
 
 [[package]]
+name = "north_frisian"
+version = "0.1.0"
+dependencies = [
+ "morphe",
+]
+
+[[package]]
 name = "northern_sami"
 version = "0.1.0"
 dependencies = [
@@ -431,6 +452,13 @@ dependencies = [
 
 [[package]]
 name = "old_french"
+version = "0.1.0"
+dependencies = [
+ "morphe",
+]
+
+[[package]]
+name = "old_frisian"
 version = "0.1.0"
 dependencies = [
  "morphe",
@@ -687,6 +715,13 @@ name = "unicode-ident"
 version = "1.0.26"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "d245f478577f809a851594d02313b640fb437e0bb33866753cff937863096954"
+
+[[package]]
+name = "urdu"
+version = "0.1.0"
+dependencies = [
+ "morphe",
+]
 
 [[package]]
 name = "uzbek"
