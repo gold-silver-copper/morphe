@@ -26,11 +26,11 @@ input matching ignores them, and `marks(false)` removes them from output.
 
 | Part of speech | Entries | Cells | Edits | Classes | Tree nodes | Lexicon |
 |---|---|---|---|---|---|---|
-| noun | 948 | 12 | 251 | 64 | 82 | 186 |
+| noun | 948 | 12 | 251 | 64 | 85 | 183 |
 | verb | 82 | 74 | 505 | 24 | 11 | 10 |
 | pron | 5 | 12 | 42 | 5 | 2 | 3 |
 
-Model size: 108490 bytes.
+Model size: 108651 bytes.
 
 **noun** cells: `NominativeSingular`, `NominativePlural`, `GenitiveSingular`, `GenitivePlural`, `DativeSingular`, `DativePlural`, `AccusativeSingular`, `AccusativePlural`, `LocativeSingular`, `LocativePlural`, `AblativeSingular`, `AblativePlural`
 
