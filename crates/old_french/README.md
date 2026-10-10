@@ -25,9 +25,9 @@ to the caller. Editorial accents (é, ë, ï) are optional on input.
 |---|---|---|---|---|---|---|
 | noun | 4035 | 4 | 145 | 184 | 181 | 874 |
 | adj | 786 | 13 | 93 | 149 | 58 | 301 |
-| verb | 1960 | 47 | 7350 | 867 | 242 | 428 |
+| verb | 1960 | 47 | 7351 | 867 | 242 | 428 |
 
-Model size: 1267113 bytes.
+Model size: 1273789 bytes.
 
 **noun** cells: `NominativeSingular`, `NominativePlural`, `ObliqueSingular`, `ObliquePlural`
 

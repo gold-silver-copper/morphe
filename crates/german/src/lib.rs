@@ -25,6 +25,16 @@ fn best(scored: Scored<String>, word: &str) -> String {
 }
 
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord)]
+pub enum Auxiliary {
+    Haben,
+    Sein,
+}
+
+impl Auxiliary {
+    pub const ALL: [Self; 2] = [Self::Haben, Self::Sein];
+}
+
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord)]
 pub enum Case {
     Nominative,
     Genitive,
@@ -604,6 +614,11 @@ impl German {
         best(self.verb_subordinate_past_subjunctive_scored(word, person, number), word)
     }
 
+    /// Scored auxiliary of a verb.
+    pub fn verb_auxiliary(&self, word: &str) -> Scored<Auxiliary> {
+        model().map(|m| m.inherent(2, 0, word).into_iter().filter_map(|(v, p)| Some((Auxiliary::ALL.get(v as usize).copied()?, p))).collect()).unwrap_or_default()
+    }
+
     /// Dictionary spelling of a verb (with stress marks where the data has them).
     pub fn verb_lemma(&self, word: &str) -> String {
         model().and_then(|m| m.lemma(2, word)).unwrap_or_else(|| word.to_string())
@@ -950,6 +965,11 @@ pub fn verb_subordinate_past_subjunctive(word: &str, person: Person, number: Num
 /// A verb form (subordinate past subjunctive). Every candidate with its confidence, best first.
 pub fn verb_subordinate_past_subjunctive_scored(word: &str, person: Person, number: Number) -> Scored<String> {
     German::default().verb_subordinate_past_subjunctive_scored(word, person, number)
+}
+
+/// Scored auxiliary of a verb.
+pub fn verb_auxiliary(word: &str) -> Scored<Auxiliary> {
+    German::default().verb_auxiliary(word)
 }
 
 /// Dictionary spelling of a verb.

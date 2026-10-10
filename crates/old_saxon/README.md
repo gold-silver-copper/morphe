@@ -22,11 +22,11 @@ optional on input. The finite plural has one form for all persons.
 
 | Part of speech | Entries | Cells | Edits | Classes | Tree nodes | Lexicon |
 |---|---|---|---|---|---|---|
-| noun | 311 | 10 | 223 | 90 | 66 | 197 |
+| noun | 311 | 10 | 224 | 90 | 66 | 197 |
 | adj | 142 | 60 | 403 | 36 | 48 | 81 |
-| verb | 664 | 19 | 1120 | 427 | 163 | 490 |
+| verb | 664 | 19 | 1121 | 427 | 163 | 490 |
 
-Model size: 272294 bytes.
+Model size: 276514 bytes.
 
 **noun** cells: `NominativeSingular`, `NominativePlural`, `AccusativeSingular`, `AccusativePlural`, `GenitiveSingular`, `GenitivePlural`, `DativeSingular`, `DativePlural`, `InstrumentalSingular`, `InstrumentalPlural`
 

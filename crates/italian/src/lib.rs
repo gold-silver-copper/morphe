@@ -67,6 +67,16 @@ impl Tense {
     pub const ALL: [Self; 4] = [Self::Present, Self::Imperfect, Self::PastHistoric, Self::Future];
 }
 
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord)]
+pub enum Auxiliary {
+    Avere,
+    Essere,
+}
+
+impl Auxiliary {
+    pub const ALL: [Self; 2] = [Self::Avere, Self::Essere];
+}
+
 /// Settings for systematic choices. `Italian::default()` is what the free functions use.
 #[derive(Clone, Copy, Debug, Default)]
 pub struct Italian {
@@ -384,6 +394,11 @@ impl Italian {
         best(self.verb_imperative_negative_scored(word, person, number), word)
     }
 
+    /// Scored auxiliary of a verb.
+    pub fn verb_auxiliary(&self, word: &str) -> Scored<Auxiliary> {
+        model().map(|m| m.inherent(2, 0, word).into_iter().filter_map(|(v, p)| Some((Auxiliary::ALL.get(v as usize).copied()?, p))).collect()).unwrap_or_default()
+    }
+
     /// Dictionary spelling of a verb (with stress marks where the data has them).
     pub fn verb_lemma(&self, word: &str) -> String {
         model().and_then(|m| m.lemma(2, word)).unwrap_or_else(|| word.to_string())
@@ -648,6 +663,11 @@ pub fn verb_imperative_negative(word: &str, person: Person, number: Number) -> S
 /// A verb form (imperative negative). Every candidate with its confidence, best first.
 pub fn verb_imperative_negative_scored(word: &str, person: Person, number: Number) -> Scored<String> {
     Italian::default().verb_imperative_negative_scored(word, person, number)
+}
+
+/// Scored auxiliary of a verb.
+pub fn verb_auxiliary(word: &str) -> Scored<Auxiliary> {
+    Italian::default().verb_auxiliary(word)
 }
 
 /// Dictionary spelling of a verb.

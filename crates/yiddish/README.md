@@ -26,9 +26,9 @@ spellings. The past and future are compound tenses: `verb_auxiliary` plus
 |---|---|---|---|---|---|---|
 | noun | 4528 | 2 | 412 | 579 | 904 | 3135 |
 | adj | 1046 | 20 | 1438 | 336 | 158 | 594 |
-| verb | 1280 | 10 | 2294 | 797 | 147 | 1002 |
+| verb | 1280 | 10 | 2295 | 797 | 147 | 1002 |
 
-Model size: 427983 bytes.
+Model size: 432114 bytes.
 
 **noun** cells: `Plural`, `Diminutive`
 

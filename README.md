@@ -19,30 +19,82 @@ russian::noun("путь, пути", Case::Instrumental, Number::Singular) // cit
 ## Languages
 
 <!-- languages -->
-20 languages, 1507186 dictionary entries, 67 MB of models.
+72 languages, 2160300 dictionary entries, 159 MB of models.
 
 | Language | Crate | Parts of speech | Entries | Cells | Model |
 |---|---|---|---|---|---|
-| Arabic | `arabic` | noun, adj, verb, pron, num | 26427 | 292 | 10.4 MB |
+| Afrikaans | `afrikaans` | noun, adj, verb | 4682 | 11 | 0.1 MB |
+| Albanian | `albanian` | noun, adj, verb | 8825 | 138 | 0.7 MB |
+| AncientGreek | `ancient_greek` | noun, adj, verb, pron, det, article, num | 14738 | 621 | 27.6 MB |
+| Arabic | `arabic` | noun, adj, verb, pron, num | 26427 | 292 | 15.6 MB |
+| Armenian | `armenian` | noun, adj, verb | 15447 | 148 | 1.2 MB |
+| Azerbaijani | `azerbaijani` | noun, verb, pron | 8463 | 344 | 1.9 MB |
+| Bashkir | `bashkir` | noun | 1640 | 12 | 0.1 MB |
+| Basque | `basque` | noun, adj, verb, pron, num | 4214 | 276 | 0.6 MB |
+| Belarusian | `belarusian` | noun, adj, verb, pron, det, num | 4746 | 424 | 0.8 MB |
+| Breton | `breton` | noun, adj, verb | 862 | 72 | 0.1 MB |
 | Bulgarian | `bulgarian` | noun, adj, verb, pron, det, num | 14686 | 198 | 1.6 MB |
-| Czech | `czech` | noun, adj, verb, pron, det, num | 36700 | 251 | 2.0 MB |
+| Catalan | `catalan` | noun, adj, verb, pron, det, article | 30998 | 75 | 0.8 MB |
+| Czech | `czech` | noun, adj, verb, pron, det, num | 36701 | 251 | 2.0 MB |
 | Danish | `danish` | noun, adj, verb | 20561 | 25 | 0.8 MB |
-| Dutch | `dutch` | noun, adj, verb, det, num | 55361 | 56 | 1.5 MB |
+| Dutch | `dutch` | noun, adj, verb, det, num | 55361 | 56 | 1.6 MB |
 | English | `english` | noun, verb, adj, adv | 494089 | 19 | 4.0 MB |
-| Finnish | `finnish` | noun, adj, verb, pron, num | 159153 | 162 | 11.3 MB |
+| Esperanto | `esperanto` | noun, adj, pron, verb | 32371 | 34 | 0.3 MB |
+| Estonian | `estonian` | noun, adj, verb, pron, num | 5734 | 163 | 1.6 MB |
+| Faroese | `faroese` | noun, adj, verb | 4905 | 68 | 0.6 MB |
+| Finnish | `finnish` | noun, adj, verb, pron, num | 159178 | 162 | 11.3 MB |
 | French | `french` | noun, adj, verb, pron, det, article, num | 75890 | 74 | 1.6 MB |
-| German | `german` | noun, adj, verb, pron, det, article, num | 89293 | 265 | 4.0 MB |
+| Galician | `galician` | noun, adj, verb, pron, det, article, num | 16502 | 98 | 0.5 MB |
+| Georgian | `georgian` | noun, adj, verb | 15111 | 137 | 2.2 MB |
+| German | `german` | noun, adj, verb, pron, det, article, num | 89293 | 265 | 5.2 MB |
+| Gothic | `gothic` | noun, adj, verb | 2970 | 140 | 0.7 MB |
 | Greek | `greek` | noun, adj, verb, pron, num, article | 23376 | 189 | 2.7 MB |
+| Hebrew | `hebrew` | noun, adj, verb | 8693 | 64 | 3.3 MB |
+| Hindi | `hindi` | noun, adj, verb, pron, num | 15439 | 98 | 0.8 MB |
 | Hungarian | `hungarian` | noun, adj, verb, pron, num | 36549 | 213 | 2.7 MB |
-| Icelandic | `icelandic` | noun, adj, verb | 15573 | 189 | 1.7 MB |
-| Italian | `italian` | noun, adj, verb, pron, det, article, num | 109390 | 80 | 2.2 MB |
-| Latin | `latin` | noun, adj, verb, pron, det, num | 34240 | 285 | 4.7 MB |
-| Polish | `polish` | noun, adj, verb, pron, det, num | 68471 | 494 | 3.7 MB |
-| Russian | `russian` | noun, adj, verb, pron, num | 51251 | 181 | 4.5 MB |
+| Icelandic | `icelandic` | noun, adj, verb | 15573 | 189 | 1.8 MB |
+| Irish | `irish` | noun, adj, verb | 25153 | 88 | 1.8 MB |
+| Italian | `italian` | noun, adj, verb, pron, det, article, num | 109390 | 80 | 2.3 MB |
+| Kazakh | `kazakh` | noun, verb | 4816 | 104 | 0.3 MB |
+| Latin | `latin` | noun, adj, verb, pron, det, num | 34245 | 285 | 4.8 MB |
+| Latvian | `latvian` | noun, adj, verb, pron, num | 8576 | 135 | 0.5 MB |
+| Lithuanian | `lithuanian` | noun, adj, verb, pron, num | 6698 | 201 | 1.8 MB |
+| Luxembourgish | `luxembourgish` | noun, adj, verb | 5483 | 37 | 0.2 MB |
+| Macedonian | `macedonian` | noun, adj, verb | 44838 | 61 | 1.5 MB |
+| MiddleEnglish | `middle_english` | noun, adj, verb | 5353 | 25 | 0.3 MB |
+| MiddleFrench | `middle_french` | noun, adj, verb | 3052 | 52 | 0.2 MB |
+| MiddleHighGerman | `middle_high_german` | noun, adj, verb | 563 | 86 | 0.2 MB |
+| NorwegianBokmål | `norwegian_bokmal` | noun, adj, verb | 20642 | 17 | 0.6 MB |
+| NorwegianNynorsk | `norwegian_nynorsk` | noun, adj, verb | 22409 | 17 | 0.7 MB |
+| Occitan | `occitan` | noun, adj, verb | 3680 | 57 | 0.3 MB |
+| OldChurchSlavonic | `old_church_slavonic` | noun, adj, verb, pron, num | 3054 | 301 | 0.5 MB |
+| OldEnglish | `old_english` | noun, adj, verb, pron, det, num | 13853 | 178 | 1.3 MB |
+| OldFrench | `old_french` | noun, adj, verb | 6781 | 64 | 1.3 MB |
+| OldHighGerman | `old_high_german` | noun, adj, verb | 915 | 98 | 0.2 MB |
+| OldIrish | `old_irish` | noun, adj, verb | 3863 | 272 | 1.2 MB |
+| OldNorse | `old_norse` | noun, adj, verb | 2929 | 126 | 0.8 MB |
+| OldSaxon | `old_saxon` | noun, adj, verb | 1117 | 89 | 0.3 MB |
+| Pali | `pali` | noun, adj, verb, pron, num | 1991 | 244 | 0.5 MB |
+| Persian | `persian` | noun, adj, verb | 4627 | 76 | 0.4 MB |
+| Polish | `polish` | noun, adj, verb, pron, det, num | 68473 | 494 | 3.8 MB |
+| Portuguese | `portuguese` | noun, adj, verb, pron, det, article, num | 61465 | 99 | 1.4 MB |
+| Romanian | `romanian` | noun, adj, verb, pron, det, article, num | 83481 | 231 | 2.6 MB |
+| Russian | `russian` | noun, adj, verb, pron, num | 51251 | 181 | 4.8 MB |
+| Sanskrit | `sanskrit` | noun, adj, verb, pron, det, num | 8807 | 484 | 1.8 MB |
+| ScottishGaelic | `scottish_gaelic` | noun, adj, verb, prep, pron | 7912 | 92 | 0.7 MB |
+| SerboCroatian | `serbo_croatian` | noun, adj, verb, pron, det, num | 43845 | 645 | 14.6 MB |
+| Slovak | `slovak` | noun, adj, verb, pron, det, num | 7744 | 393 | 0.5 MB |
+| Slovene | `slovene` | noun, adj, verb, pron, det, num | 3764 | 374 | 1.0 MB |
 | Spanish | `spanish` | noun, adj, verb, pron, det, article, num | 103333 | 105 | 2.1 MB |
+| Swahili | `swahili` | noun, verb | 9694 | 30 | 0.3 MB |
 | Swedish | `swedish` | noun, adj, verb, pron, det, num | 51886 | 47 | 1.5 MB |
+| Tamil | `tamil` | noun, verb, pron, num | 8078 | 142 | 0.7 MB |
+| Tatar | `tatar` | noun | 174 | 84 | 0.1 MB |
 | Turkish | `turkish` | noun, verb, pron, num | 14938 | 266 | 1.6 MB |
-| Ukrainian | `ukrainian` | noun, adj, verb, pron, det, num | 26019 | 490 | 2.5 MB |
+| Ukrainian | `ukrainian` | noun, adj, verb, pron, det, num | 26023 | 490 | 2.5 MB |
+| Uzbek | `uzbek` | noun | 1414 | 84 | 0.2 MB |
+| Welsh | `welsh` | noun, adj, verb, prep, num, pron | 23112 | 91 | 2.0 MB |
+| Yiddish | `yiddish` | noun, adj, verb | 6854 | 32 | 0.4 MB |
 <!-- /languages -->
 
 ## Layout

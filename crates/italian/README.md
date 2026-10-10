@@ -36,7 +36,7 @@ accent is kept (`darò`, `città`).
 | article | 9 | 4 | 31 | 16 | 2 | 2 |
 | num | 9 | 1 | 3 | 3 | 2 | 1 |
 
-Model size: 2226777 bytes.
+Model size: 2273844 bytes.
 
 **noun** cells: `Plural`, `CounterpartMasculine`, `CounterpartFeminine`
 

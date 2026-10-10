@@ -22,11 +22,11 @@ Macrons are optional on input, and th matches þ and ð.
 
 | Part of speech | Entries | Cells | Edits | Classes | Tree nodes | Lexicon |
 |---|---|---|---|---|---|---|
-| noun | 3514 | 5 | 296 | 393 | 232 | 1110 |
+| noun | 3514 | 5 | 297 | 393 | 232 | 1110 |
 | adj | 186 | 4 | 97 | 97 | 41 | 110 |
-| verb | 1653 | 16 | 1069 | 690 | 174 | 727 |
+| verb | 1653 | 16 | 1070 | 690 | 174 | 727 |
 
-Model size: 253929 bytes.
+Model size: 260060 bytes.
 
 **noun** cells: `Plural`, `GenitiveSingular`, `GenitivePlural`, `DativeSingular`, `DativePlural`
 

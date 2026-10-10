@@ -27,9 +27,9 @@ writes them ("méi grouss", "am gréissten").
 |---|---|---|---|---|---|---|
 | noun | 3332 | 2 | 232 | 302 | 337 | 879 |
 | adj | 680 | 14 | 82 | 80 | 49 | 227 |
-| verb | 1471 | 21 | 927 | 397 | 146 | 661 |
+| verb | 1471 | 21 | 928 | 397 | 146 | 661 |
 
-Model size: 217400 bytes.
+Model size: 218799 bytes.
 
 **noun** cells: `Plural`, `Diminutive`
 

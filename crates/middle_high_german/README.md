@@ -26,9 +26,9 @@ without their article. Compound tenses are left to the caller.
 |---|---|---|---|---|---|---|
 | noun | 345 | 8 | 183 | 140 | 58 | 216 |
 | adj | 38 | 50 | 142 | 36 | 9 | 19 |
-| verb | 180 | 28 | 821 | 157 | 69 | 125 |
+| verb | 180 | 28 | 822 | 157 | 69 | 125 |
 
-Model size: 153781 bytes.
+Model size: 165233 bytes.
 
 **noun** cells: `NominativeSingular`, `NominativePlural`, `GenitiveSingular`, `GenitivePlural`, `DativeSingular`, `DativePlural`, `AccusativeSingular`, `AccusativePlural`
 

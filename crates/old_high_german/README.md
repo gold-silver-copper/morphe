@@ -22,11 +22,11 @@ optional on input.
 
 | Part of speech | Entries | Cells | Edits | Classes | Tree nodes | Lexicon |
 |---|---|---|---|---|---|---|
-| noun | 715 | 10 | 259 | 108 | 103 | 289 |
-| adj | 1 | 60 | 24 | 2 | 2 | 0 |
-| verb | 199 | 28 | 1323 | 212 | 62 | 116 |
+| noun | 715 | 10 | 260 | 108 | 103 | 289 |
+| adj | 1 | 60 | 25 | 2 | 2 | 0 |
+| verb | 199 | 28 | 1324 | 212 | 62 | 116 |
 
-Model size: 174423 bytes.
+Model size: 179014 bytes.
 
 **noun** cells: `NominativeSingular`, `NominativePlural`, `AccusativeSingular`, `AccusativePlural`, `GenitiveSingular`, `GenitivePlural`, `DativeSingular`, `DativePlural`, `InstrumentalSingular`, `InstrumentalPlural`
 

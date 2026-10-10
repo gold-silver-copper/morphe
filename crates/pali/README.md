@@ -34,7 +34,7 @@ matching ignores the macrons and dots (ā ṃ ṭ ṇ…).
 | pron | 20 | 48 | 134 | 32 | 2 | 12 |
 | num | 28 | 48 | 203 | 36 | 6 | 19 |
 
-Model size: 481845 bytes.
+Model size: 482382 bytes.
 
 **noun** cells: `NominativeSingular`, `NominativePlural`, `AccusativeSingular`, `AccusativePlural`, `InstrumentalSingular`, `InstrumentalPlural`, `DativeSingular`, `DativePlural`, `AblativeSingular`, `AblativePlural`, `GenitiveSingular`, `GenitivePlural`, `LocativeSingular`, `LocativePlural`, `VocativeSingular`, `VocativePlural`
 

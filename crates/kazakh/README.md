@@ -26,10 +26,10 @@ hundred verbs only.
 
 | Part of speech | Entries | Cells | Edits | Classes | Tree nodes | Lexicon |
 |---|---|---|---|---|---|---|
-| noun | 4648 | 16 | 899 | 345 | 194 | 487 |
+| noun | 4648 | 16 | 900 | 345 | 194 | 487 |
 | verb | 168 | 88 | 1007 | 21 | 18 | 43 |
 
-Model size: 314389 bytes.
+Model size: 324381 bytes.
 
 **noun** cells: `NominativeSingular`, `NominativePlural`, `GenitiveSingular`, `GenitivePlural`, `DativeSingular`, `DativePlural`, `AccusativeSingular`, `AccusativePlural`, `LocativeSingular`, `LocativePlural`, `AblativeSingular`, `AblativePlural`, `InstrumentalSingular`, `InstrumentalPlural`, `EquativeSingular`, `EquativePlural`
 

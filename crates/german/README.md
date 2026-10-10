@@ -37,7 +37,7 @@ auxiliary plus `verb_participle_past`. Personal pronouns are not covered.
 | article | 12 | 16 | 51 | 13 | 2 | 11 |
 | num | 19 | 8 | 4 | 3 | 4 | 1 |
 
-Model size: 5102141 bytes.
+Model size: 5189673 bytes.
 
 **noun** cells: `NominativeSingular`, `NominativePlural`, `GenitiveSingular`, `GenitivePlural`, `DativeSingular`, `DativePlural`, `AccusativeSingular`, `AccusativePlural`, `Diminutive`
 
