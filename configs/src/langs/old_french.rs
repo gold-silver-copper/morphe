@@ -1,3 +1,4 @@
+use morphe_train::kaikki::{Entry, Form};
 use morphe_train::spec::*;
 
 pub struct OldFrench;
@@ -44,6 +45,7 @@ impl Language for OldFrench {
             pos("noun", "noun", vec![group("", "", "Case Number")])
                 .inherent("Gender")
                 .citation("Lemma NominativeSingular ObliquePlural")
+                .lemma_cell("ObliqueSingular")
                 .head_last(),
             pos(
                 "adj",
@@ -69,6 +71,15 @@ impl Language for OldFrench {
         s
     }
 
+    /// Adjective tables repeat the feminine and neuter rows without a
+    /// gender; with the gender loose they would fill every gender.
+    fn prepare(&self, e: &mut Entry) {
+        let gendered = |f: &Form| ["masculine", "feminine", "neuter"].iter().any(|g| has(&f.tags, g));
+        if e.pos == "adj" && e.forms.iter().any(|f| f.source.is_some() && gendered(f)) {
+            e.forms.retain(|f| f.source.is_none() || gendered(f) || has(&f.tags, "table-tags") || has(&f.tags, "inflection-template"));
+        }
+    }
+
     fn retag(&self, pos: &PosSpec, _form: &str, tags: &mut Vec<String>) {
         // Tables say "subjective" for the nominative.
         for t in tags.iter_mut() {
@@ -84,6 +95,8 @@ impl Language for OldFrench {
 
     fn split_form(&self, raw: &str) -> Vec<String> {
         // "cat oblique singular or"
+        // "grant (later grande)": the later spelling is Middle French.
+        let raw = raw.split(" (later").next().unwrap_or(raw);
         vec![raw.split(" oblique").next().unwrap_or(raw).to_string()]
     }
 
