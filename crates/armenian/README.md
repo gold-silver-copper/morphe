@@ -33,7 +33,7 @@ Input matching ignores the stress and emphasis marks.
 | adj | 3221 | 35 | 391 | 84 | 153 | 1054 |
 | verb | 2011 | 79 | 876 | 150 | 82 | 551 |
 
-Model size: 1213852 bytes.
+Model size: 1213950 bytes.
 
 **noun** cells: `NominativeSingular`, `NominativePlural`, `DativeSingular`, `DativePlural`, `AblativeSingular`, `AblativePlural`, `InstrumentalSingular`, `InstrumentalPlural`, `LocativeSingular`, `LocativePlural`, `DefiniteNominativeSingular`, `DefiniteNominativePlural`, `DefiniteDativeSingular`, `DefiniteDativePlural`, `PossessiveFirstNominativeSingular`, `PossessiveFirstNominativePlural`, `PossessiveFirstDativeSingular`, `PossessiveFirstDativePlural`, `PossessiveFirstAblativeSingular`, `PossessiveFirstAblativePlural`, `PossessiveFirstInstrumentalSingular`, `PossessiveFirstInstrumentalPlural`, `PossessiveFirstLocativeSingular`, `PossessiveFirstLocativePlural`, `PossessiveSecondNominativeSingular`, `PossessiveSecondNominativePlural`, `PossessiveSecondDativeSingular`, `PossessiveSecondDativePlural`, `PossessiveSecondAblativeSingular`, `PossessiveSecondAblativePlural`, `PossessiveSecondInstrumentalSingular`, `PossessiveSecondInstrumentalPlural`, `PossessiveSecondLocativeSingular`, `PossessiveSecondLocativePlural`
 

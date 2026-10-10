@@ -31,7 +31,7 @@ compound tenses and negatives are built with auxiliaries and left out.
 | pron | 20 | 20 | 219 | 33 | 2 | 11 |
 | num | 35 | 20 | 266 | 34 | 3 | 15 |
 
-Model size: 818657 bytes.
+Model size: 818707 bytes.
 
 **noun** cells: `NominativeSingular`, `NominativePlural`, `GenitiveSingular`, `GenitivePlural`, `PartitiveSingular`, `PartitivePlural`, `IllativeSingular`, `IllativePlural`, `InessiveSingular`, `InessivePlural`, `ElativeSingular`, `ElativePlural`, `AllativeSingular`, `AllativePlural`, `AdessiveSingular`, `AdessivePlural`, `AblativeSingular`, `AblativePlural`, `TranslativeSingular`, `TranslativePlural`
 

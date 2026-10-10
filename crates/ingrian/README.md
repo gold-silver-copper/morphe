@@ -31,7 +31,7 @@ tule, oon tult) are built with auxiliaries and left out.
 | pron | 26 | 24 | 317 | 36 | 7 | 21 |
 | num | 13 | 24 | 235 | 26 | 2 | 11 |
 
-Model size: 2018489 bytes.
+Model size: 2018536 bytes.
 
 **noun** cells: `NominativeSingular`, `NominativePlural`, `GenitiveSingular`, `GenitivePlural`, `PartitiveSingular`, `PartitivePlural`, `IllativeSingular`, `IllativePlural`, `InessiveSingular`, `InessivePlural`, `ElativeSingular`, `ElativePlural`, `AllativeSingular`, `AllativePlural`, `AdessiveSingular`, `AdessivePlural`, `AblativeSingular`, `AblativePlural`, `TranslativeSingular`, `TranslativePlural`, `EssiveSingular`, `EssivePlural`, `ExessiveSingular`, `ExessivePlural`
 

@@ -33,7 +33,7 @@ plural forms from the headword line.
 | adj | 953 | 3 | 58 | 65 | 59 | 330 |
 | verb | 1732 | 119 | 6648 | 308 | 112 | 525 |
 
-Model size: 717055 bytes.
+Model size: 717139 bytes.
 
 **noun** cells: `NominativeIndefiniteSingular`, `NominativeIndefinitePlural`, `NominativeDefiniteSingular`, `NominativeDefinitePlural`, `AccusativeIndefiniteSingular`, `AccusativeIndefinitePlural`, `AccusativeDefiniteSingular`, `AccusativeDefinitePlural`, `DativeIndefiniteSingular`, `DativeIndefinitePlural`, `DativeDefiniteSingular`, `DativeDefinitePlural`, `AblativeIndefiniteSingular`, `AblativeIndefinitePlural`, `AblativeDefiniteSingular`, `AblativeDefinitePlural`
 
