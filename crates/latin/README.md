@@ -37,7 +37,7 @@ combine `verb_participle_passive` with a form of *sum*.
 | det | 35 | 42 | 220 | 45 | 16 | 22 |
 | num | 126 | 36 | 111 | 21 | 58 | 53 |
 
-Model size: 1445015 bytes.
+Model size: 4718984 bytes.
 
 **noun** cells: `NominativeSingular`, `NominativePlural`, `GenitiveSingular`, `GenitivePlural`, `DativeSingular`, `DativePlural`, `AccusativeSingular`, `AccusativePlural`, `AblativeSingular`, `AblativePlural`, `VocativeSingular`, `VocativePlural`, `LocativeSingular`, `LocativePlural`
 

@@ -73,8 +73,8 @@ impl Language for Latin {
                     group("ImperativePassive", "imperative passive present second-person", "Number"),
                     group("FutureImperativePassive", "imperative passive future", "Person[Second,Third] Number"),
                     group("Infinitive", "infinitive", "Voice Tense[Present,Perfect,Future]"),
-                    group("Participle", "participle active", "Tense[Present,Future]"),
-                    group("ParticiplePassive", "participle passive", "Tense[Perfect,Future]"),
+                    group("Participle", "participle active", "Tense[Present,Future]").declines("adj", ""),
+                    group("ParticiplePassive", "participle passive", "Tense[Perfect,Future]").declines("adj", ""),
                     group("Gerund", "gerund", "Case[Genitive,Dative,Accusative,Ablative]"),
                     group("Supine", "supine", "Case[Accusative,Ablative]"),
                 ],
@@ -105,6 +105,8 @@ println!("{:?}", noun_gender("nox"));
 println!("{}", verb_indicative("amo", Tense::Perfect, Person::Third, Number::Plural)); // amāvērunt
 println!("{}", verb_subjunctive_passive("capio", Tense::Imperfect, Person::First, Number::Singular));
 println!("{}", adj("bonus", Case::Accusative, Gender::Feminine, Number::Singular)); // bonam
+// Participles decline like adjectives:
+println!("{}", verb_participle_passive_declined("amo", Tense::Perfect, Case::Genitive, Gender::Feminine, Number::Plural));
 // Citations pin principal parts: amō, amāre, amāvī, amātum.
 println!("{}", verb_indicative("fero, ferre, tuli, latum", Tense::Perfect, Person::First, Number::Plural));
 // Without macrons in the output:

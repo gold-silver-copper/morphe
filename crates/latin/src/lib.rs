@@ -495,6 +495,17 @@ impl Latin {
         best(self.verb_infinitive_scored(word, voice, tense), word)
     }
 
+    /// A verb form (participle). Then declined like a adj: every candidate, best first.
+    pub fn verb_participle_declined_scored(&self, word: &str, tense: Tense, case: Case, gender: Gender, number: Number) -> Scored<String> {
+        let base = self.verb_participle(word, tense);
+        self.adj_scored(&base, case, gender, number)
+    }
+
+    /// A verb form (participle). Then declined like a adj.
+    pub fn verb_participle_declined(&self, word: &str, tense: Tense, case: Case, gender: Gender, number: Number) -> String {
+        best(self.verb_participle_declined_scored(word, tense, case, gender, number), word)
+    }
+
     /// A verb form (participle).
     pub fn verb_participle_scored(&self, word: &str, tense: Tense) -> Scored<String> {
         let cell: Option<u32> = match (tense,) {
@@ -511,6 +522,17 @@ impl Latin {
     /// A verb form (participle). The best candidate; the word itself if nothing is known.
     pub fn verb_participle(&self, word: &str, tense: Tense) -> String {
         best(self.verb_participle_scored(word, tense), word)
+    }
+
+    /// A verb form (participle passive). Then declined like a adj: every candidate, best first.
+    pub fn verb_participle_passive_declined_scored(&self, word: &str, tense: Tense, case: Case, gender: Gender, number: Number) -> Scored<String> {
+        let base = self.verb_participle_passive(word, tense);
+        self.adj_scored(&base, case, gender, number)
+    }
+
+    /// A verb form (participle passive). Then declined like a adj.
+    pub fn verb_participle_passive_declined(&self, word: &str, tense: Tense, case: Case, gender: Gender, number: Number) -> String {
+        best(self.verb_participle_passive_declined_scored(word, tense, case, gender, number), word)
     }
 
     /// A verb form (participle passive).
@@ -907,6 +929,11 @@ pub fn verb_infinitive_scored(word: &str, voice: Voice, tense: Tense) -> Scored<
     Latin::default().verb_infinitive_scored(word, voice, tense)
 }
 
+/// A verb form (participle). Then declined like a adj.
+pub fn verb_participle_declined(word: &str, tense: Tense, case: Case, gender: Gender, number: Number) -> String {
+    Latin::default().verb_participle_declined(word, tense, case, gender, number)
+}
+
 /// A verb form (participle).
 pub fn verb_participle(word: &str, tense: Tense) -> String {
     Latin::default().verb_participle(word, tense)
@@ -915,6 +942,11 @@ pub fn verb_participle(word: &str, tense: Tense) -> String {
 /// A verb form (participle). Every candidate with its confidence, best first.
 pub fn verb_participle_scored(word: &str, tense: Tense) -> Scored<String> {
     Latin::default().verb_participle_scored(word, tense)
+}
+
+/// A verb form (participle passive). Then declined like a adj.
+pub fn verb_participle_passive_declined(word: &str, tense: Tense, case: Case, gender: Gender, number: Number) -> String {
+    Latin::default().verb_participle_passive_declined(word, tense, case, gender, number)
 }
 
 /// A verb form (participle passive).
@@ -995,6 +1027,31 @@ pub fn num_scored(word: &str, case: Case, gender: Gender, number: Number) -> Sco
 /// Dictionary spelling of a num.
 pub fn num_lemma(word: &str) -> String {
     Latin::default().num_lemma(word)
+}
+
+/// One reading of a form: its part of speech, lemma, and cell (`None` when
+/// the form is the lemma itself).
+#[derive(Clone, Debug, PartialEq)]
+pub struct Analysis {
+    pub pos: &'static str,
+    pub lemma: String,
+    pub cell: Option<&'static str>,
+}
+
+/// Which lemma and cell a form could be, best first. Works for unknown words too.
+pub fn analyze(word: &str) -> Scored<Analysis> {
+    let Some(m) = model() else { return Vec::new() };
+    m.analyze(word)
+        .into_iter()
+        .filter_map(|(a, p)| {
+            let pos = m.pos.get(a.pos)?;
+            let cell = match a.cell {
+                Some(c) => Some(pos.cells.get(c as usize)?.as_str()),
+                None => None,
+            };
+            Some((Analysis { pos: pos.name.as_str(), lemma: a.lemma, cell }, p))
+        })
+        .collect()
 }
 
 /// Inflect by names, e.g. `inflect("noun", "GenitivePlural", word)`.
