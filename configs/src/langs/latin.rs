@@ -1,3 +1,4 @@
+use morphe_train::kaikki::Entry;
 use morphe_train::spec::*;
 
 pub struct Latin;
@@ -48,6 +49,7 @@ impl Language for Latin {
             pos("noun", "noun", vec![group("", "", "Case Number")])
                 .inherent("Gender")
                 .citation("NominativeSingular GenitiveSingular")
+                .missing_is_absent()
                 .head_last(),
             pos(
                 "adj",
@@ -59,7 +61,8 @@ impl Language for Latin {
                     group("Adverb", "adverb", ""),
                 ],
             )
-            .citation("NominativeMasculineSingular NominativeFeminineSingular|GenitiveMasculineSingular NominativeNeuterSingular"),
+            .citation("NominativeMasculineSingular NominativeFeminineSingular|GenitiveMasculineSingular NominativeNeuterSingular")
+            .missing_is_absent(),
             pos(
                 "verb",
                 "verb",
@@ -80,6 +83,8 @@ impl Language for Latin {
                 ],
             )
             .citation("IndicativePresentFirstSingular InfinitiveActivePresent IndicativePerfectFirstSingular SupineAccusative|ParticiplePassivePerfect")
+            // Deponents and defective verbs lack whole voices.
+            .missing_is_absent()
             .head_first(),
             pos("pron", "pron", vec![group("", "", &format!("{CASES} Gender? Number"))]),
             pos("det", "det", vec![group("", "", "Case Gender? Number")]),
@@ -88,10 +93,25 @@ impl Language for Latin {
         s
     }
 
+    /// A vowel marked both long and short (egō̆, lī̆mō̆nis) has uncertain
+    /// length: it is written plain.
+    fn prepare(&self, e: &mut Entry) {
+        for f in &mut e.forms {
+            f.form = plain_anceps(&f.form);
+        }
+    }
+
     /// Periphrastic perfect passives come as "amātus + present active
-    /// indicative of sum": a description, not a form.
+    /// indicative of sum": a description, not a form. A j-spelling next to
+    /// the same form with i (eius, ejus) is the same word.
     fn adjust(&self, _pos: &PosSpec, _lemma: &str, forms: &mut Vec<(usize, String, bool)>) {
         forms.retain(|f| !f.1.contains('+'));
+        let all = forms.clone();
+        forms.retain(|f| !f.1.contains('j') || !all.iter().any(|g| g.0 == f.0 && g.1 == f.1.replace('j', "i")));
+    }
+
+    fn samples(&self) -> Vec<&'static str> {
+        vec!["rosa", "rex", "amo", "fero, ferre, tuli, latum", "hortor", "bonus", "blorgus", "zarpo"]
     }
 
     fn readme(&self) -> String {
@@ -121,6 +141,27 @@ combine `verb_participle_passive` with a form of *sum*.
         .into()
     }
 }
+
+fn plain_anceps(form: &str) -> String {
+    let mut out = String::new();
+    let mut chars = form.chars().peekable();
+    while let Some(c) = chars.next() {
+        if chars.peek() == Some(&'\u{306}') {
+            if let Some(&(_, plain)) = MACRONS.iter().find(|m| m.0 == c) {
+                chars.next();
+                out.push(plain);
+                continue;
+            }
+        }
+        out.push(c);
+    }
+    out
+}
+
+const MACRONS: [(char, char); 12] = [
+    ('ā', 'a'), ('ē', 'e'), ('ī', 'i'), ('ō', 'o'), ('ū', 'u'), ('ȳ', 'y'),
+    ('Ā', 'A'), ('Ē', 'E'), ('Ī', 'I'), ('Ō', 'O'), ('Ū', 'U'), ('Ȳ', 'Y'),
+];
 
 pub fn language() -> Box<dyn Language> {
     Box::new(Latin)

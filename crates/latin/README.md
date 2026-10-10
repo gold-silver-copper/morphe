@@ -32,14 +32,14 @@ combine `verb_participle_passive` with a form of *sum*.
 
 | Part of speech | Entries | Cells | Edits | Classes | Tree nodes | Lexicon |
 |---|---|---|---|---|---|---|
-| noun | 16739 | 14 | 2725 | 983 | 2286 | 6988 |
-| adj | 10882 | 39 | 1318 | 590 | 1660 | 4414 |
-| verb | 6393 | 118 | 12368 | 1463 | 1281 | 3265 |
-| pron | 70 | 36 | 490 | 103 | 46 | 42 |
-| det | 35 | 42 | 221 | 45 | 16 | 22 |
-| num | 126 | 36 | 111 | 21 | 58 | 61 |
+| noun | 16739 | 14 | 2684 | 976 | 2219 | 6928 |
+| adj | 10882 | 39 | 1301 | 588 | 1619 | 4382 |
+| verb | 6393 | 118 | 12262 | 1456 | 1257 | 3265 |
+| pron | 70 | 36 | 486 | 103 | 42 | 44 |
+| det | 35 | 42 | 221 | 45 | 15 | 21 |
+| num | 126 | 36 | 111 | 21 | 57 | 62 |
 
-Model size: 4757219 bytes.
+Model size: 1781914 bytes.
 
 **noun** cells: `NominativeSingular`, `NominativePlural`, `GenitiveSingular`, `GenitivePlural`, `DativeSingular`, `DativePlural`, `AccusativeSingular`, `AccusativePlural`, `AblativeSingular`, `AblativePlural`, `VocativeSingular`, `VocativePlural`, `LocativeSingular`, `LocativePlural`
 
