@@ -28,7 +28,7 @@ the present subjunctive.
 
 | Part of speech | Entries | Cells | Edits | Classes | Tree nodes | Lexicon |
 |---|---|---|---|---|---|---|
-| noun | 10895 | 5 | 231 | 158 | 163 | 1035 |
+| noun | 10895 | 5 | 234 | 158 | 163 | 1035 |
 | adj | 2932 | 4 | 65 | 45 | 28 | 73 |
 | verb | 2573 | 73 | 1548 | 164 | 99 | 223 |
 | pron | 40 | 4 | 38 | 28 | 10 | 21 |
@@ -36,7 +36,7 @@ the present subjunctive.
 | article | 10 | 4 | 22 | 10 | 2 | 9 |
 | num | 16 | 4 | 11 | 10 | 4 | 7 |
 
-Model size: 532511 bytes.
+Model size: 224567 bytes.
 
 **noun** cells: `Plural`, `CounterpartMasculineSingular`, `CounterpartMasculinePlural`, `CounterpartFeminineSingular`, `CounterpartFemininePlural`
 

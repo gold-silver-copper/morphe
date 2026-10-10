@@ -36,6 +36,8 @@ impl Language for Galician {
             )
             .inherent("Gender")
             .citation("Lemma Plural")
+            // Only nouns with a gendered counterpart (gato, gata) have one.
+            .missing_is_absent()
             .head_first(),
             pos("adj", "adj", vec![group("", "", "Gender? Number")]).head_first(),
             pos(
@@ -54,6 +56,8 @@ impl Language for Galician {
                 ],
             )
             .citation("Infinitive IndicativePresentFirstSingular IndicativePreteriteFirstSingular ParticipleMasculineSingular")
+            // Only a few verbs have a short participle (pago, aceso).
+            .missing_is_absent()
             .head_first(),
             pos("pron", "pron", vec![group("", "!accusative !dative !genitive", "Gender? Number")]),
             pos("det", "det", vec![group("", "", "Gender? Number")]),
@@ -93,7 +97,11 @@ impl Language for Galician {
             s.pos.iter().map(|p| (p.name.clone(), s.cells(p).into_iter().map(|c| c.name).collect())).collect()
         });
         let Some((_, names)) = cells.iter().find(|c| c.0 == pos.name) else { return };
-        fill_lemma(names, lemma, forms);
+        if pos.name == "noun" {
+            fill_counterpart(names, lemma, forms);
+        } else {
+            fill_lemma(names, lemma, forms);
+        }
     }
 
     fn samples(&self) -> Vec<&'static str> {
@@ -122,6 +130,30 @@ the present subjunctive.
 "#
         .into()
     }
+}
+
+/// A noun with a counterpart of the other gender (gato, gata) is itself the
+/// counterpart of its own gender: gata's feminine counterpart is gata.
+fn fill_counterpart(names: &[String], lemma: &str, forms: &mut Vec<(usize, String, bool)>) {
+    let idx = |n: &str| names.iter().position(|c| c == n);
+    let (Some(plural), Some(ms), Some(mp), Some(fs), Some(fp)) = (
+        idx("Plural"),
+        idx("CounterpartMasculineSingular"),
+        idx("CounterpartMasculinePlural"),
+        idx("CounterpartFeminineSingular"),
+        idx("CounterpartFemininePlural"),
+    ) else {
+        return;
+    };
+    let has = |ci: usize| forms.iter().any(|f| f.0 == ci);
+    let own = match (has(ms) || has(mp), has(fs) || has(fp)) {
+        (true, false) => (fs, fp),
+        (false, true) => (ms, mp),
+        _ => return,
+    };
+    let plurals: Vec<(usize, String, bool)> = forms.iter().filter(|f| f.0 == plural).map(|f| (own.1, f.1.clone(), f.2)).collect();
+    forms.push((own.0, lemma.to_string(), false));
+    forms.extend(plurals);
 }
 
 /// The dictionary form is a cell Wiktionary doesn't list: the masculine
