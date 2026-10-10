@@ -1,0 +1,582 @@
+//! The trained model of one language and how it answers queries.
+
+use crate::codec::{Reader, Writer};
+use crate::edit::Edit;
+
+const MAGIC: &str = "morphe-1";
+
+/// A whole language.
+#[derive(Clone, Debug, Default)]
+pub struct Model {
+    pub name: String,
+    /// Characters that users don't type (stress marks): removed from input,
+    /// and from output when marks are turned off.
+    pub marks: Vec<char>,
+    /// Letter pairs that users write interchangeably (ё → е), applied only
+    /// when matching input against known words.
+    pub fold: Vec<(char, char)>,
+    /// Letters that marks follow in the data (vowels, for stress).
+    pub mark_bases: Vec<char>,
+    pub pos: Vec<Pos>,
+}
+
+/// One part of speech.
+#[derive(Clone, Debug, Default)]
+pub struct Pos {
+    pub name: String,
+    pub cells: Vec<String>,
+    /// Cells given, in order, by a citation like "книга, книги". The first is
+    /// the lemma itself; each part may stand for one of several cells.
+    pub citation: Vec<Vec<u32>>,
+    pub edits: Vec<Edit>,
+    /// class → cell → variants (edit id, weight).
+    pub classes: Vec<Vec<Vec<(u32, f32)>>>,
+    /// Restores a typed word to its dictionary spelling (stress marks).
+    /// Labels index `restores`.
+    pub restore: Tree,
+    pub restores: Vec<Edit>,
+    /// Predicts the inflection class of a word.
+    pub paradigm: Tree,
+    /// Known words whose answer the trees don't give: key → readings.
+    pub lexicon: Vec<(String, Vec<Reading>)>,
+    pub inherent: Vec<Inherent>,
+}
+
+/// One reading of a known word.
+#[derive(Clone, Debug, PartialEq)]
+pub struct Reading {
+    /// The lowercased lemma without marks, when it differs from the key.
+    pub plain: Option<String>,
+    pub restore: u32,
+    pub class: u32,
+    pub weight: f32,
+}
+
+/// A feature the word carries itself, like a noun's gender.
+#[derive(Clone, Debug, Default)]
+pub struct Inherent {
+    pub name: String,
+    pub values: Vec<String>,
+    pub tree: Tree,
+    pub lexicon: Vec<(String, Vec<(u32, f32)>)>,
+}
+
+/// Extra symbols read before the word's letters.
+#[derive(Clone, Debug, PartialEq, Eq, Hash)]
+pub enum KeyFeature {
+    /// Number of vowel groups, capped.
+    Syllables { vowels: String, cap: u32 },
+}
+
+pub const TOKEN_BASE: u32 = 0xF0000;
+pub const WORD_START: u32 = '^' as u32;
+
+/// A suffix tree over the word read from its end, with a distribution over
+/// labels at every node that differed enough from its ancestors to keep.
+#[derive(Clone, Debug, Default)]
+pub struct Tree {
+    pub key: Vec<KeyFeature>,
+    pub nodes: Vec<Node>,
+}
+
+#[derive(Clone, Debug, Default)]
+pub struct Node {
+    pub children: Vec<(u32, u32)>,
+    pub dist: Vec<(u32, f32)>,
+}
+
+impl KeyFeature {
+    pub fn token(&self, word: &str) -> u32 {
+        match self {
+            KeyFeature::Syllables { vowels, cap } => {
+                let mut n = 0u32;
+                let mut prev = false;
+                for c in word.chars() {
+                    let v = vowels.contains(c);
+                    if v && !prev {
+                        n += 1;
+                    }
+                    prev = v;
+                }
+                TOKEN_BASE + n.min(*cap)
+            }
+        }
+    }
+}
+
+impl Tree {
+    /// The symbols the tree reads for `word`, root first.
+    pub fn symbols(key: &[KeyFeature], word: &str) -> Vec<u32> {
+        let mut s: Vec<u32> = key.iter().map(|k| k.token(word)).collect();
+        s.extend(word.chars().rev().map(u32::from));
+        s.push(WORD_START);
+        s
+    }
+
+    /// Distributions along the path for `word`, deepest first.
+    pub fn path(&self, word: &str) -> Vec<&[(u32, f32)]> {
+        let mut out = Vec::new();
+        let mut node = 0usize;
+        if let Some(n) = self.nodes.get(node) {
+            out.push(n.dist.as_slice());
+        }
+        for sym in Tree::symbols(&self.key, word) {
+            let Some(n) = self.nodes.get(node) else { break };
+            let Ok(i) = n.children.binary_search_by_key(&sym, |c| c.0) else { break };
+            let Some(&(_, child)) = n.children.get(i) else { break };
+            node = child as usize;
+            if let Some(c) = self.nodes.get(node) {
+                out.push(c.dist.as_slice());
+            }
+        }
+        out.retain(|d| !d.is_empty());
+        out.reverse();
+        out
+    }
+
+    /// The deepest distribution whose labels pass `keep`, renormalized.
+    pub fn predict(&self, word: &str, mut keep: impl FnMut(u32) -> bool) -> Vec<(u32, f32)> {
+        for dist in self.path(word) {
+            let kept: Vec<(u32, f32)> = dist.iter().copied().filter(|(l, _)| keep(*l)).collect();
+            let total: f32 = kept.iter().map(|x| x.1).sum();
+            if total > 0.0 {
+                return kept.into_iter().map(|(l, p)| (l, p / total)).collect();
+            }
+        }
+        Vec::new()
+    }
+}
+
+/// How answers are written.
+#[derive(Clone, Copy, Debug)]
+pub struct Options {
+    /// Keep stress and similar marks in the output.
+    pub marks: bool,
+}
+
+impl Default for Options {
+    fn default() -> Self {
+        Options { marks: true }
+    }
+}
+
+#[derive(Clone, Copy, PartialEq)]
+enum Casing {
+    Lower,
+    Title,
+    Upper,
+}
+
+/// A parsed query word: what the user typed, split into citation parts.
+struct Query {
+    casing: Casing,
+    /// Lowercased, marks removed.
+    plain: String,
+    /// `plain` with letter folds: the lexicon key.
+    key: String,
+    /// Further citation parts, as typed.
+    parts: Vec<String>,
+}
+
+impl Model {
+    fn strip(&self, s: &str) -> String {
+        s.chars().filter(|c| !self.marks.contains(c)).collect()
+    }
+
+    /// Lowercase, without marks, with letter folds: how two spellings are compared.
+    pub fn key(&self, s: &str) -> String {
+        self.strip(&s.to_lowercase())
+            .chars()
+            .map(|c| self.fold.iter().find(|f| f.0 == c).map_or(c, |f| f.1))
+            .collect()
+    }
+
+    /// Every mark follows a letter that carries marks in the data.
+    fn marks_placed(&self, s: &str) -> bool {
+        let mut prev = None;
+        for c in s.chars() {
+            if self.marks.contains(&c) && !prev.is_some_and(|p| self.mark_bases.contains(&p)) {
+                return false;
+            }
+            prev = Some(c);
+        }
+        true
+    }
+
+    fn query(&self, input: &str) -> Query {
+        let mut parts = input.split(',').map(str::trim).filter(|p| !p.is_empty());
+        let lemma = parts.next().unwrap_or("");
+        let letters: Vec<char> = lemma.chars().filter(|c| c.is_alphabetic()).collect();
+        let casing = if letters.len() > 1 && letters.iter().all(|c| c.is_uppercase()) {
+            Casing::Upper
+        } else if letters.first().is_some_and(|c| c.is_uppercase()) {
+            Casing::Title
+        } else {
+            Casing::Lower
+        };
+        let plain = self.strip(&lemma.to_lowercase());
+        Query { casing, key: self.key(lemma), plain, parts: parts.map(String::from).collect() }
+    }
+
+    fn finish(&self, s: &str, casing: Casing, opts: Options) -> String {
+        let s = if opts.marks { s.to_string() } else { self.strip(s) };
+        match casing {
+            Casing::Lower => s,
+            Casing::Upper => s.to_uppercase(),
+            Casing::Title => {
+                let mut c = s.chars();
+                match c.next() {
+                    Some(f) => f.to_uppercase().chain(c).collect(),
+                    None => s,
+                }
+            }
+        }
+    }
+
+    /// Readings (dictionary spelling, class, weight) for a query word.
+    fn readings(&self, pos: &Pos, q: &Query, cell: u32) -> Vec<(String, u32, f32)> {
+        let needs = |class: u32| -> bool {
+            let Some(c) = pos.classes.get(class as usize) else { return false };
+            cell == u32::MAX || c.get(cell as usize).is_some_and(|v| !v.is_empty())
+        };
+        let cites = |canon: &str, class: u32| -> bool {
+            q.parts.iter().zip(pos.citation.iter().skip(1)).all(|(part, alts)| {
+                let want = self.key(part);
+                alts.iter().any(|&cc| {
+                    pos.classes.get(class as usize).and_then(|c| c.get(cc as usize)).is_some_and(|vs| {
+                        vs.iter().any(|&(e, _)| {
+                            pos.edits
+                                .get(e as usize)
+                                .and_then(|e| e.apply(canon))
+                                .is_some_and(|f| self.key(&f) == want)
+                        })
+                    })
+                })
+            })
+        };
+
+        if let Ok(i) = pos.lexicon.binary_search_by(|e| e.0.as_str().cmp(&q.key)) {
+            if let Some((_, rs)) = pos.lexicon.get(i) {
+                let known: Vec<(String, u32, f32)> = rs
+                    .iter()
+                    .filter_map(|r| {
+                        let plain = r.plain.as_deref().unwrap_or(&q.key);
+                        let canon = pos.restores.get(r.restore as usize)?.apply(plain)?;
+                        Some((canon, r.class, r.weight))
+                    })
+                    .filter(|(canon, class, _)| cites(canon, *class))
+                    .collect();
+                if !known.is_empty() {
+                    return known;
+                }
+            }
+        }
+
+        // Unknown word: restore its spelling, then predict its class.
+        let restored = pos.restore.predict(&q.plain, |l| {
+            pos.restores.get(l as usize).and_then(|e| e.apply(&q.plain)).is_some_and(|c| self.marks_placed(&c))
+        });
+        let mut out = Vec::new();
+        for (r, rp) in restored.into_iter().take(3) {
+            let Some(canon) = pos.restores.get(r as usize).and_then(|e| e.apply(&q.plain)) else {
+                continue;
+            };
+            let applies = |class: u32| -> bool {
+                needs(class)
+                    && pos.classes.get(class as usize).is_some_and(|c| {
+                        c.get(cell as usize).is_none_or(|vs| {
+                            vs.is_empty()
+                                || vs.iter().any(|&(e, _)| {
+                                    pos.edits.get(e as usize).and_then(|e| e.apply(&canon)).is_some()
+                                })
+                        })
+                    })
+                    && cites(&canon, class)
+            };
+            let mut classes = pos.paradigm.predict(&q.plain, applies);
+            if classes.is_empty() && !q.parts.is_empty() {
+                // The citation rules out every class the tree knows here:
+                // search all classes.
+                let all: Vec<u32> = (0..pos.classes.len() as u32).filter(|&c| applies(c)).collect();
+                let p = 1.0 / all.len().max(1) as f32;
+                classes = all.into_iter().map(|c| (c, p)).collect();
+            }
+            out.extend(classes.into_iter().map(|(c, p)| (canon.clone(), c, p * rp)));
+        }
+        out
+    }
+
+    /// Every candidate form of `input` in `cell` of part of speech `pos`,
+    /// best first, with confidences summing to 1. Empty only when nothing
+    /// is known or predictable.
+    pub fn inflect(&self, pos: usize, cell: u32, input: &str, opts: Options) -> Vec<(String, f32)> {
+        let Some(p) = self.pos.get(pos) else { return Vec::new() };
+        let q = self.query(input);
+        if q.plain.is_empty() {
+            return Vec::new();
+        }
+        let readings = self.readings(p, &q, cell);
+        // Principal parts the caller gave are output exactly.
+        if let Some(i) = p.citation.iter().position(|alts| alts.contains(&cell)).filter(|&i| i > 0) {
+            if let Some(g) = q.parts.get(i - 1) {
+                if !readings.is_empty() {
+                    return vec![(g.clone(), 1.0)];
+                }
+            }
+        }
+        let mut forms: Vec<(String, f32)> = Vec::new();
+        for (canon, class, w) in readings {
+            let Some(vs) = p.classes.get(class as usize).and_then(|c| c.get(cell as usize)) else { continue };
+            for &(e, vw) in vs {
+                if let Some(f) = p.edits.get(e as usize).and_then(|e| e.apply(&canon)) {
+                    let f = self.finish(&f, q.casing, opts);
+                    match forms.iter_mut().find(|x| x.0 == f) {
+                        Some(x) => x.1 += w * vw,
+                        None => forms.push((f, w * vw)),
+                    }
+                }
+            }
+        }
+        let total: f32 = forms.iter().map(|f| f.1).sum();
+        if total > 0.0 {
+            for f in &mut forms {
+                f.1 /= total;
+            }
+        }
+        forms.sort_by(|a, b| b.1.total_cmp(&a.1).then_with(|| a.0.cmp(&b.0)));
+        forms
+    }
+
+    /// The dictionary spelling of a word (with stress marks where known).
+    pub fn lemma(&self, pos: usize, input: &str) -> Option<String> {
+        let p = self.pos.get(pos)?;
+        let q = self.query(input);
+        self.readings(p, &q, u32::MAX).into_iter().next().map(|r| self.finish(&r.0, q.casing, Options::default()))
+    }
+
+    /// Scored values of an inherent feature (e.g. gender) of a word.
+    pub fn inherent(&self, pos: usize, feature: usize, input: &str) -> Vec<(u32, f32)> {
+        let Some(f) = self.pos.get(pos).and_then(|p| p.inherent.get(feature)) else { return Vec::new() };
+        let q = self.query(input);
+        if let Ok(i) = f.lexicon.binary_search_by(|e| e.0.as_str().cmp(&q.key)) {
+            if let Some((_, d)) = f.lexicon.get(i) {
+                return d.clone();
+            }
+        }
+        f.tree.predict(&q.plain, |_| true)
+    }
+
+    pub fn encode(&self) -> Vec<u8> {
+        let mut w = Writer::default();
+        w.s(MAGIC);
+        w.s(&self.name);
+        w.s(&self.marks.iter().collect::<String>());
+        w.u(self.fold.len() as u64);
+        for (a, b) in &self.fold {
+            w.u(u64::from(*a));
+            w.u(u64::from(*b));
+        }
+        w.s(&self.mark_bases.iter().collect::<String>());
+        w.u(self.pos.len() as u64);
+        for p in &self.pos {
+            w.s(&p.name);
+            w.u(p.cells.len() as u64);
+            for c in &p.cells {
+                w.s(c);
+            }
+            w.u(p.citation.len() as u64);
+            for alts in &p.citation {
+                w.u(alts.len() as u64);
+                for c in alts {
+                    w.u(u64::from(*c));
+                }
+            }
+            w.u(p.edits.len() as u64);
+            for e in &p.edits {
+                w.edit(e);
+            }
+            w.u(p.classes.len() as u64);
+            for class in &p.classes {
+                for vs in class {
+                    w.u(vs.len() as u64);
+                    for &(e, wt) in vs {
+                        w.u(u64::from(e));
+                        if vs.len() > 1 {
+                            w.p(wt);
+                        }
+                    }
+                }
+            }
+            write_tree(&mut w, &p.restore);
+            w.u(p.restores.len() as u64);
+            for e in &p.restores {
+                w.edit(e);
+            }
+            write_tree(&mut w, &p.paradigm);
+            w.u(p.lexicon.len() as u64);
+            let mut prev = "";
+            for (k, rs) in &p.lexicon {
+                write_key(&mut w, prev, k);
+                prev = k;
+                w.u(rs.len() as u64);
+                for r in rs {
+                    match &r.plain {
+                        Some(s) => {
+                            w.u(1);
+                            w.s(s);
+                        }
+                        None => w.u(0),
+                    }
+                    w.u(u64::from(r.restore));
+                    w.u(u64::from(r.class));
+                    if rs.len() > 1 {
+                        w.p(r.weight);
+                    }
+                }
+            }
+            w.u(p.inherent.len() as u64);
+            for f in &p.inherent {
+                w.s(&f.name);
+                w.u(f.values.len() as u64);
+                for v in &f.values {
+                    w.s(v);
+                }
+                write_tree(&mut w, &f.tree);
+                w.u(f.lexicon.len() as u64);
+                let mut prev = "";
+                for (k, d) in &f.lexicon {
+                    write_key(&mut w, prev, k);
+                    prev = k;
+                    write_dist(&mut w, d);
+                }
+            }
+        }
+        w.buf
+    }
+
+    pub fn decode(buf: &[u8]) -> Option<Model> {
+        let mut r = Reader::new(buf);
+        if r.s()? != MAGIC {
+            return None;
+        }
+        let name = r.s()?;
+        let marks = r.s()?.chars().collect();
+        let fold = r.vec(|r| Some((char::from_u32(r.u32()?)?, char::from_u32(r.u32()?)?)))?;
+        let mark_bases = r.s()?.chars().collect();
+        let pos = r.vec(|r| {
+            let name = r.s()?;
+            let cells = r.vec(|r| r.s())?;
+            let citation = r.vec(|r| r.vec(|r| r.u32()))?;
+            let edits = r.vec(|r| r.edit())?;
+            let ncells = cells.len();
+            let classes = r.vec(|r| {
+                (0..ncells)
+                    .map(|_| {
+                        let n = r.n()?;
+                        (0..n)
+                            .map(|_| {
+                                let e = r.u32()?;
+                                let w = if n > 1 { r.p()? } else { 1.0 };
+                                Some((e, w))
+                            })
+                            .collect::<Option<Vec<_>>>()
+                    })
+                    .collect::<Option<Vec<_>>>()
+            })?;
+            let restore = read_tree(r)?;
+            let restores = r.vec(|r| r.edit())?;
+            let paradigm = read_tree(r)?;
+            let mut prev = String::new();
+            let lexicon = r.vec(|r| {
+                let k = read_key(r, &prev)?;
+                prev.clone_from(&k);
+                let n = r.n()?;
+                let rs = (0..n)
+                    .map(|_| {
+                        let plain = if r.u()? == 1 { Some(r.s()?) } else { None };
+                        let restore = r.u32()?;
+                        let class = r.u32()?;
+                        let weight = if n > 1 { r.p()? } else { 1.0 };
+                        Some(Reading { plain, restore, class, weight })
+                    })
+                    .collect::<Option<Vec<_>>>()?;
+                Some((k, rs))
+            })?;
+            let inherent = r.vec(|r| {
+                let name = r.s()?;
+                let values = r.vec(|r| r.s())?;
+                let tree = read_tree(r)?;
+                let mut prev = String::new();
+                let lexicon = r.vec(|r| {
+                    let k = read_key(r, &prev)?;
+                    prev.clone_from(&k);
+                    Some((k, read_dist(r)?))
+                })?;
+                Some(Inherent { name, values, tree, lexicon })
+            })?;
+            Some(Pos { name, cells, citation, edits, classes, restore, restores, paradigm, lexicon, inherent })
+        })?;
+        Some(Model { name, marks, fold, mark_bases, pos })
+    }
+}
+
+fn write_key(w: &mut Writer, prev: &str, k: &str) {
+    let shared = prev.chars().zip(k.chars()).take_while(|(a, b)| a == b).map(|(a, _)| a.len_utf8()).sum::<usize>();
+    w.u(shared as u64);
+    w.s(k.get(shared..).unwrap_or(""));
+}
+
+fn read_key(r: &mut Reader, prev: &str) -> Option<String> {
+    let shared = r.n()?;
+    let rest = r.s()?;
+    Some(format!("{}{}", prev.get(..shared)?, rest))
+}
+
+fn write_dist(w: &mut Writer, d: &[(u32, f32)]) {
+    w.u(d.len() as u64);
+    for &(l, p) in d {
+        w.u(u64::from(l));
+        w.p(p);
+    }
+}
+
+fn read_dist(r: &mut Reader) -> Option<Vec<(u32, f32)>> {
+    r.vec(|r| Some((r.u32()?, r.p()?)))
+}
+
+fn write_tree(w: &mut Writer, t: &Tree) {
+    w.u(t.key.len() as u64);
+    for k in &t.key {
+        match k {
+            KeyFeature::Syllables { vowels, cap } => {
+                w.u(0);
+                w.s(vowels);
+                w.u(u64::from(*cap));
+            }
+        }
+    }
+    w.u(t.nodes.len() as u64);
+    for (i, n) in t.nodes.iter().enumerate() {
+        w.u(n.children.len() as u64);
+        for &(sym, child) in &n.children {
+            w.u(u64::from(sym));
+            w.u(u64::from(child) - i as u64);
+        }
+        write_dist(w, &n.dist);
+    }
+}
+
+fn read_tree(r: &mut Reader) -> Option<Tree> {
+    let key = r.vec(|r| match r.u()? {
+        0 => Some(KeyFeature::Syllables { vowels: r.s()?, cap: r.u32()? }),
+        _ => None,
+    })?;
+    let n = r.n()?;
+    let mut nodes = Vec::with_capacity(n.min(1 << 24));
+    for i in 0..n {
+        let children = r.vec(|r| Some((r.u32()?, u32::try_from(r.u()? + i as u64).ok()?)))?;
+        let dist = read_dist(r)?;
+        nodes.push(Node { children, dist });
+    }
+    Some(Tree { key, nodes })
+}

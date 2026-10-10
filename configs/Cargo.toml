@@ -1,0 +1,17 @@
+[package]
+name = "morphe-configs"
+version = "0.1.0"
+description = "Language descriptions for morphe, and the morphe command"
+edition.workspace = true
+license.workspace = true
+repository.workspace = true
+authors.workspace = true
+publish = false
+
+[[bin]]
+name = "morphe"
+path = "src/main.rs"
+
+[dependencies]
+morphe = { path = "../crates/morphe" }
+morphe-train = { path = "../crates/morphe-train" }

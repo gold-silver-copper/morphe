@@ -1,0 +1,10 @@
+[package]
+name = "morphe"
+version = "0.1.0"
+description = "Tiny runtime for inflection crates generated from Wiktionary by morphe"
+edition.workspace = true
+license.workspace = true
+repository.workspace = true
+authors.workspace = true
+
+[dependencies]
