@@ -106,6 +106,13 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "4e7648175b45a9a48536d676f68d918270699102aa8dab5496df06904c914600"
 
 [[package]]
+name = "corsican"
+version = "0.1.0"
+dependencies = [
+ "morphe",
+]
+
+[[package]]
 name = "crc32fast"
 version = "1.5.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -479,6 +486,13 @@ dependencies = [
 ]
 
 [[package]]
+name = "nepali"
+version = "0.1.0"
+dependencies = [
+ "morphe",
+]
+
+[[package]]
 name = "north_frisian"
 version = "0.1.0"
 dependencies = [
@@ -729,6 +743,13 @@ dependencies = [
 ]
 
 [[package]]
+name = "sicilian"
+version = "0.1.0"
+dependencies = [
+ "morphe",
+]
+
+[[package]]
 name = "simd-adler32"
 version = "0.3.10"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -844,6 +865,20 @@ dependencies = [
 
 [[package]]
 name = "uzbek"
+version = "0.1.0"
+dependencies = [
+ "morphe",
+]
+
+[[package]]
+name = "voro"
+version = "0.1.0"
+dependencies = [
+ "morphe",
+]
+
+[[package]]
+name = "votic"
 version = "0.1.0"
 dependencies = [
  "morphe",
