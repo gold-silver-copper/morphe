@@ -37,7 +37,7 @@ future II) are built from the `verb_past` participle plus an auxiliary.
 | det | 4 | 84 | 34 | 4 | 2 | 0 |
 | num | 19 | 84 | 73 | 19 | 2 | 15 |
 
-Model size: 14553084 bytes.
+Model size: 3073927 bytes.
 
 **noun** cells: `NominativeSingular`, `NominativePlural`, `GenitiveSingular`, `GenitivePlural`, `DativeSingular`, `DativePlural`, `AccusativeSingular`, `AccusativePlural`, `VocativeSingular`, `VocativePlural`, `LocativeSingular`, `LocativePlural`, `InstrumentalSingular`, `InstrumentalPlural`
 

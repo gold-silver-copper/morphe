@@ -84,7 +84,10 @@ impl Language for SerboCroatian {
                 ],
             )
             .inherent("Aspect")
-            .citation("Infinitive PresentFirstSingular"),
+            .citation("Infinitive PresentFirstSingular")
+            // Perfective verbs have no imperfect or present adverbial
+            // participle.
+            .missing_is_absent(),
             pos("pron", "pron", vec![group("", "", &format!("{CASES} Number Gender? Animacy?"))]),
             pos("det", "det", vec![group("", "", &format!("{CASES} Number Gender? Animacy?"))]),
             pos("num", "num", vec![group("", "", &format!("{CASES} Number? Gender? Animacy?"))]),
@@ -159,6 +162,10 @@ impl Language for SerboCroatian {
         let raw = raw.trim();
         let stripped = [" m", " f", " n"].iter().find_map(|g| raw.strip_suffix(g)).unwrap_or(raw);
         vec![stripped.to_string()]
+    }
+
+    fn samples(&self) -> Vec<&'static str> {
+        vec!["žena", "pas, psa", "жена", "pisati", "napisati", "star", "glorpa", "zlimati"]
     }
 
     fn readme(&self) -> String {
